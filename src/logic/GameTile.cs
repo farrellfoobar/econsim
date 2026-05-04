@@ -1,14 +1,13 @@
-using Godot;
-using Vector2 = System.Numerics.Vector2;
+using EconSim.data;
 
 namespace EconSim;
 
 public class GameTile
 {
     public TileType tileType;
-    public Vector2I position;
+    public Vector2Int position;
     
-    public GameTile(TileType tileType, Vector2I position)
+    public GameTile(TileType tileType, Vector2Int position)
     {
         this.tileType = tileType;
         this.position = position;

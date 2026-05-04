@@ -1,5 +1,4 @@
 using Godot;
-
 namespace EconSim.render;
 
 
@@ -15,12 +14,12 @@ public class MapRenderer
         parent.AddChild(tileMapLayer);
         
         tileMapLayer.SetTileSet( (TileSet) GD.Load("res://res/tiles/tileset.tres"));
-        tileMapLayer.SetScale(new Vector2(0.5f, 0.5f));
+        tileMapLayer.SetScale(new Vector2(0.5f, 0.5f)); //FIX THIS!!!!
     }
 
 
     public void RenderTile(GameTile gameTile)
     {
-        tileMapLayer.SetCell(new Vector2I(gameTile.position.X, gameTile.position.Y), (int) gameTile.tileType, ATLAS_COORDS);
+        tileMapLayer.SetCell(new Vector2I(gameTile.position.getX(), gameTile.position.getY()), (int) gameTile.tileType, ATLAS_COORDS);
     }
 }
