@@ -8,9 +8,17 @@
 
 config_version=5
 
+[animation]
+
+compatibility/default_parent_skeleton_in_mesh_instance_3d=true
+
 [application]
 
 config/name="EconSim"
-run/main_scene="res://MainScene.tscn"
-config/features=PackedStringArray("4.3", "Forward Plus")
+run/main_scene="uid://1et4cvif5j6c"
+config/features=PackedStringArray("4.6", "C#", "Forward Plus")
 config/icon="res://res/icon.svg"
+
+[dotnet]
+
+project/assembly_name="EconSim"
