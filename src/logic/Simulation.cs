@@ -1,33 +1,33 @@
+using System.Collections.Generic;
 using EconSim.data;
-using EconSim.render;
-using Godot; //!!!!!!!!!!!!!!!!!!!!!!!!!!! this breaks the readme and I need to fix it by... idk, making a
-             //SimulationRenderer ?
 
-namespace EconSim;
+namespace EconSim.logic;
+
 
 public class Simulation
 {
     private GameMap gameMap;
-    private Merchant merchant;
-
-    private MapRenderer mapRenderer;
-    private MerchantRenderer merchantRenderer;
+    private List<Merchant> merchants;
     
-    public Simulation(Node parent)
+    public Simulation()
     {
-        mapRenderer = new MapRenderer(parent);
-        merchantRenderer = new MerchantRenderer(parent);
-        
-        gameMap = new GameMap(27, 13, mapRenderer);
+        gameMap = new GameMap(27, 13);
         gameMap.setTileType(new Vector2Int(3, 3), TileType.HAMLET);
         gameMap.setTileType(new Vector2Int(13, 7), TileType.HAMLET);
         gameMap.setTileType(new Vector2Int(20, 9), TileType.HAMLET);
         
-        merchant = new Merchant(new Vector2Int(3,3), merchantRenderer);
+        merchants = new List<Merchant> {new Merchant(new Vector2Int(3,3))};
     }
 
-    public void DoTurn()
+    public void doTurn()
     {
-        merchant.DoTurn();
+        foreach (Merchant merchant in merchants)
+        {
+            merchant.DoTurn();
+        }
     }
+    
+    public GameMap getGameMap() { return gameMap; }
+    public List<Merchant> getMerchants() { return merchants; }
+    
 }

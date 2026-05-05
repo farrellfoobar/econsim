@@ -1,7 +1,7 @@
+using EconSim.logic;
 using Godot;
 
 namespace EconSim.render;
-
 
 
 public class MerchantRenderer

@@ -1,8 +1,8 @@
 using System.Collections.Generic; //for `Dictionary<>`. Can I scope this down somehow? 
 using EconSim.data;
-using EconSim.render;
 
-namespace EconSim;
+namespace EconSim.logic;
+
 
 public class GameMap
 {
@@ -10,11 +10,8 @@ public class GameMap
        private int height;
        private Dictionary<Vector2Int, GameTile> tiles = new Dictionary<Vector2Int, GameTile>();
        
-       private MapRenderer mapRenderer;
-       
-       public GameMap(int width, int height, MapRenderer mapRenderer)
+       public GameMap(int width, int height)
        {
-            this.mapRenderer = mapRenderer;
             this.width = width;
             this.height = height;
 
@@ -24,7 +21,6 @@ public class GameMap
                  {
                      GameTile tile = new GameTile(TileType.GRASS, new Vector2Int(x, y));
                      tiles.Add(tile.position, tile);
-                     mapRenderer.RenderTile(tile);
                  }   
             }
        }
@@ -32,6 +28,7 @@ public class GameMap
        public void setTileType(Vector2Int position, TileType tileType)
        {
            tiles[position].tileType = tileType;
-           mapRenderer.RenderTile(tiles[position]);
        }
+       
+       public Dictionary<Vector2Int, GameTile> getTiles() { return tiles; }
 }

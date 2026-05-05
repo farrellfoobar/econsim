@@ -1,6 +1,7 @@
 using EconSim.data;
 
-namespace EconSim;
+namespace EconSim.logic;
+
 
 public class GameTile
 {
