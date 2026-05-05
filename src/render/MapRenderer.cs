@@ -19,7 +19,9 @@ public class MapRenderer
         parent.AddChild(tileMapLayer);
         
         tileMapLayer.SetTileSet( (TileSet) GD.Load("res://res/tiles/tileset.tres"));
-        tileMapLayer.SetScale(new Vector2(0.5f, 0.5f)); //FIX THIS!!!!
+        
+        //todo: remove setscale once we add camera movement. Only set to half scale to fit in screen
+        tileMapLayer.SetScale(new Vector2(0.5f, 0.5f));
     }
 
     public void renderMap()

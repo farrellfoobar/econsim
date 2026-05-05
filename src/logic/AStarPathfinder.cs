@@ -7,17 +7,14 @@ namespace EconSim.logic;
 
 public class AStarPathfinder
 {
-    //TODO: replace this with AStar2D and manually connect adjacent tiles for hex logic
+    //TODO: replace this with AStar2D and manually connect adjacent tiles for correct hex neighbor logic
+    // see https://github.com/godotengine/godot-demo-projects/blob/3.5-9e68af3/2d/navigation_astar/pathfind_astar.gd
     private AStarGrid2D pathfinder;
     
     public AStarPathfinder(GameMap map)
     {
         pathfinder = new AStarGrid2D();
         pathfinder.SetRegion(new Rect2I(0, 0, map.getWidth(), map.getHeight()));
-        //cellsize
-        //offset
-        //default_compute_heuristic 
-        //default_estimate_heuristic 
         pathfinder.SetDiagonalMode(AStarGrid2D.DiagonalModeEnum.Always);
         pathfinder.Update();
     }
@@ -26,8 +23,6 @@ public class AStarPathfinder
     {
         Vector2[] godotPath = pathfinder.GetPointPath(start.asGodotVector(), goal.asGodotVector());
         
-        //i hate this. maybe just use some godot type. but also godot's a* does use floats so we have to convert somewhere
-        //foreach also doesnt work because it returns an enumerable which I would have to cast
         Stack<Vector2Int> path = new Stack<Vector2Int>(godotPath.Length);
         for(int i = godotPath.Length-1; i >= 0 ; i--){
             path.Push(new Vector2Int(godotPath[i]));
