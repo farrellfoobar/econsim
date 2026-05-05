@@ -18,15 +18,12 @@ public class SimulationRenderer
         this.simulation = simulation;
         
         mapRenderer = new MapRenderer(parent, this.simulation.getGameMap());
-        merchantRenderer = new MerchantRenderer(parent);
+        merchantRenderer = new MerchantRenderer(parent, this.simulation.getGameMap());
     }
     
     public void renderSimulation()
     {
         mapRenderer.renderMap();
-        foreach (Merchant merchant in simulation.getMerchants())
-        {
-            merchantRenderer.render(merchant);
-        }
+        merchantRenderer.render(simulation.getMerchants());
     }
 }
