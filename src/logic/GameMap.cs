@@ -42,4 +42,8 @@ public class GameMap
        }
        
        public Dictionary<Vector2Int, GameTile> getTiles() { return tiles; }
+
+       public int getHeight(){ return height; }
+
+       public int getWidth(){ return width; }
 }

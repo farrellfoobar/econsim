@@ -1,4 +1,5 @@
 using System;
+using Godot;
 
 namespace EconSim.data;
 
@@ -17,6 +18,15 @@ public class Vector2Int
         this.y = y;
     }
 
+    public Vector2Int(Vector2 godotVector)
+    {
+        if (!float.IsInteger(godotVector.X) || !float.IsInteger(godotVector.Y)){
+            throw new ArgumentException("Got float values: " + godotVector + " trying to create Vector2Int. ");
+        }
+        x = (int) godotVector.X;
+        y = (int) godotVector.Y;
+    }
+    
     public override bool Equals(object that)
     {
         if (!(that is Vector2Int))
@@ -32,6 +42,11 @@ public class Vector2Int
         return HashCode.Combine(x.GetHashCode(), y.GetHashCode());
     }
 
+    public Vector2I asGodotVector()
+    {
+        return new Vector2I(x, y);
+    }
+    
     public int getX()
     {
         return x;

@@ -8,15 +8,20 @@ public class Simulation
 {
     private GameMap gameMap;
     private List<Merchant> merchants;
+    private AStarPathfinder pathfinder;
     
     public Simulation()
     {
         gameMap = new GameMap(27, 13);
+        pathfinder = new AStarPathfinder(gameMap);
         gameMap.addTown(new Vector2Int(3, 3), new Town());
         gameMap.addTown(new Vector2Int(13, 7), new Town());
         gameMap.addTown(new Vector2Int(20, 9), new Town());
+
+        Merchant thisOneGuy = new Merchant(new Vector2Int(3, 3), pathfinder);
+        merchants = new List<Merchant> {thisOneGuy};
         
-        merchants = new List<Merchant> {new Merchant(new Vector2Int(3,3))};
+        thisOneGuy.setOnJourneyTo(new Vector2Int(20, 9));
     }
 
     public void doTurn()
