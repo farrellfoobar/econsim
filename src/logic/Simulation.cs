@@ -12,9 +12,9 @@ public class Simulation
     public Simulation()
     {
         gameMap = new GameMap(27, 13);
-        gameMap.setTileType(new Vector2Int(3, 3), TileType.HAMLET);
-        gameMap.setTileType(new Vector2Int(13, 7), TileType.HAMLET);
-        gameMap.setTileType(new Vector2Int(20, 9), TileType.HAMLET);
+        gameMap.addTown(new Vector2Int(3, 3), new Town());
+        gameMap.addTown(new Vector2Int(13, 7), new Town());
+        gameMap.addTown(new Vector2Int(20, 9), new Town());
         
         merchants = new List<Merchant> {new Merchant(new Vector2Int(3,3))};
     }

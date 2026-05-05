@@ -41,5 +41,9 @@ public class Vector2Int
     {
         return y;
     }
-    
+
+    public override string ToString()
+    {
+        return "(" + x + "," + y + ")";
+    }
 }

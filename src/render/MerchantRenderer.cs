@@ -6,7 +6,7 @@ namespace EconSim.render;
 
 public class MerchantRenderer
 {
-    const float TILE_SIZE_PX = 128; //128 = tile size, 1/2=scale also float feels bad to use over double but vector2 wants floats
+    const float TILE_SIZE_PX = 128;
     private Node rendererParent;
     private Sprite2D sprite;
     public MerchantRenderer(Node rendererParent)
@@ -21,7 +21,7 @@ public class MerchantRenderer
     public void render(Merchant merchant)
     {
         //this seems stupid, maybe just put the sprite on the tile map on another layer
-        sprite.SetPosition(new Vector2(25, 22*8));
+        sprite.SetPosition(new Vector2(25, 22 + TILE_SIZE_PX));
         //sprite.SetPosition(new Vector2(25, 22+1*TILE_SIZE_PX)); //oh god, x,y to cells is ugh idk
         //sprite.SetPosition(new Vector2(merchant.getPosition().X * TILE_SIZE_PX, merchant.getPosition().Y * TILE_SIZE_PX));
     }

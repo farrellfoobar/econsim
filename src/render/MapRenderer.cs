@@ -32,6 +32,7 @@ public class MapRenderer
 
     private void renderTile(GameTile gameTile)
     {
-        tileMapLayer.SetCell(new Vector2I(gameTile.position.getX(), gameTile.position.getY()), (int) gameTile.tileType, ATLAS_COORDS);
+        Vector2I tilePositionAsGodotType = new Vector2I(gameTile.position.getX(), gameTile.position.getY());
+        tileMapLayer.SetCell(tilePositionAsGodotType, (int) gameTile.tileType, ATLAS_COORDS);
     }
 }

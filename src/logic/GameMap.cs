@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic; //for `Dictionary<>`. Can I scope this down somehow? 
 using EconSim.data;
 
@@ -27,7 +28,17 @@ public class GameMap
 
        public void setTileType(Vector2Int position, TileType tileType)
        {
+           if (position.getX() >= width || position.getY() >= height)
+           {
+               throw new IndexOutOfRangeException(
+                   "Tried to assign tile at position: " + position + " in map of " + new Vector2Int(width, height));
+           }
            tiles[position].tileType = tileType;
+       }
+       
+       public void addTown(Vector2Int position, Town town)
+       {
+           setTileType(position, TileType.HAMLET);
        }
        
        public Dictionary<Vector2Int, GameTile> getTiles() { return tiles; }
