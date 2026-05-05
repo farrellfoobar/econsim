@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://c4lgvyh3bb0f0"]
+[gd_scene format=3 uid="uid://c4lgvyh3bb0f0"]
 
 [ext_resource type="Texture2D" uid="uid://crqmfvmjk10qv" path="res://res/tiles/tilePNGs/WWT-01.png" id="1"]
 [ext_resource type="Texture2D" uid="uid://cedbg617ddc06" path="res://res/tiles/tilePNGs/WWT-02.png" id="2"]
@@ -27,133 +27,133 @@
 [ext_resource type="Texture2D" uid="uid://c0ujnkfiof2c7" path="res://res/tiles/tilePNGs/WWT-25.png" id="25"]
 [ext_resource type="Texture2D" uid="uid://nqj5fdvt56ad" path="res://res/tiles/tilePNGs/WWT-26.png" id="26"]
 
-[node name="TilesetEdit" type="Node2D"]
+[node name="TilesetEdit" type="Node2D" unique_id=223711515]
 
-[node name="Tile1" type="Sprite2D" parent="."]
+[node name="Tile1" type="Sprite2D" parent="." unique_id=1482749733]
 texture = ExtResource("1")
 centered = false
 
-[node name="Tile2" type="Sprite2D" parent="."]
+[node name="Tile2" type="Sprite2D" parent="." unique_id=1450053412]
 position = Vector2(128, 0)
 texture = ExtResource("2")
 centered = false
 
-[node name="Tile3" type="Sprite2D" parent="."]
+[node name="Tile3" type="Sprite2D" parent="." unique_id=1336372369]
 position = Vector2(256, 0)
 texture = ExtResource("3")
 centered = false
 
-[node name="Tile4" type="Sprite2D" parent="."]
+[node name="Tile4" type="Sprite2D" parent="." unique_id=167022479]
 position = Vector2(384, 0)
 texture = ExtResource("4")
 centered = false
 
-[node name="Tile5" type="Sprite2D" parent="."]
+[node name="Tile5" type="Sprite2D" parent="." unique_id=354266167]
 position = Vector2(512, 0)
 texture = ExtResource("5")
 centered = false
 
-[node name="Tile6" type="Sprite2D" parent="."]
+[node name="Tile6" type="Sprite2D" parent="." unique_id=1164368828]
 position = Vector2(640, 0)
 texture = ExtResource("6")
 centered = false
 
-[node name="Tile7" type="Sprite2D" parent="."]
+[node name="Tile7" type="Sprite2D" parent="." unique_id=1316990730]
 position = Vector2(768, 0)
 texture = ExtResource("7")
 centered = false
 
-[node name="Tile8" type="Sprite2D" parent="."]
+[node name="Tile8" type="Sprite2D" parent="." unique_id=1647646086]
 position = Vector2(896, 0)
 texture = ExtResource("8")
 centered = false
 
-[node name="Tile9" type="Sprite2D" parent="."]
+[node name="Tile9" type="Sprite2D" parent="." unique_id=1300785187]
 position = Vector2(1024, 0)
 texture = ExtResource("9")
 centered = false
 
-[node name="Tile10" type="Sprite2D" parent="."]
+[node name="Tile10" type="Sprite2D" parent="." unique_id=1025715348]
 position = Vector2(0, 128)
 texture = ExtResource("10")
 centered = false
 
-[node name="Tile11" type="Sprite2D" parent="."]
+[node name="Tile11" type="Sprite2D" parent="." unique_id=1640718484]
 position = Vector2(128, 128)
 texture = ExtResource("11")
 centered = false
 
-[node name="Tile12" type="Sprite2D" parent="."]
+[node name="Tile12" type="Sprite2D" parent="." unique_id=1459276563]
 position = Vector2(256, 128)
 texture = ExtResource("12")
 centered = false
 
-[node name="Tile13" type="Sprite2D" parent="."]
+[node name="Tile13" type="Sprite2D" parent="." unique_id=2117871537]
 position = Vector2(384, 128)
 texture = ExtResource("13")
 centered = false
 
-[node name="Tile14" type="Sprite2D" parent="."]
+[node name="Tile14" type="Sprite2D" parent="." unique_id=1270947957]
 position = Vector2(512, 128)
 texture = ExtResource("14")
 centered = false
 
-[node name="Tile15" type="Sprite2D" parent="."]
+[node name="Tile15" type="Sprite2D" parent="." unique_id=1446704703]
 position = Vector2(640, 128)
 texture = ExtResource("15")
 centered = false
 
-[node name="Tile16" type="Sprite2D" parent="."]
+[node name="Tile16" type="Sprite2D" parent="." unique_id=236996773]
 position = Vector2(768, 128)
 texture = ExtResource("16")
 centered = false
 
-[node name="Tile17" type="Sprite2D" parent="."]
+[node name="Tile17" type="Sprite2D" parent="." unique_id=401642348]
 position = Vector2(896, 128)
 texture = ExtResource("17")
 centered = false
 
-[node name="Tile18" type="Sprite2D" parent="."]
+[node name="Tile18" type="Sprite2D" parent="." unique_id=1020098177]
 position = Vector2(1024, 128)
 texture = ExtResource("18")
 centered = false
 
-[node name="Tile19" type="Sprite2D" parent="."]
+[node name="Tile19" type="Sprite2D" parent="." unique_id=1207162282]
 position = Vector2(0, 256)
 texture = ExtResource("19")
 centered = false
 
-[node name="Tile20" type="Sprite2D" parent="."]
+[node name="Tile20" type="Sprite2D" parent="." unique_id=1037239484]
 position = Vector2(128, 256)
 texture = ExtResource("20")
 centered = false
 
-[node name="Tile21" type="Sprite2D" parent="."]
+[node name="Tile21" type="Sprite2D" parent="." unique_id=629581832]
 position = Vector2(256, 256)
 texture = ExtResource("21")
 centered = false
 
-[node name="Tile22" type="Sprite2D" parent="."]
+[node name="Tile22" type="Sprite2D" parent="." unique_id=1410614522]
 position = Vector2(384, 256)
 texture = ExtResource("22")
 centered = false
 
-[node name="Tile23" type="Sprite2D" parent="."]
+[node name="Tile23" type="Sprite2D" parent="." unique_id=1551931854]
 position = Vector2(512, 256)
 texture = ExtResource("23")
 centered = false
 
-[node name="Tile24" type="Sprite2D" parent="."]
+[node name="Tile24" type="Sprite2D" parent="." unique_id=828752407]
 position = Vector2(640, 256)
 texture = ExtResource("24")
 centered = false
 
-[node name="Tile25" type="Sprite2D" parent="."]
+[node name="Tile25" type="Sprite2D" parent="." unique_id=339464577]
 position = Vector2(768, 256)
 texture = ExtResource("25")
 centered = false
 
-[node name="Tile26" type="Sprite2D" parent="."]
+[node name="Tile26" type="Sprite2D" parent="." unique_id=758623276]
 position = Vector2(896, 256)
 texture = ExtResource("26")
 centered = false
