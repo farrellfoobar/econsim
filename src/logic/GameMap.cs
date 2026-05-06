@@ -1,5 +1,6 @@
 using System;
-using System.Collections.Generic; //for `Dictionary<>`. Can I scope this down somehow? 
+using System.Collections.Generic;
+using System.Linq; 
 using EconSim.data;
 
 namespace EconSim.logic;
@@ -10,6 +11,7 @@ public class GameMap
        private int width;
        private int height;
        private Dictionary<Vector2Int, GameTile> tiles = new Dictionary<Vector2Int, GameTile>();
+       private Dictionary<Vector2Int, Town> towns = new Dictionary<Vector2Int, Town>();
        
        public GameMap(int width, int height)
        {
@@ -39,7 +41,14 @@ public class GameMap
        public void addTown(Vector2Int position, Town town)
        {
            setTileType(position, TileType.HAMLET);
+           towns.Add(position, town);
        }
+
+       public Town getTownAt(Vector2Int position) {
+           return towns[position]; //this is kinda intentionally unsafe because eventually Merchant should know if/what town it is in
+       }
+
+       public List<Town> getTowns() { return towns.Values.ToList(); }
        
        public Dictionary<Vector2Int, GameTile> getTiles() { return tiles; }
 

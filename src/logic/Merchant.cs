@@ -9,13 +9,18 @@ public class Merchant
     private Goal goal = Goal.NONE;
     private Vector2Int position;
     private Vector2Int destination;
+
+    private GameMap map;
+    TradeLogic tradeLogic;
     private AStarPathfinder pathfinder;
     private Stack<Vector2Int> path;
 
-    public Merchant(Vector2Int position, AStarPathfinder pathfinder)
+    public Merchant(Vector2Int position, GameMap map)
     {
+        this.map = map;
+        this.tradeLogic = new TradeLogic(map);
         this.position = position;
-        this.pathfinder = pathfinder;
+        this.pathfinder = new AStarPathfinder(map);
     }
     
     public void DoTurn()
@@ -30,6 +35,10 @@ public class Merchant
                 break;
             case Goal.PLAN_ROUTE:
                 path = pathfinder.findPath(position, destination);
+                goal = Goal.GOTO;
+                break;
+            case Goal.CHOOSE_TRADE_DESTINATION:
+                destination = tradeLogic.getMostProfitableTradeRouteFrom(map.getTownAt(position));
                 goal = Goal.GOTO;
                 break;
             default:
@@ -50,7 +59,8 @@ public class Merchant
 }
 
 public enum Goal{
+    NONE,
+    CHOOSE_TRADE_DESTINATION, //Only used when we are in a town right now because we are still doing mind control
     PLAN_ROUTE,
     GOTO,
-    NONE,
 }
