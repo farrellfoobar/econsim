@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using EconSim.data;
+using EconSim.logic.buildings;
 
 namespace EconSim.logic;
 
@@ -30,9 +31,11 @@ public class Simulation
         burg.getInventory().addItem(ItemType.GRAIN, 1000);
         burg.getInventory().addItem(ItemType.WOOD, 1000);
         burg.getInventory().addItem(ItemType.FISH, 1000);
+        Building burgLumberYard = new LumberYard(burg); 
+        burg.addBuilding(burgLumberYard);
         
         soko.getInventory().addItem(ItemType.GRAIN, 100);
-        soko.getInventory().addItem(ItemType.WOOD, 1000);
+        soko.getInventory().addItem(ItemType.WOOD, 100);
         soko.getInventory().addItem(ItemType.FISH, 1000);
         // This setup should get the merchant to trade GRAIN for WOOD from sili to soko without using mind control (setOnJourneyTo) 
 

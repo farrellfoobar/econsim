@@ -40,5 +40,6 @@ public enum ItemType
     NONE,
     GRAIN,
     WOOD,
+    LUMBER,
     FISH,
 }

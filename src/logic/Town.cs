@@ -33,4 +33,20 @@ public class Town
     public override String ToString() {
         return name + " - Market: " + inventory;
     }
+
+    public void addBuilding(Building building) {
+        buildings.Add(building);
+    }
+
+    public int getUnemployedPopulation() {
+        return unemployedPopulation;
+    }
+
+    public int getPopulation() {
+        return population;
+    }
+
+    public void setUnemployedPopulation(int unemployedPopulation) {
+        this.unemployedPopulation = unemployedPopulation;
+    }
 }

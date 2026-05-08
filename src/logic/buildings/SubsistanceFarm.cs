@@ -1,14 +1,10 @@
-using System;
-
 namespace EconSim.logic.buildings;
 
 public class SubsistanceFarm : Building
 {
-    private const int PRODUCTION_PER_PERSONYEAR = 100;
-    private const int TURNS_IN_A_YEAR = 4;//365;
+    private const int PRODUCTION_PER_PERSONYEAR = 20;
     private const float PRODDUCTION_PER_PERSONTURN = PRODUCTION_PER_PERSONYEAR / TURNS_IN_A_YEAR;
     
-    private int workers = 0;
     private float productionThisYear = 0;
 
     private int turnCount = 0; //todo: remove me, see isHarvestTime()
@@ -26,19 +22,18 @@ public class SubsistanceFarm : Building
         }
     }
 
+    public override bool addWorker(int amount) {
+        //Subsistance farmers are by definition unemployed, so dont reduce the 
+        if (this.hostTown.getPopulation() > amount) {
+            return false;
+        }
+        
+        workers += amount;
+        return true;
+    }
+    
     //TODO: remove this and do a real time system, but this is fine for now. 
     private bool isHarvestTime() {
         return turnCount == TURNS_IN_A_YEAR;
-    }
-
-    public override void addWorker(int amount) {
-        workers += amount;
-    }
-    
-    public override void removeWorker(int amount) {
-        if(workers-amount < 0) 
-            throw new ArgumentException("");
-
-        workers -= amount;
     }
 }
