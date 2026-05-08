@@ -12,10 +12,10 @@ public class Merchant
     private AStarPathfinder pathfinder;
     private Stack<Vector2Int> path;
 
-    public Merchant(Vector2Int position, AStarPathfinder pathfinder)
+    public Merchant(Vector2Int position, GameMap map)
     {
         this.position = position;
-        this.pathfinder = pathfinder;
+        this.pathfinder = new AStarPathfinder(map);
     }
     
     public void DoTurn()
@@ -50,7 +50,7 @@ public class Merchant
 }
 
 public enum Goal{
+    NONE,
     PLAN_ROUTE,
     GOTO,
-    NONE,
 }
