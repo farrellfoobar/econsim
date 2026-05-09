@@ -16,7 +16,7 @@ public class SubsistanceFarm : Building
         productionThisYear += PRODDUCTION_PER_PERSONTURN * workers;
 
         if (turnAndTimeManager.isHarvestTurn()) {
-            hostTown.getInventory().addItem(ItemType.GRAIN, (int) productionThisYear);
+            hostTown.getInventory().addItems(ItemType.GRAIN, (int) productionThisYear);
         }
     }
 

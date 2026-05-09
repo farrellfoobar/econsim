@@ -7,7 +7,7 @@ public class Inventory
 {
     private Dictionary<ItemType, int> inventory = new Dictionary<ItemType, int>();
     
-    public void addItem(ItemType item, int amount) {
+    public void addItems(ItemType item, int amount) {
         if( inventory.ContainsKey(item) ) {
             inventory[item] += amount;
         } else {

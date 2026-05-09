@@ -17,7 +17,7 @@ public class LumberYard : Building
         productionCarryover -= (int) productionCarryover;
 
         if (production > 0) {
-            hostTown.getInventory().addItem(ItemType.LUMBER, production);
+            hostTown.getInventory().addItems(ItemType.LUMBER, production);
         }
     }
 }
