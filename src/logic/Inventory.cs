@@ -7,12 +7,20 @@ public class Inventory
 {
     private Dictionary<ItemType, int> inventory = new Dictionary<ItemType, int>();
     
-    public void addItems(ItemType item, int amount) {
-        if( inventory.ContainsKey(item) ) {
-            inventory[item] += amount;
+    public void addItems(ItemType itemType, int amount) {
+        if( inventory.ContainsKey(itemType) ) {
+            inventory[itemType] += amount;
         } else {
-            inventory[item] = amount;
+            inventory[itemType] = amount;
         }
+    }
+    
+    public void removeItems(ItemType itemType, int amount) {
+        if (!inventory.ContainsKey(itemType) ||  inventory[itemType] < amount) {
+            throw new ArgumentException("Tried to remove " + amount + " item, but only have " + inventory[itemType] + " items.");
+        }
+        
+        inventory[itemType] -= amount;
     }
 
     public double getItemCount(ItemType item) {
@@ -32,6 +40,10 @@ public class Inventory
         }
         str += ">";
         return str;
+    }
+
+    public bool ContainsItem(ItemType itemType) {
+        return inventory.ContainsKey(itemType);
     }
 }
 

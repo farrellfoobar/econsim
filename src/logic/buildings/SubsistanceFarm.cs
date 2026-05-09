@@ -16,12 +16,12 @@ public class SubsistanceFarm : Building
         productionThisYear += PRODDUCTION_PER_PERSONTURN * workers;
 
         if (turnAndTimeManager.isHarvestTurn()) {
-            hostTown.getInventory().addItems(ItemType.GRAIN, (int) productionThisYear);
+            this.profit += hostTown.getMarket().sellItems(ItemType.GRAIN, (int) productionThisYear);
         }
     }
 
     public override bool addWorker(int amount) {
-        //Subsistance farmers are by definition unemployed, so dont reduce the 
+        //Subsistance farmers are by definition unemployed, so dont reduce unemployment
         if (this.hostTown.getPopulation() > amount) {
             return false;
         }

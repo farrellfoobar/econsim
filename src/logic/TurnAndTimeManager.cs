@@ -3,7 +3,7 @@ namespace EconSim.logic;
 public class TurnAndTimeManager
 {
     public const int TURNS_IN_A_YEAR = 4;
-    private int turnCount = 1;
+    private int turnCount = 0;
     private int years = 0;    
     
     public int getTurnCount() {
