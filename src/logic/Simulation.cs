@@ -10,15 +10,16 @@ public class Simulation
 {
     private GameMap gameMap;
     private List<Merchant> merchants;
+    private TurnAndTimeManager turnAndTimeManager = new TurnAndTimeManager();
     private int turnCount = 0;
     
     public Simulation()
     {
         gameMap = new GameMap(27, 13);
         
-        Town sili = new Town("San Silicio", 40);
-        Town burg = new Town("Burgherville", 20);
-        Town soko = new Town("Sokotra", 60);
+        Town sili = new Town("San Silicio", 40, turnAndTimeManager);
+        Town burg = new Town("Burgherville", 20, turnAndTimeManager);
+        Town soko = new Town("Sokotra", 60, turnAndTimeManager);
         
         gameMap.addTown(new Vector2Int(3, 3), sili);
         gameMap.addTown(new Vector2Int(13, 7), burg);
@@ -33,6 +34,7 @@ public class Simulation
         burg.getInventory().addItem(ItemType.FISH, 1000);
         Building burgLumberYard = new LumberYard(burg); 
         burg.addBuilding(burgLumberYard);
+        burgLumberYard.addWorker(4);
         
         soko.getInventory().addItem(ItemType.GRAIN, 100);
         soko.getInventory().addItem(ItemType.WOOD, 100);
@@ -46,13 +48,13 @@ public class Simulation
     }
 
     public void doTurn() {
+        turnAndTimeManager.nextTurn();
+        Console.WriteLine("TURN " + turnAndTimeManager.getTurnCount());
+        
         foreach (Merchant merchant in merchants)
         {
             merchant.DoTurn();
         }
-
-        turnCount++;
-        Console.WriteLine("TURN " + turnCount);
         
         foreach (Town town in gameMap.getTowns()) {
             town.doProductionTurn();

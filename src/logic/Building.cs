@@ -4,11 +4,9 @@ namespace EconSim.logic;
 
 public abstract class Building
 {
-    protected const int TURNS_IN_A_YEAR = 4;
-    
     protected int workers = 0;
-    
     protected Town hostTown;
+    
     protected Building(Town hostTown) {
         this.hostTown = hostTown;
     }

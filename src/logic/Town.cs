@@ -12,12 +12,12 @@ public class Town
     private int population;
     private int unemployedPopulation;
     
-    public Town(String name, int population) {
+    public Town(String name, int population, TurnAndTimeManager turnAndTimeManager) {
         this.population = population;
         this.unemployedPopulation = population;
         this.name = name;
         this.buildings = new List<Building>();
-        buildings.Add(new SubsistanceFarm(this));
+        buildings.Add(new SubsistanceFarm(this, turnAndTimeManager));
         buildings[0].addWorker(unemployedPopulation);
         inventory = new Inventory();
     }
