@@ -10,12 +10,16 @@ public class Town
     private Market market;
     private List<Building> buildings;
     private Stack<Laborer> unemployedPopulation;
+    private List<Laborer> allPopulation;
     private TurnAndTimeManager turnAndTimeManager;
     
     public Town(String name, int population, TurnAndTimeManager turnAndTimeManager) {
-        this.unemployedPopulation = new Stack<Laborer>(population);
+        unemployedPopulation = new Stack<Laborer>(population);
+        allPopulation = new List<Laborer>(population);
         for (int i = 0; i < population; i++) {
-            unemployedPopulation.Push(new Laborer());
+            Laborer laborer = new Laborer();
+            unemployedPopulation.Push(laborer);
+            allPopulation.Add(laborer);
         }
         this.turnAndTimeManager = turnAndTimeManager;
         this.name = name;
@@ -40,6 +44,12 @@ public class Town
             building.doProductionTurn();
         }
     }
+    
+    public void doConsumptionTurn() {
+        foreach (Laborer person in allPopulation) {
+            person.consumeAtMarket(market);
+        }
+    }
 
     public override String ToString() {
         return name + " - Market: " + market;
@@ -49,19 +59,19 @@ public class Town
         buildings.Add(building);
     }
 
-    public int getUnemployedPopulation() {
+    public int getUnemployedPopulationCount() {
         return unemployedPopulation.Count;
     }
     
-    public Stack<Laborer> getUnemployed() {
+    public Stack<Laborer> getUnemployedPopulation() {
         return unemployedPopulation;
     }
 
-    public int getPopulation() {
-        int pop = 0;
-        foreach (Building building in buildings) {
-            pop += building.getEmployeeCount();
-        }
-        return pop;
+    public int getPopulationCount() {
+        return allPopulation.Count;
+    }
+
+    public List<Laborer> getAllPopulation() {
+        return allPopulation;
     }
 }

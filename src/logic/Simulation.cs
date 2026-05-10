@@ -58,6 +58,7 @@ public class Simulation
         
         foreach (Town town in gameMap.getTowns()) {
             town.doProductionTurn();
+            town.doConsumptionTurn();
             Console.WriteLine(town);
         }
     }

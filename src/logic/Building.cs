@@ -46,12 +46,14 @@ public abstract class Building
     }
     
     public virtual bool employWorkers(int amount) {
-        if (amount > hostTown.getUnemployed().Count) {
+        if (amount > hostTown.getUnemployedPopulation().Count) {
             return false;
         }
 
         for (int i = 0; i < amount; i++) {
-            employees.Push(hostTown.getUnemployed().Pop());
+            Laborer laborer = hostTown.getUnemployedPopulation().Pop();
+            laborer.setEmployed(true);
+            employees.Push(laborer);
         }
         return true;
     }
@@ -61,7 +63,9 @@ public abstract class Building
             return false;
 
         for (int i = 0; i < amount; i++) {
-            unemployedPopulation.Push(employees.Pop());
+            Laborer laborer = employees.Pop();
+            laborer.setEmployed(false);
+            unemployedPopulation.Push(laborer);
         }
         return true;
     }
