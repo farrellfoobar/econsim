@@ -29,36 +29,36 @@ public class Market
         }
     }
 
-    public int sellItems(ItemType itemType, int quantity) {
-        int cost = 0;
+    public CoinAmount sellItems(ItemType itemType, int quantity) {
+        CoinAmount cost = new CoinAmount(0);
         for (int i = 0; i < quantity; i++) {
-            cost += sellItem(itemType);
+            cost.add(sellItem(itemType));
         }
         
         return cost;
     }
 
-    public Optional<int> tryBuyItems(ItemType itemType, int quantity) {
+    public Optional<CoinAmount> tryBuyItems(ItemType itemType, int quantity) {
         if (quantity > inventory.getItemCount(itemType)) {
-            return Optional<int>.EMPTY();
+            return Optional<CoinAmount>.EMPTY();
         }
 
-        int cost = 0;
+        CoinAmount cost = new CoinAmount();
         for (int i = 0; i < quantity; i++) {
-            cost += buyItem(itemType);
+            cost.add(buyItem(itemType));
         }
         
-        return new Optional<int>(cost);
+        return new Optional<CoinAmount>(cost);
     }
 
-    private int sellItem(ItemType itemType) {
+    private CoinAmount sellItem(ItemType itemType) {
         inventory.addItems(itemType, 1);
         itemSupplyDemandHistory[itemType].addSupply(turnManager.getTurnCount());
         
         return getPrice(itemType);
     }
 
-    private int buyItem(ItemType itemType) {
+    private CoinAmount buyItem(ItemType itemType) {
         inventory.removeItems(itemType, 1);
         itemSupplyDemandHistory[itemType].addDemand(turnManager.getTurnCount());
         
@@ -73,14 +73,17 @@ public class Market
         }
     }
 
-    public int getPrice(ItemType itemType) {
-        int totalDemand = itemSupplyDemandHistory[itemType].getTotalDemand();
-        int totalSupply = itemSupplyDemandHistory[itemType].getTotalSupply();
-        int supplyDemandFactor = 1;
+    public CoinAmount getPrice(ItemType itemType) {
+        double totalDemand = itemSupplyDemandHistory[itemType].getTotalDemand();
+        double totalSupply = itemSupplyDemandHistory[itemType].getTotalSupply();
+        double supplyDemandFactor = 1;
         if (totalSupply != 0 && totalDemand != 0) {
             supplyDemandFactor = totalSupply / totalDemand;
         }
-        int price = BASE_PRICE[itemType] * supplyDemandFactor;
+        CoinAmount price = (CoinAmount) (BASE_PRICE[itemType] * supplyDemandFactor);
+        
+        if(price.Equals(0))
+            Console.WriteLine("!!! 0= " +  totalSupply + " / " + totalDemand);
         
         return price;
     }
@@ -89,7 +92,7 @@ public class Market
         String str = "<";
         foreach (ItemType itemType in Enum.GetValues(typeof (ItemType))) {
             if (inventory.ContainsItem(itemType))
-                str += itemType + ":" + inventory.getItemCount(itemType) + ":$" + getPrice(itemType) + ", ";
+                str += itemType + ":" + inventory.getItemCount(itemType) + ":" + getPrice(itemType) + ", ";
         }
         str += ">";
         return str;

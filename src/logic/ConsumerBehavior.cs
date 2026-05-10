@@ -1,4 +1,5 @@
 using System;
+using EconSim.data;
 
 namespace EconSim.logic;
 
@@ -7,7 +8,7 @@ public class ConsumerBehavior
     private const int DECIMAL_PRECISION_OF_FLOAT_TO_INT_PROBABILITY = 2;
     private Random random = new Random(0); // 0 so we get the same random numbers from run to run
     
-    public int QuantityPurchasedPerTurn(ItemType itemType, int wealth, int getPrice) {
+    public int QuantityPurchasedPerTurn(ItemType itemType, CoinAmount wealth, CoinAmount getPrice) {
         float quantityFloat = QuantityPurchasedPerYear(itemType, wealth, getPrice) / TurnAndTimeManager.TURNS_IN_A_YEAR;
 
         return floatToIntAndProbability(quantityFloat);
@@ -32,7 +33,7 @@ public class ConsumerBehavior
         return integerComponent;
     }
 
-    private int QuantityPurchasedPerYear(ItemType itemType, int wealth, int getPrice) {
+    private int QuantityPurchasedPerYear(ItemType itemType, CoinAmount wealth, CoinAmount getPrice) {
         //TODO: Take price into consideration with realistic elasticity of demand values ex: QuantityDesired=Const-Elasticity*price
         //TODO: take wealth into consideration
         int quantity = 0;

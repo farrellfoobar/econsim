@@ -5,15 +5,15 @@ namespace EconSim.logic;
 
 public class Laborer
 {
-    private int wealth = 0;
+    private CoinAmount wealth = new CoinAmount(0);
     private bool isEmployed = false;
     private float turnLengthConsumptionModifier = 1f / (float) TurnAndTimeManager.TURNS_IN_A_YEAR;
     private ConsumerBehavior consumerBehavior = new ConsumerBehavior();
     
     private const int foodConsumptionPerPersonPerYear = 20;
 
-    public void pay(int wage) {
-        wealth += wage;
+    public void pay(CoinAmount wage) {
+        wealth.add(wage);
     }
 
     //For reference subsistance farmer makes $20/yr, LumberYard laborer makes 60/yr
@@ -40,11 +40,11 @@ public class Laborer
     }
 
     private ItemType getCheapestItem(Market market) {
-        int cheapestItemCost = Int32.MaxValue;
+        CoinAmount cheapestItemCost = CoinAmount.MAX_VALUE;
         ItemType cheapestItemType = ItemType.NONE;
         foreach (ItemType food in Items.ALL_FOOD_ITEMS) {
-            int foodCost = market.getPrice(food);
-            if (foodCost < cheapestItemCost) {
+            CoinAmount foodCost = market.getPrice(food);
+            if (foodCost.isLessThan(cheapestItemCost) ) {
                 cheapestItemCost = foodCost;
                 cheapestItemType = food;
             }
@@ -58,7 +58,7 @@ public class Laborer
         foreach (ItemType food in Items.ALL_FOOD_ITEMS) {
             int desiredFoodConsumption = consumerBehavior.QuantityPurchasedPerTurn(food, wealth, market.getPrice(food)) / TurnAndTimeManager.TURNS_IN_A_YEAR;
             //TODO: allow buyItems to do a partial buy. This would require returning both the cost and the quantity purchased  
-            Optional<int> buyResult = market.tryBuyItems(food, desiredFoodConsumption);
+            Optional<CoinAmount> buyResult = market.tryBuyItems(food, desiredFoodConsumption);
             if (buyResult.IsPresent()) {
                 foodConsumed += desiredFoodConsumption;
             }

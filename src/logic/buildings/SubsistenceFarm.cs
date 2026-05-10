@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using EconSim.data;
 
 namespace EconSim.logic.buildings;
 
@@ -8,7 +9,7 @@ public class SubsistenceFarm : Building
     protected override int PRODUCTION_PER_PERSONYEAR { get; } = 20;
     protected override ItemType ITEM_CONSUMED { get; } = ItemType.NONE;
     protected override int ITEMS_CONSUMED_PER_UNIT_PRODUCED { get; } = 0;
-    protected override int WAGE_PER_PERSONYEAR { get; } = 0; //Noone pays subsistence farmers, they earn what their product sells for on the market
+    protected override CoinAmount WAGE_PER_PERSONYEAR { get; } = new CoinAmount(0); //Noone pays subsistence farmers, they earn what their product sells for on the market
     protected override ItemType ITEM_PRODUCED { get; } = ItemType.GRAIN;
 
     private float productionThisYear = 0;
@@ -23,7 +24,7 @@ public class SubsistenceFarm : Building
         productionThisYear += productionPerPersonTurn * this.employees.Count;
 
         if (turnAndTimeManager.isHarvestTurn()) {
-            this.profit += hostTown.getMarket().sellItems(ItemType.GRAIN, (int) productionThisYear);
+            this.profit.add(hostTown.getMarket().sellItems(ItemType.GRAIN, (int) productionThisYear));
             //TODO: split profit among employees
             //this will be kinda complicated because employees can change durring the year
         }
