@@ -35,7 +35,7 @@ public class Laborer
         int foodMustConsumeThisTurn = foodConsumptionPerPersonPerYear/TurnAndTimeManager.TURNS_IN_A_YEAR;
 
         for (int i = foodConsumed; i < foodMustConsumeThisTurn; i++) {
-            market.buyItems(getCheapestItem(market), 1);
+            market.tryBuyItems(getCheapestItem(market), 1);
         }
     }
 
@@ -58,7 +58,7 @@ public class Laborer
         foreach (ItemType food in Items.ALL_FOOD_ITEMS) {
             int desiredFoodConsumption = consumerBehavior.QuantityPurchasedPerTurn(food, wealth, market.getPrice(food)) / TurnAndTimeManager.TURNS_IN_A_YEAR;
             //TODO: allow buyItems to do a partial buy. This would require returning both the cost and the quantity purchased  
-            Optional<int> buyResult = market.buyItems(food, desiredFoodConsumption);
+            Optional<int> buyResult = market.tryBuyItems(food, desiredFoodConsumption);
             if (buyResult.IsPresent()) {
                 foodConsumed += desiredFoodConsumption;
             }

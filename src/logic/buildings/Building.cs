@@ -1,13 +1,16 @@
 using System;
 using System.Collections.Generic;
+using EconSim.data;
 
 namespace EconSim.logic;
 
 public abstract class Building
 {
-    protected abstract int PRODUCTION_PER_PERSONYEAR { get; }
     protected abstract int WAGE_PER_PERSONYEAR { get; }
     protected abstract ItemType ITEM_PRODUCED { get; }
+    protected abstract int PRODUCTION_PER_PERSONYEAR { get; }
+    protected abstract ItemType ITEM_CONSUMED { get; }
+    protected abstract int ITEMS_CONSUMED_PER_UNIT_PRODUCED { get; }
     protected Town hostTown;
     protected int profit = 0;
     protected Stack<Laborer> employees = new Stack<Laborer>();
@@ -28,12 +31,16 @@ public abstract class Building
         int productionPerPersonTurn = PRODUCTION_PER_PERSONYEAR / TurnAndTimeManager.TURNS_IN_A_YEAR;
         int wagePerPersonTurn = WAGE_PER_PERSONYEAR / TurnAndTimeManager.TURNS_IN_A_YEAR;
         
+        //todo: this is breaking my brain already like three days after I wrote it, tear it out and make production, consumption floats
         productionCarryover += productionPerPersonTurn * employees.Count;
         int production = (int)productionCarryover;
         productionCarryover -= (int) productionCarryover;
         
-        if (production > 0) {
-            this.profit += hostTown.getMarket().sellItems(ITEM_PRODUCED, production);
+        int consumption = production * ITEMS_CONSUMED_PER_UNIT_PRODUCED;
+        Optional<int> productionCostMaybe = hostTown.getMarket().tryBuyItems(ITEM_CONSUMED, consumption);
+
+        if (productionCostMaybe.IsPresent() && production > 0) {
+            profit += hostTown.getMarket().sellItems(ITEM_PRODUCED, production);
             foreach (Laborer employee in employees) {
                 employee.pay(wagePerPersonTurn);
                 profit -= wagePerPersonTurn;

@@ -38,7 +38,7 @@ public class Market
         return cost;
     }
 
-    public Optional<int> buyItems(ItemType itemType, int quantity) {
+    public Optional<int> tryBuyItems(ItemType itemType, int quantity) {
         if (quantity > inventory.getItemCount(itemType)) {
             return Optional<int>.EMPTY();
         }

@@ -28,17 +28,28 @@ public class Simulation
         sili.getInventory().addItems(ItemType.GRAIN, 1000);
         sili.getInventory().addItems(ItemType.WOOD, 100);
         sili.getInventory().addItems(ItemType.FISH, 1000);
+        Building siliBrewery = new Brewery(sili);
+        siliBrewery.employWorkers(10);
+        sili.addBuilding(siliBrewery);
         
         burg.getInventory().addItems(ItemType.GRAIN, 1000);
         burg.getInventory().addItems(ItemType.WOOD, 1000);
         burg.getInventory().addItems(ItemType.FISH, 1000);
+
         Building burgLumberYard = new CarpentryYard(burg); 
         burg.addBuilding(burgLumberYard);
-        burgLumberYard.employWorkers(4);
+        burgLumberYard.employWorkers(12);
+
+        Building burgJeweler = new Jeweler(burg); 
+        burg.addBuilding(burgJeweler);
+        burgJeweler.employWorkers(4);
         
         soko.getInventory().addItems(ItemType.GRAIN, 100);
         soko.getInventory().addItems(ItemType.WOOD, 100);
         soko.getInventory().addItems(ItemType.FISH, 1000);
+        Building sokoBrewery = new Brewery(sili);
+        sokoBrewery.employWorkers(10);
+        soko.addBuilding(sokoBrewery);
         // This setup should get the merchant to trade GRAIN for WOOD from sili to soko without using mind control (setOnJourneyTo) 
 
         Merchant thisOneGuy = new Merchant(new Vector2Int(3, 3), gameMap);
