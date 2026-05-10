@@ -32,7 +32,7 @@ public class Simulation
         burg.getInventory().addItems(ItemType.GRAIN, 1000);
         burg.getInventory().addItems(ItemType.WOOD, 1000);
         burg.getInventory().addItems(ItemType.FISH, 1000);
-        Building burgLumberYard = new LumberYard(burg); 
+        Building burgLumberYard = new CarpentryYard(burg); 
         burg.addBuilding(burgLumberYard);
         burgLumberYard.employWorkers(4);
         

@@ -13,6 +13,9 @@ public enum ItemType
     NONE,
     GRAIN,
     WOOD,
-    LUMBER,
+    FURNITURE,
     FISH,
+    BEER,
+    SILVER_ORE,
+    JEWELRY,
 }

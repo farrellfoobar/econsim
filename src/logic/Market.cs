@@ -9,8 +9,11 @@ public class Market
     private readonly Dictionary<ItemType, int> BASE_PRICE = new Dictionary<ItemType, int> {
         { ItemType.GRAIN, 1 },
         { ItemType.WOOD, 10 },
-        { ItemType.LUMBER, 20 },
-        { ItemType.FISH, 3 },
+        { ItemType.FURNITURE, 20 },
+        { ItemType.FISH, 2 },
+        { ItemType.BEER, 3 },
+        { ItemType.SILVER_ORE, 20 },
+        { ItemType.JEWELRY, 100 },
     };
     
     private Inventory inventory = new Inventory();
