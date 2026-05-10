@@ -46,12 +46,3 @@ public class Inventory
         return inventory.ContainsKey(itemType);
     }
 }
-
-public enum ItemType
-{
-    NONE,
-    GRAIN,
-    WOOD,
-    LUMBER,
-    FISH,
-}
