@@ -47,6 +47,15 @@ public class ConsumerBehavior
             case ItemType.BEER:
                 quantity = 5;
                 break;
+            case ItemType.FURNITURE:
+                quantity = 5;
+                break;
+            case ItemType.JEWELRY:
+                quantity = 5;
+                break;
+            default:
+                quantity = 0;
+                break;
         }
         
         return quantity;

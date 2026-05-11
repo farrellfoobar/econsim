@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using EconSim.data;
+using EconSim.logic.buildings;
 
 namespace EconSim.logic;
 
@@ -76,5 +77,25 @@ public abstract class Building
 
     public int getEmployeeCount() {
         return employees.Count;
+    }
+    
+    public CoinAmount GET_WAGE_PER_PERSONYEAR() {
+        return WAGE_PER_PERSONYEAR; 
+    }
+    
+    public ItemType GET_ITEM_PRODUCED() {
+        return ITEM_PRODUCED; 
+    }
+
+    public int GET_PRODUCTION_PER_PERSONYEAR() {
+        return PRODUCTION_PER_PERSONYEAR; 
+    }
+
+    public ItemType GET_ITEM_CONSUMED() {
+        return ITEM_CONSUMED; 
+    }
+
+    public int GET_ITEMS_CONSUMED_PER_UNIT_PRODUCED() {
+        return ITEMS_CONSUMED_PER_UNIT_PRODUCED; 
     }
 }

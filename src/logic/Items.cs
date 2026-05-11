@@ -9,12 +9,12 @@ public class Items
     
     public static Dictionary<ItemType, int> BASE_PRICE = new Dictionary<ItemType, int> {
         { ItemType.GRAIN, 1 },
-        { ItemType.WOOD, 10 },
+        { ItemType.WOOD, 5 },
         { ItemType.FURNITURE, 20 },
-        { ItemType.FISH, 2 },
+        { ItemType.FISH, 4 },
         { ItemType.BEER, 3 },
-        { ItemType.SILVER_ORE, 20 },
-        { ItemType.JEWELRY, 100 },
+        { ItemType.SILVER_ORE, 1000 },
+        { ItemType.JEWELRY, 3000 },
     };
 }
 
