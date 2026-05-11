@@ -4,10 +4,6 @@ namespace EconSim.data;
 
 public class CoinAmount()
 {
-    public static CoinAmount ONE_COPPER = new CoinAmount(0.01f);
-    public static CoinAmount ONE_SILVER = new CoinAmount(1);
-    public static CoinAmount ONE_GOLD = new CoinAmount(100);
-
     public static readonly CoinAmount MAX_VALUE = new CoinAmount(Double.MaxValue);
     
     private double cents = 0;
