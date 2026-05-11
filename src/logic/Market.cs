@@ -6,15 +6,6 @@ namespace EconSim.logic;
 
 public class Market
 {
-    private readonly Dictionary<ItemType, int> BASE_PRICE = new Dictionary<ItemType, int> {
-        { ItemType.GRAIN, 1 },
-        { ItemType.WOOD, 10 },
-        { ItemType.FURNITURE, 20 },
-        { ItemType.FISH, 2 },
-        { ItemType.BEER, 3 },
-        { ItemType.SILVER_ORE, 20 },
-        { ItemType.JEWELRY, 100 },
-    };
     
     private Inventory inventory = new Inventory();
     private TurnAndTimeManager turnManager;
@@ -80,7 +71,7 @@ public class Market
         if (totalSupply != 0 && totalDemand != 0) {
             supplyDemandFactor = totalSupply / totalDemand;
         }
-        CoinAmount price = (CoinAmount) (BASE_PRICE[itemType] * supplyDemandFactor);
+        CoinAmount price = (CoinAmount) (Items.BASE_PRICE[itemType] * supplyDemandFactor);
         
         if(price.Equals(0))
             Console.WriteLine("!!! 0= " +  totalSupply + " / " + totalDemand);
