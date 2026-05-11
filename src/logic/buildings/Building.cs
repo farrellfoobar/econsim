@@ -27,7 +27,7 @@ public abstract class Building
 
     public virtual void doProductionTurn() {        
         int productionPerPersonTurn = PRODUCTION_PER_PERSONYEAR / TurnAndTimeManager.TURNS_IN_A_YEAR;
-        CoinAmount wagePerPersonTurn = WAGE_PER_PERSONYEAR.getDivideBy(TurnAndTimeManager.TURNS_IN_A_YEAR);
+        CoinAmount wagePerPersonTurn = CoinAmount.getDivideBy(WAGE_PER_PERSONYEAR, TurnAndTimeManager.TURNS_IN_A_YEAR);
         
         //todo: this is breaking my brain already like three days after I wrote it, tear it out and make production, consumption floats
         productionCarryover += productionPerPersonTurn * employees.Count;

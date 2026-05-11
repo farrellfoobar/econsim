@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using EconSim.data;
 using EconSim.logic;
 using EconSim.logic.buildings;
 
@@ -28,10 +29,10 @@ public class FactoryAndBasePriceSanityCheck
             !building.GET_ITEM_CONSUMED().Equals(building.GET_ITEM_PRODUCED()),
             building.GetType() + " cannot consume and produce the same item.");
         
-        float unitCost = building.GET_ITEMS_CONSUMED_PER_UNIT_PRODUCED() * Items.BASE_PRICE[building.GET_ITEM_CONSUMED()];
-        float unitIncome = Items.BASE_PRICE[building.GET_ITEM_PRODUCED()];
+        CoinAmount unitCost = Items.BASE_PRICE[building.GET_ITEM_CONSUMED()].multiply(building.GET_ITEMS_CONSUMED_PER_UNIT_PRODUCED());
+        CoinAmount unitIncome = Items.BASE_PRICE[building.GET_ITEM_PRODUCED()];
 
-        float roi = unitIncome / unitCost;
+        double roi = CoinAmount.getDivideBy(unitIncome , unitCost);
         
         Util.Assert(roi > 1, 
             building.GetType() + " cannot have roi <1. (Unit Income,Unit Cost) = ( " + unitIncome + ", " + unitCost + ")");

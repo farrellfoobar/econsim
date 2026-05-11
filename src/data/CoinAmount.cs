@@ -4,9 +4,14 @@ namespace EconSim.data;
 
 public class CoinAmount()
 {
-    private double cents = 0;
-    public static readonly CoinAmount MAX_VALUE = new CoinAmount(Double.MaxValue);
+    public static CoinAmount ONE_COPPER = new CoinAmount(0.01f);
+    public static CoinAmount ONE_SILVER = new CoinAmount(1);
+    public static CoinAmount ONE_GOLD = new CoinAmount(100);
 
+    public static readonly CoinAmount MAX_VALUE = new CoinAmount(Double.MaxValue);
+    
+    private double cents = 0;
+    
     public CoinAmount(double cents) : this() {
         this.cents = cents;
     }
@@ -51,11 +56,35 @@ public class CoinAmount()
         return this.cents > that.cents;
     }
 
-    //TODO: fix this error message, but I think this is the only way 
-    public CoinAmount getDivideBy(int denominator) {
-        if (cents % denominator != 0)
-            throw new ArgumentException("Cant divide " + cents + " cents by " + denominator);
+    public static CoinAmount Copper(int copperCoinCount) {
+        return new CoinAmount(copperCoinCount * 0.01);
+    }
+    
+    public static CoinAmount Silver(int silverCoinCount) {
+        return new CoinAmount(silverCoinCount);
+    }
+    
+    public static CoinAmount Gold(int goldCoinCount) {
+        return new CoinAmount(goldCoinCount * 0.01);
+    }
+
+    public CoinAmount multiply(double factor) {
+        this.cents *= factor;
+        return this;
+    }
+    
+    public static CoinAmount getDivideBy(CoinAmount coinAmount, int denominator) {
+        if (coinAmount.cents % denominator != 0)
+            throw new ArgumentException("Cant divide " + coinAmount.cents + " cents by " + denominator);
         
-        return new CoinAmount(cents / denominator);
+        return new CoinAmount(coinAmount.cents / denominator);
+    }
+    
+    public static double getDivideBy(CoinAmount numerator, CoinAmount denominator) {
+        return numerator.cents / denominator.cents;
+    }
+    
+    public static CoinAmount getMultiplyBy(CoinAmount coinAmount, int factor) {
+        return new CoinAmount(coinAmount.cents * factor);
     }
 }
