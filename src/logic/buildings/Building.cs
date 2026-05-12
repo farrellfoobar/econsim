@@ -20,10 +20,6 @@ public abstract class Building
     
     protected Building(Town hostTown) {
         this.hostTown = hostTown;
-        
-        //todo: fix the types for this stuff, this might get ugly with large TURNS_IN_YEAR
-        if (PRODUCTION_PER_PERSONYEAR % TurnAndTimeManager.TURNS_IN_A_YEAR != 0)
-            throw new ArgumentException("PRODUCTION_PER_PERSONYEAR must be divisible by TurnAndTimeManager.TURNS_IN_A_YEAR");
     }
 
     public virtual void doProductionTurn() {        

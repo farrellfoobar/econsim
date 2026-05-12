@@ -19,15 +19,24 @@ public class BuildingInitialValues(ItemType produces, ItemType consumes, double 
 public class SimulationConstants
 {
     public static BuildingInitialValues BreweryValues = new BuildingInitialValues(
-        ItemType.BEER, ItemType.GRAIN, 1000, 1, new CoinAmount(60)
+        ItemType.BEER, ItemType.GRAIN, 
+        1404, // 9*12 packs (10 gallons) a day, cleaning every other day = 9*3*52=1404 
+        10, // 9lbs grain / 5 gallons = 2.378 lb/Liter * 4.26Liter/12pack ~= 10
+        new CoinAmount(0)
         );
     
     public static BuildingInitialValues CarpentryYardValues = new BuildingInitialValues(
-        ItemType.FURNITURE, ItemType.WOOD, 60, 2, new CoinAmount(60)
+        ItemType.FURNITURE, ItemType.WOOD, 
+        18, // one every three weeks
+        2, //see BASE_PRICE[ItemType.Furniture] declaration
+        new CoinAmount(0)
     );
     
     public static BuildingInitialValues JewelryValues = new BuildingInitialValues(
-        ItemType.JEWELRY, ItemType.SILVER_ORE, 24, 0.5, new CoinAmount(120)
+        ItemType.JEWELRY, ItemType.SILVER_ORE, 
+        12, //one a month
+        1, // one ring ~= 4 grams ~= CoinAmount.Silver(1) := about 3.5grams silver
+        new CoinAmount(0)
     );
     
     public static BuildingInitialValues SubsistanceFarmValues = new BuildingInitialValues(
@@ -46,7 +55,7 @@ public class SimulationConstants
         { ItemType.WOOD, CoinAmount.Copper(50) }, //$50 = 50 board feet 
         { ItemType.FURNITURE, CoinAmount.Silver(5) }, //$500 = a big ass dining table, ~= 100 board feet of wood
         
-        { ItemType.SILVER_ORE, CoinAmount.Silver(1) }, // $100 = a big chunk of ore, i.e. enough for one coin or two rings
+        { ItemType.SILVER_ORE, CoinAmount.Silver(1) }, // $100 = a big chunk of ore, i.e. enough for a coin or rings
         { ItemType.JEWELRY, CoinAmount.Silver(6) }, // $600 = a fancy silver band ring 
         
     };

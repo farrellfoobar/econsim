@@ -13,8 +13,12 @@ public class Simulation
     private TurnAndTimeManager turnAndTimeManager = new TurnAndTimeManager();
     private int turnCount = 0;
     
-    public Simulation()
+    private SimpleLogger logger;
+    
+    public Simulation(bool debug = false)
     {
+        logger = new SimpleLogger(debug);
+        
         gameMap = new GameMap(27, 13);
         
         Town sili = new Town("San Silicio", 40, turnAndTimeManager);

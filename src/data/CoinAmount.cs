@@ -5,6 +5,7 @@ namespace EconSim.data;
 public class CoinAmount()
 {
     public static readonly CoinAmount MAX_VALUE = new CoinAmount(Double.MaxValue);
+    public static readonly CoinAmount MIN_VALUE = new CoinAmount(0.01f);
     
     private double cents = 0;
     
@@ -19,7 +20,7 @@ public class CoinAmount()
     public void subtract(CoinAmount that) {
         this.cents -= that.cents;
         if (this.cents < 0f) {
-            throw new NotImplementedException("Coin Amount is negative, maybe it shouldnt do that?");
+            //throw new NotImplementedException("Coin Amount is negative, maybe it shouldnt do that?");
         }
     }
 
@@ -61,8 +62,8 @@ public class CoinAmount()
     }
     
     public static CoinAmount getDivideBy(CoinAmount coinAmount, int denominator) {
-        if (coinAmount.cents % denominator != 0)
-            throw new ArgumentException("Cant divide " + coinAmount.cents + " cents by " + denominator);
+        //if (coinAmount.cents % denominator != 0)
+            //throw new ArgumentException("Cant divide " + coinAmount.cents + " cents by " + denominator);
         
         return new CoinAmount(coinAmount.cents / denominator);
     }
@@ -73,5 +74,9 @@ public class CoinAmount()
     
     public static CoinAmount getMultiplyBy(CoinAmount coinAmount, double factor) {
         return new CoinAmount(coinAmount.cents * factor);
+    }
+
+    public static CoinAmount getAdd(CoinAmount a, CoinAmount b) {
+        return new CoinAmount(a.cents + b.cents);
     }
 }
