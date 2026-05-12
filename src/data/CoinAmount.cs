@@ -2,15 +2,21 @@ using System;
 
 namespace EconSim.data;
 
-public class CoinAmount()
+public class CoinAmount
 {
     public static readonly CoinAmount MAX_VALUE = new CoinAmount(Double.MaxValue);
     public static readonly CoinAmount MIN_VALUE = new CoinAmount(0.01f);
     
     private double cents = 0;
+
+    public CoinAmount() {}
     
-    public CoinAmount(double cents) : this() {
+    public CoinAmount(double cents) {
         this.cents = cents;
+    }
+    
+    public CoinAmount(CoinAmount that) {
+        this.cents = that.cents;
     }
 
     public void add(CoinAmount that) {
@@ -35,8 +41,11 @@ public class CoinAmount()
         } else if (cents >= 1) {
             ret = "$" + cents.ToString("0.##");
         }
-        else {
+        else if (cents >= MIN_VALUE.asDouble()) {
             ret = "c" + (cents * 100).ToString("0.");
+        }
+        else {
+            SimpleLogger.debug("Coin amount < 1c: " + cents.ToString());
         }
         return ret;
     }
@@ -61,10 +70,7 @@ public class CoinAmount()
         return new CoinAmount(goldCoinCount * 100);
     }
     
-    public static CoinAmount getDivideBy(CoinAmount coinAmount, int denominator) {
-        //if (coinAmount.cents % denominator != 0)
-            //throw new ArgumentException("Cant divide " + coinAmount.cents + " cents by " + denominator);
-        
+    public static CoinAmount getDivideBy(CoinAmount coinAmount, int denominator) {        
         return new CoinAmount(coinAmount.cents / denominator);
     }
     
