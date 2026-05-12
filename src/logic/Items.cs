@@ -6,8 +6,6 @@ namespace EconSim.logic;
 public class Items
 {
     public static readonly List<ItemType> ALL_FOOD_ITEMS = new List<ItemType> { ItemType.GRAIN, ItemType.FISH }; 
-
-    public static Dictionary<ItemType, CoinAmount> BASE_PRICE = SimulationConstants.BASE_PRICE;
 }
 
 public enum ItemType

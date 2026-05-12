@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using EconSim.data;
 
@@ -59,5 +60,44 @@ public class SimulationConstants
         { ItemType.JEWELRY, 5 },
     };
     
+    public static Dictionary<ItemType, double> DEMAND_ELASTICITY = new Dictionary<ItemType, double> {
+        { ItemType.GRAIN, 0 },
+        { ItemType.BEER, 0 },
+        
+        { ItemType.FISH, 0 },
+        
+        { ItemType.WOOD, 0 },
+        { ItemType.FURNITURE, 0 },
+        
+        { ItemType.SILVER_ORE, 0 },
+        { ItemType.JEWELRY, 0 },
+    };
     
+    public static Dictionary<ItemType, double> DEMAND_SLOPE = new Dictionary<ItemType, double> {
+        { ItemType.GRAIN, getDemandSlope(ItemType.GRAIN) },
+        { ItemType.BEER, getDemandSlope(ItemType.BEER) },
+        
+        { ItemType.FISH, getDemandSlope(ItemType.FISH) },
+        
+        { ItemType.WOOD, getDemandSlope(ItemType.WOOD) },
+        { ItemType.FURNITURE, getDemandSlope(ItemType.FURNITURE) },
+        
+        { ItemType.SILVER_ORE, getDemandSlope(ItemType.SILVER_ORE) },
+        { ItemType.JEWELRY, getDemandSlope(ItemType.JEWELRY) },
+    };
+
+    private static double getDemandSlope(ItemType itemType) {
+        //We define: QuantityofDemand(price) = m/price^elasticity 
+        //Thus: m = QuantityofDemand * price^elasticity
+        //We define QD(basePrice) = baseDemand
+        // m = baseDemand * basePrice^elasticity
+        
+        double baseDemand = BASE_DEMAND[itemType];
+        double basePrice = BASE_PRICE[itemType].asDouble();
+        double elasticity = DEMAND_ELASTICITY[itemType];
+        
+        double m = baseDemand * Math.Pow(basePrice, elasticity);
+
+        return m;
+    }
 }

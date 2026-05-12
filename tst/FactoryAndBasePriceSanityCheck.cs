@@ -29,8 +29,10 @@ public class FactoryAndBasePriceSanityCheck
             !building.GET_ITEM_CONSUMED().Equals(building.GET_ITEM_PRODUCED()),
             building.GetType() + " cannot consume and produce the same item.");
         
-        CoinAmount unitCost = Items.BASE_PRICE[building.GET_ITEM_CONSUMED()].multiply(building.GET_ITEMS_CONSUMED_PER_UNIT_PRODUCED());
-        CoinAmount unitIncome = Items.BASE_PRICE[building.GET_ITEM_PRODUCED()];
+        CoinAmount unitCost = CoinAmount.getMultiplyBy(
+            SimulationConstants.BASE_PRICE[building.GET_ITEM_CONSUMED()], 
+            building.GET_ITEMS_CONSUMED_PER_UNIT_PRODUCED());
+        CoinAmount unitIncome = SimulationConstants.BASE_PRICE[building.GET_ITEM_PRODUCED()];
 
         double roi = CoinAmount.getDivideBy(unitIncome , unitCost);
         

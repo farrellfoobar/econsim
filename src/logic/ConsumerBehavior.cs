@@ -34,10 +34,14 @@ public class ConsumerBehavior
         return integerComponent;
     }
 
-    private double QuantityPurchasedPerYear(ItemType itemType, CoinAmount wealth, CoinAmount itemPrice) {
-        //TODO: Take price into consideration with realistic elasticity of demand values ex: QuantityDesired=Const-Elasticity*price
+    private double QuantityPurchasedPerYear(ItemType itemType, CoinAmount wealth, CoinAmount price) {
         //TODO: take wealth into consideration
  
-        return SimulationConstants.BASE_DEMAND[itemType];
+        double m = SimulationConstants.DEMAND_SLOPE[itemType];
+        double elasticity = SimulationConstants.DEMAND_ELASTICITY[itemType];
+        
+        double quantityDemanded = m / Math.Pow(price.asDouble(), elasticity);
+        
+        return quantityDemanded;
     }
 }

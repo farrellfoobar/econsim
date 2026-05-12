@@ -71,9 +71,9 @@ public class Market
         if (totalSupply != 0 && totalDemand != 0) {
             supplyDemandFactor = totalSupply / totalDemand;
         }
-        CoinAmount price = Items.BASE_PRICE[itemType].multiply(supplyDemandFactor);
+        CoinAmount price = CoinAmount.getMultiplyBy(SimulationConstants.BASE_PRICE[itemType], supplyDemandFactor);
         
-        if(price.Equals(0))
+        if(price.asDouble() < 1E-3)
             Console.WriteLine("!!! 0= " +  totalSupply + " / " + totalDemand);
         
         return price;

@@ -22,13 +22,9 @@ public class CoinAmount()
             throw new NotImplementedException("Coin Amount is negative, maybe it shouldnt do that?");
         }
     }
-    
-    public static explicit operator CoinAmount(double cents) {
-        return new CoinAmount(cents);
-    }
-    
-    public static explicit operator double(CoinAmount amount) {
-        return amount.cents;
+
+    public double asDouble() {
+        return this.cents;
     }
 
     public override string ToString() {
@@ -63,11 +59,6 @@ public class CoinAmount()
     public static CoinAmount Gold(int goldCoinCount) {
         return new CoinAmount(goldCoinCount * 0.01);
     }
-
-    public CoinAmount multiply(double factor) {
-        this.cents *= factor;
-        return this;
-    }
     
     public static CoinAmount getDivideBy(CoinAmount coinAmount, int denominator) {
         if (coinAmount.cents % denominator != 0)
@@ -80,7 +71,7 @@ public class CoinAmount()
         return numerator.cents / denominator.cents;
     }
     
-    public static CoinAmount getMultiplyBy(CoinAmount coinAmount, int factor) {
+    public static CoinAmount getMultiplyBy(CoinAmount coinAmount, double factor) {
         return new CoinAmount(coinAmount.cents * factor);
     }
 }
