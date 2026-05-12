@@ -8,7 +8,7 @@ namespace EconSim.render;
 
 public class MerchantRenderer
 {
-    const float TILE_SIZE_PX = 128;
+    const double TILE_SIZE_PX = 128;
     private const int MERCHANT_TEXTURE_INDEX = 1;
     private const int ERASE_TEXTURE_INDEX = -1;
     private TileMapLayer mapLayer;

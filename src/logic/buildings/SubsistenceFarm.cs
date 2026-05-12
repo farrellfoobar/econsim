@@ -12,7 +12,7 @@ public class SubsistenceFarm : Building
     protected override CoinAmount WAGE_PER_PERSONYEAR { get; } = SimulationConstants.SubsistanceFarmValues.WAGE_PER_PERSONYEAR;
     protected override ItemType ITEM_PRODUCED { get; } = SimulationConstants.SubsistanceFarmValues.ITEM_PRODUCED;
 
-    private float productionThisYear = 0;
+    private double productionThisYear = 0;
     private TurnAndTimeManager turnAndTimeManager;
 
     public SubsistenceFarm(Town hostTown, TurnAndTimeManager turnAndTimeManager) : base(hostTown) {
@@ -20,7 +20,7 @@ public class SubsistenceFarm : Building
     }
     
     public override void doProductionTurn() {
-        float productionPerPersonTurn = PRODUCTION_PER_PERSONYEAR / (float)TurnAndTimeManager.TURNS_IN_A_YEAR;
+        double productionPerPersonTurn = PRODUCTION_PER_PERSONYEAR / (double)TurnAndTimeManager.TURNS_IN_A_YEAR;
         productionThisYear += productionPerPersonTurn * this.employees.Count;
 
         if (turnAndTimeManager.isHarvestTurn()) {

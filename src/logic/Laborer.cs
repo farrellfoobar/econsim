@@ -7,7 +7,7 @@ public class Laborer
 {
     private CoinAmount wealth = new CoinAmount(0);
     private bool isEmployed = false;
-    private float turnLengthConsumptionModifier = 1f / (float) TurnAndTimeManager.TURNS_IN_A_YEAR;
+    private double turnLengthConsumptionModifier = 1f / (double) TurnAndTimeManager.TURNS_IN_A_YEAR;
     private ConsumerBehavior consumerBehavior = new ConsumerBehavior();
     
     private const int foodConsumptionPerPersonPerYear = 20;

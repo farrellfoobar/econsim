@@ -15,7 +15,7 @@ public abstract class Building
     protected Town hostTown;
     protected CoinAmount profit = new CoinAmount(0);
     protected Stack<Laborer> employees = new Stack<Laborer>();
-    protected float productionCarryover = 0;
+    protected double productionCarryover = 0;
     
     protected Building(Town hostTown) {
         this.hostTown = hostTown;

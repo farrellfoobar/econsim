@@ -20,8 +20,8 @@ public class Vector2Int
 
     public Vector2Int(Vector2 godotVector)
     {
-        if (!float.IsInteger(godotVector.X) || !float.IsInteger(godotVector.Y)){
-            throw new ArgumentException("Got float values: " + godotVector + " trying to create Vector2Int. ");
+        if (!double.IsInteger(godotVector.X) || !double.IsInteger(godotVector.Y)){
+            throw new ArgumentException("Got double values: " + godotVector + " trying to create Vector2Int. ");
         }
         x = (int) godotVector.X;
         y = (int) godotVector.Y;
