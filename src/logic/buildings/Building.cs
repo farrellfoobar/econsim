@@ -9,13 +9,14 @@ public abstract class Building
 {
     protected abstract CoinAmount WAGE_PER_PERSONYEAR { get; }
     protected abstract ItemType ITEM_PRODUCED { get; }
-    protected abstract int PRODUCTION_PER_PERSONYEAR { get; }
+    protected abstract double PRODUCTION_PER_PERSONYEAR { get; }
     protected abstract ItemType ITEM_CONSUMED { get; }
-    protected abstract int ITEMS_CONSUMED_PER_UNIT_PRODUCED { get; }
+    protected abstract double ITEMS_CONSUMED_PER_UNIT_PRODUCED { get; }
     protected Town hostTown;
     protected CoinAmount profit = new CoinAmount(0);
     protected Stack<Laborer> employees = new Stack<Laborer>();
-    protected double productionCarryover = 0;
+    protected double productionOverflow = 0;
+    protected double consumptionOverflow = 0;
     
     protected Building(Town hostTown) {
         this.hostTown = hostTown;
@@ -26,19 +27,22 @@ public abstract class Building
     }
 
     public virtual void doProductionTurn() {        
-        int productionPerPersonTurn = PRODUCTION_PER_PERSONYEAR / TurnAndTimeManager.TURNS_IN_A_YEAR;
+        double productionPerPersonTurn = PRODUCTION_PER_PERSONYEAR / TurnAndTimeManager.TURNS_IN_A_YEAR;
         CoinAmount wagePerPersonTurn = CoinAmount.getDivideBy(WAGE_PER_PERSONYEAR, TurnAndTimeManager.TURNS_IN_A_YEAR);
         
         //todo: this is breaking my brain already like three days after I wrote it, tear it out and make production, consumption floats
-        productionCarryover += productionPerPersonTurn * employees.Count;
-        int production = (int)productionCarryover;
-        productionCarryover -= (int) productionCarryover;
+        productionOverflow += productionPerPersonTurn * employees.Count;
+        int productionInt = (int) Math.Truncate(productionOverflow);
+        productionOverflow -= productionInt;
         
-        int consumption = production * ITEMS_CONSUMED_PER_UNIT_PRODUCED;
-        Optional<CoinAmount> productionCostMaybe = hostTown.getMarket().tryBuyItems(ITEM_CONSUMED, consumption);
+        consumptionOverflow += productionInt * ITEMS_CONSUMED_PER_UNIT_PRODUCED;
+        int consumptionInt = (int) Math.Truncate(productionOverflow);
+        consumptionOverflow -= consumptionInt;
 
-        if (productionCostMaybe.IsPresent() && production > 0) {
-            profit.add(hostTown.getMarket().sellItems(ITEM_PRODUCED, production));
+        Optional<CoinAmount> productionCostMaybe = hostTown.getMarket().tryBuyItems(ITEM_CONSUMED, consumptionInt);
+
+        if (productionCostMaybe.IsPresent() && productionInt > 0) {
+            profit.add(hostTown.getMarket().sellItems(ITEM_PRODUCED, productionInt));
             foreach (Laborer employee in employees) {
                 employee.pay(wagePerPersonTurn);
                 profit.subtract(wagePerPersonTurn);
@@ -87,7 +91,7 @@ public abstract class Building
         return ITEM_PRODUCED; 
     }
 
-    public int GET_PRODUCTION_PER_PERSONYEAR() {
+    public double GET_PRODUCTION_PER_PERSONYEAR() {
         return PRODUCTION_PER_PERSONYEAR; 
     }
 
@@ -95,7 +99,7 @@ public abstract class Building
         return ITEM_CONSUMED; 
     }
 
-    public int GET_ITEMS_CONSUMED_PER_UNIT_PRODUCED() {
+    public double GET_ITEMS_CONSUMED_PER_UNIT_PRODUCED() {
         return ITEMS_CONSUMED_PER_UNIT_PRODUCED; 
     }
 }
