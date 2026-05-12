@@ -6,11 +6,11 @@ namespace EconSim.logic.buildings;
 
 public class SubsistenceFarm : Building
 {   
-    protected override int PRODUCTION_PER_PERSONYEAR { get; } = 20;
-    protected override ItemType ITEM_CONSUMED { get; } = ItemType.NONE;
-    protected override int ITEMS_CONSUMED_PER_UNIT_PRODUCED { get; } = 0;
-    protected override CoinAmount WAGE_PER_PERSONYEAR { get; } = new CoinAmount(0); 
-    protected override ItemType ITEM_PRODUCED { get; } = ItemType.GRAIN;
+    protected override int PRODUCTION_PER_PERSONYEAR { get; } = SimulationConstants.SubsistanceFarmValues.PRODUCTION_PER_PERSONYEAR;
+    protected override ItemType ITEM_CONSUMED { get; } = SimulationConstants.SubsistanceFarmValues.ITEM_CONSUMED;
+    protected override int ITEMS_CONSUMED_PER_UNIT_PRODUCED { get; } = SimulationConstants.SubsistanceFarmValues.CONSUMPTION_PER_UNIT_PRODUCED;
+    protected override CoinAmount WAGE_PER_PERSONYEAR { get; } = SimulationConstants.SubsistanceFarmValues.WAGE_PER_PERSONYEAR;
+    protected override ItemType ITEM_PRODUCED { get; } = SimulationConstants.SubsistanceFarmValues.ITEM_PRODUCED;
 
     private float productionThisYear = 0;
     private TurnAndTimeManager turnAndTimeManager;
