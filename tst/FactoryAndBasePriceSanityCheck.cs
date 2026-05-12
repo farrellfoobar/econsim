@@ -22,7 +22,6 @@ public class FactoryAndBasePriceSanityCheck
         testBuilding(carpentyYard);
         testBuilding(jeweler);
     }
-        
 
     void testBuilding(Building building) {
         Util.Assert(
@@ -31,7 +30,9 @@ public class FactoryAndBasePriceSanityCheck
         
         CoinAmount unitCost = CoinAmount.getMultiplyBy(
             SimulationConstants.BASE_PRICE[building.GET_ITEM_CONSUMED()], 
-            building.GET_ITEMS_CONSUMED_PER_UNIT_PRODUCED());
+            building.GET_ITEMS_CONSUMED_PER_UNIT_PRODUCED()
+        );
+        
         CoinAmount unitIncome = SimulationConstants.BASE_PRICE[building.GET_ITEM_PRODUCED()];
 
         double roi = CoinAmount.getDivideBy(unitIncome , unitCost);

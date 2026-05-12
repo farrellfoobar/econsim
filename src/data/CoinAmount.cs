@@ -18,7 +18,7 @@ public class CoinAmount()
     
     public void subtract(CoinAmount that) {
         this.cents -= that.cents;
-        if (this.cents < 0) {
+        if (this.cents < 0f) {
             throw new NotImplementedException("Coin Amount is negative, maybe it shouldnt do that?");
         }
     }
@@ -57,7 +57,7 @@ public class CoinAmount()
     }
     
     public static CoinAmount Gold(int goldCoinCount) {
-        return new CoinAmount(goldCoinCount * 0.01);
+        return new CoinAmount(goldCoinCount * 100);
     }
     
     public static CoinAmount getDivideBy(CoinAmount coinAmount, int denominator) {
