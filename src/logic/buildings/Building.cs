@@ -25,25 +25,31 @@ public abstract class Building
     public virtual void doProductionTurn() {        
         double productionPerPersonTurn = PRODUCTION_PER_PERSONYEAR / TurnAndTimeManager.TURNS_IN_A_YEAR;
         CoinAmount wagePerPersonTurn = CoinAmount.getDivideBy(WAGE_PER_PERSONYEAR, TurnAndTimeManager.TURNS_IN_A_YEAR);
-        
-        //todo: this is breaking my brain already like three days after I wrote it, tear it out and make production, consumption floats
-        productionOverflow += productionPerPersonTurn * employees.Count;
-        int productionInt = (int) Math.Truncate(productionOverflow);
-        productionOverflow -= productionInt;
-        
-        consumptionOverflow += productionInt * ITEMS_CONSUMED_PER_UNIT_PRODUCED;
-        int consumptionInt = (int) Math.Truncate(productionOverflow);
-        consumptionOverflow -= consumptionInt;
 
-        Optional<CoinAmount> productionCostMaybe = hostTown.getMarket().tryBuyItems(ITEM_CONSUMED, consumptionInt);
+        double production = productionOverflow + productionPerPersonTurn * employees.Count;
+        double consumption = consumptionOverflow + production * ITEMS_CONSUMED_PER_UNIT_PRODUCED;
+                
+        Optional<CoinAmount> consumptionCostMaybe = hostTown.getMarket().tryBuyItems(ITEM_CONSUMED, getIntegerComponent(consumption));
 
-        if (productionCostMaybe.IsPresent() && productionInt > 0) {
-            profit.add(hostTown.getMarket().sellItems(ITEM_PRODUCED, productionInt));
+        if (consumptionCostMaybe.IsPresent()) {
+            consumptionOverflow = getNonIntegerComponent(consumption);
+            
+            profit.add(hostTown.getMarket().sellItems(ITEM_PRODUCED, getIntegerComponent(production)));
+            productionOverflow = getNonIntegerComponent(production);
+            
             foreach (Laborer employee in employees) {
                 employee.pay(wagePerPersonTurn);
                 profit.subtract(wagePerPersonTurn);
             }
         }
+    }
+
+    private double getNonIntegerComponent(double production) {
+        return production - (int) Math.Truncate(production);
+    }
+
+    private int getIntegerComponent(double consumptionRequired) {
+        return(int) consumptionRequired;
     }
 
     public CoinAmount getProfit() {

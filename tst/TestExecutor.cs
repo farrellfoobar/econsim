@@ -8,6 +8,6 @@ public class TestExecutor
 {
     public static void main() {
         FactoryAndBasePriceSanityCheck test = new FactoryAndBasePriceSanityCheck();
-        test.sanityCheckBaseFactoryIO(true);
+        test.run();
     }
 }
