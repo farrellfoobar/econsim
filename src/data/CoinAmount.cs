@@ -45,6 +45,7 @@ public class CoinAmount
             ret = "c" + (cents * 100).ToString("0.");
         }
         else {
+            ret = ">c" + (cents * 100).ToString("0.");
             SimpleLogger.debug("Coin amount < 1c: " + cents.ToString());
         }
         return ret;

@@ -68,4 +68,8 @@ public class Laborer
     public void setEmployed(bool isEmployed) {
         this.isEmployed = isEmployed;
     }
+
+    public CoinAmount getWealth() {
+        return wealth;
+    }
 }

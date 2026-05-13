@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using EconSim.data;
 using EconSim.logic.buildings;
 
 namespace EconSim.logic;
@@ -80,5 +82,38 @@ public class Town
 
     public List<Laborer> getAllPopulation() {
         return allPopulation;
+    }
+
+    public String getWealthDistribution() {
+        List<Laborer> dist = allPopulation.OrderBy(laborer => laborer.getWealth().asDouble()).OrderDescending().ToList();
+
+        int third = dist.Count/3;
+
+        double highestThirdWealth = 0;
+        for (int i = 0; i < third; i++) {
+            highestThirdWealth+=dist[i].getWealth().asDouble();
+        }
+        
+        double middleThirdWealth = 0;
+        for (int i = third; i < third*2; i++) {
+            middleThirdWealth+=dist[i].getWealth().asDouble();
+        }
+        
+        double lowThirdWealth = 0;
+        for (int i = third*2; i < dist.Count-1; i++) {
+            lowThirdWealth+=dist[i].getWealth().asDouble();
+        }
+        
+        double totalWealth = highestThirdWealth + middleThirdWealth + lowThirdWealth;
+        
+        double highestShare = highestThirdWealth/totalWealth;
+        double middleShare = middleThirdWealth/totalWealth;
+        double lowShare = lowThirdWealth/totalWealth;
+
+        return "WD:<"
+               + lowShare.ToString("P0") + ","
+               + middleShare.ToString("P0") + ","
+               + highestShare.ToString("P0") + ","
+               + ">";
     }
 }
