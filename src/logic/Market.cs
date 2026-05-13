@@ -53,8 +53,7 @@ public class Market
         inventory.removeItems(itemType, 1);
         itemSupplyDemandHistory[itemType].addDemand(turnManager.getTurnCount());
         
-        CoinAmount tmp = getPrice(itemType);
-        return tmp;
+        return getPrice(itemType);
     }
     
     public Inventory getInventory() {return inventory;}
