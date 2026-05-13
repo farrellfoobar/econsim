@@ -21,22 +21,22 @@ public class SimulationConstants
     public static BuildingInitialValues BreweryValues = new BuildingInitialValues(
         ItemType.BEER, ItemType.GRAIN, 
         1404, // 9*12 packs (10 gallons) a day, cleaning every other day = 9*3*52=1404 
-        1, // 2.378 lb grain/Liter * 2.13Liter/6pack ~= 5, halved since beer was way weeker back then (/ballance)
-        new CoinAmount(0)
+        2.5, // 2.378 lb grain/Liter * 2.13Liter/6pack ~= 5, halved since beer was way weeker back then (/ballance)
+        CoinAmount.Silver(8)
         );
     
     public static BuildingInitialValues CarpentryYardValues = new BuildingInitialValues(
         ItemType.FURNITURE, ItemType.WOOD, 
         18, // one every three weeks
         2, //see BASE_PRICE[ItemType.Furniture] declaration
-        new CoinAmount(0)
+        CoinAmount.Silver(15)
     );
     
     public static BuildingInitialValues JewelryValues = new BuildingInitialValues(
         ItemType.JEWELRY, ItemType.SILVER_ORE, 
         12, //one a month
         1, // one ring ~= 4 grams ~= CoinAmount.Silver(1) := about 3.5grams silver
-        new CoinAmount(0)
+        CoinAmount.Silver(18)
     );
     
     private const int FOOD_CONSUMPTION_PER_PERSON_YEAR = 20;

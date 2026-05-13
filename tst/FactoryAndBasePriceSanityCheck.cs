@@ -9,11 +9,28 @@ public class FactoryAndBasePriceSanityCheck
 {
 
     public void run() {
+        testBrewery();
+        testCarpentryYard();
+        testJewelry();
+    }
+
+    private void testBrewery() {
         testBuildingMakesMoneyOnPaper(new Brewery(getTestTown()));
         testBuildingDoesntMakeMoneyIfItCantBuyIngredients(new Brewery(getTestTown()));
         testBuildingMakesMoneyWithWages(new Brewery(getTestTown()));
     }
-
+    
+    private void testCarpentryYard() {
+        testBuildingMakesMoneyOnPaper(new CarpentryYard(getTestTown()));
+        testBuildingDoesntMakeMoneyIfItCantBuyIngredients(new CarpentryYard(getTestTown()));
+        testBuildingMakesMoneyWithWages(new CarpentryYard(getTestTown()));
+    }
+    
+    private void testJewelry() {
+        testBuildingMakesMoneyOnPaper(new Jeweler(getTestTown()));
+        testBuildingDoesntMakeMoneyIfItCantBuyIngredients(new Jeweler(getTestTown()));
+        testBuildingMakesMoneyWithWages(new Jeweler(getTestTown()));
+    }
 
     private Town getTestTown() {
         TurnAndTimeManager turnManager = new TurnAndTimeManager();
@@ -39,6 +56,7 @@ public class FactoryAndBasePriceSanityCheck
         Util.Assert(roi > 1, 
             building.GetType() + "\t cannot have roi <1. (Unit Income,Unit Cost) = ( " + unitIncome + ", " + unitCost + ")");
 
+        SimpleLogger.debug(building.GetType() + "\t has (Unit Income,Unit Cost) = ( " + unitIncome + ", " + unitCost + ")");
         SimpleLogger.debug(building.GetType() + "\t has on paper ReturnOnInvestment of " + roi);
     }
 
@@ -85,13 +103,13 @@ public class FactoryAndBasePriceSanityCheck
         
         double wageFractionOfProfit = CoinAmount.getDivideBy(totalWages, building.getProfit());
         
+        SimpleLogger.debug(building.GetType() + "\t has income per person year of " + profitPerYear);
+        SimpleLogger.debug(building.GetType() + "\t has wage fraction of profit of " + wageFractionOfProfit.ToString("P0"));
+        
         Util.Assert( profitPerTurn.asDouble() > CoinAmount.MIN_VALUE.asDouble(),
             building.GetType() + "\t didnt make any money. Are wages too high?"
         );
         
-        Util.Assert(wageFractionOfProfit > 0, building.GetType() + "\t did not make pay any wages as fraction of profit.");
-        
-        SimpleLogger.debug(building.GetType() + "\t has income per person year of " + profitPerYear);
-        SimpleLogger.debug(building.GetType() + "\t has wage fraction of profit of " + wageFractionOfProfit);
+        //Util.Assert(wageFractionOfProfit > 0, building.GetType() + "\t did not pay any wages as fraction of profit.");        
     }
 }

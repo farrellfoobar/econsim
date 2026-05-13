@@ -91,8 +91,8 @@ public class Market
                 str += itemType + ":" + inventory.getItemCount(itemType) + ":" + getPrice(itemType);
 
                 if (SimpleLogger.isDebug)
-                    str += ":S/D=" + itemSupplyDemandHistory[itemType].getTotalDemand() + "/" +
-                           itemSupplyDemandHistory[itemType].getTotalSupply();
+                    str += ":S/D=" + itemSupplyDemandHistory[itemType].getTotalSupply() + "/" +
+                           itemSupplyDemandHistory[itemType].getTotalDemand();
                     
                 str += ", ";
             }
