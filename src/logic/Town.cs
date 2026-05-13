@@ -52,7 +52,14 @@ public class Town
     }
 
     public override String ToString() {
-        return name + " - Market: " + market;
+        String ret = name;
+
+        double unemployment = (double) unemployedPopulation.Count / getPopulationCount();
+        ret += " - " + unemployment.ToString("P0") + " unemployment";
+        
+        ret += " - Market: " + market;
+        
+        return ret ;
     }
 
     public void addBuilding(Building building) {

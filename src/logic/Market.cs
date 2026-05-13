@@ -65,22 +65,37 @@ public class Market
     }
 
     public CoinAmount getPrice(ItemType itemType) {
+        CoinAmount price = CoinAmount.getMultiplyBy(
+            SimulationConstants.BASE_PRICE[itemType], 
+            getSupplyDemandFactor(itemType)
+        );
+        
+        return price;
+    }
+
+    private double getSupplyDemandFactor(ItemType itemType) {
         double totalDemand = itemSupplyDemandHistory[itemType].getTotalDemand();
         double totalSupply = itemSupplyDemandHistory[itemType].getTotalSupply();
         double supplyDemandFactor = 1;
         if (totalSupply != 0 && totalDemand != 0) {
             supplyDemandFactor = totalSupply / totalDemand;
         }
-        CoinAmount price = CoinAmount.getMultiplyBy(SimulationConstants.BASE_PRICE[itemType], supplyDemandFactor);
-        
-        return price;
+
+        return supplyDemandFactor;
     }
     
     public override string ToString() {
         String str = "<";
         foreach (ItemType itemType in Enum.GetValues(typeof (ItemType))) {
-            if (inventory.ContainsItem(itemType))
-                str += itemType + ":" + inventory.getItemCount(itemType) + ":" + getPrice(itemType) + ", ";
+            if (inventory.ContainsItem(itemType)) {
+                str += itemType + ":" + inventory.getItemCount(itemType) + ":" + getPrice(itemType);
+
+                if (SimpleLogger.isDebug)
+                    str += ":S/D=" + itemSupplyDemandHistory[itemType].getTotalDemand() + "/" +
+                           itemSupplyDemandHistory[itemType].getTotalSupply();
+                    
+                str += ", ";
+            }
         }
         str += ">";
         return str;

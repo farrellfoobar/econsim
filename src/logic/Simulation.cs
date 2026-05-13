@@ -11,7 +11,6 @@ public class Simulation
     private GameMap gameMap;
     private List<Merchant> merchants;
     private TurnAndTimeManager turnAndTimeManager = new TurnAndTimeManager();
-    private int turnCount = 0;
 
     public Simulation(bool debug = false)
     {
@@ -60,7 +59,7 @@ public class Simulation
 
     public void doTurn() {
         turnAndTimeManager.nextTurn();
-        Console.WriteLine("TURN " + turnAndTimeManager.getTurnCount());
+        Console.WriteLine("TURN " + turnAndTimeManager.getTurnCount() + " YEAR " + turnAndTimeManager.getYear());
         
         foreach (Merchant merchant in merchants)
         {

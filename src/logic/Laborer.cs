@@ -10,8 +10,6 @@ public class Laborer
     private double turnLengthConsumptionModifier = 1f / (double) TurnAndTimeManager.TURNS_IN_A_YEAR;
     private ConsumerBehavior consumerBehavior = new ConsumerBehavior();
     
-    private const int foodConsumptionPerPersonPerYear = 20;
-
     public void pay(CoinAmount wage) {
         wealth.add(wage);
     }
@@ -28,17 +26,31 @@ public class Laborer
 
     private void consumeFood(Market market) {
         int foodConsumed = consumeDesiredFood(market);
-        consumeRemainingFoodAsCheaplyAsPossible(market, foodConsumed);
-    }
 
-    private void consumeRemainingFoodAsCheaplyAsPossible(Market market, int foodConsumed) {
-        int foodMustConsumeThisTurn = foodConsumptionPerPersonPerYear/TurnAndTimeManager.TURNS_IN_A_YEAR;
-
-        for (int i = foodConsumed; i < foodMustConsumeThisTurn; i++) {
-            market.tryBuyItems(getCheapestItem(market), 1);
+        ItemType cheapestItem = getCheapestItem(market);
+        for (int i = foodConsumed; i < SimulationConstants.FOOD_CONSUMPTION_PER_TURN; i++) {
+            Optional<CoinAmount> result = market.tryBuyItems(cheapestItem, 1);
+            if (result.IsPresent())
+                foodConsumed++;
         }
+        
+        if(foodConsumed < SimulationConstants.FOOD_CONSUMPTION_PER_TURN)
+            SimpleLogger.log("Im starving!!!");
     }
 
+    private int consumeDesiredFood(Market market) {
+        int foodConsumed = 0;
+        foreach (ItemType food in Items.ALL_FOOD_ITEMS) {
+            int desiredFoodConsumption = consumerBehavior.QuantityPurchasedPerTurn(food, wealth, market.getPrice(food));
+            Optional<CoinAmount> buyResult = market.tryBuyItems(food, desiredFoodConsumption);
+            if (buyResult.IsPresent()) {
+                foodConsumed += desiredFoodConsumption;
+            }
+        }
+        
+        return foodConsumed;
+    }
+    
     private ItemType getCheapestItem(Market market) {
         CoinAmount cheapestItemCost = CoinAmount.MAX_VALUE;
         ItemType cheapestItemType = ItemType.NONE;
@@ -51,20 +63,6 @@ public class Laborer
         }
 
         return cheapestItemType;
-    }
-
-    private int consumeDesiredFood(Market market) {
-        int foodConsumed = 0;
-        foreach (ItemType food in Items.ALL_FOOD_ITEMS) {
-            int desiredFoodConsumption = consumerBehavior.QuantityPurchasedPerTurn(food, wealth, market.getPrice(food)) / TurnAndTimeManager.TURNS_IN_A_YEAR;
-            //TODO: allow buyItems to do a partial buy. This would require returning both the cost and the quantity purchased  
-            Optional<CoinAmount> buyResult = market.tryBuyItems(food, desiredFoodConsumption);
-            if (buyResult.IsPresent()) {
-                foodConsumed += desiredFoodConsumption;
-            }
-        }
-        
-        return foodConsumed;
     }
     
     public void setEmployed(bool isEmployed) {

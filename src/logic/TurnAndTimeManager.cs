@@ -9,6 +9,10 @@ public class TurnAndTimeManager
     public int getTurnCount() {
         return turnCount;
     }
+    
+    public int getYear() {
+        return years;
+    }
 
     public void nextTurn() {
         if (turnCount == TURNS_IN_A_YEAR) {

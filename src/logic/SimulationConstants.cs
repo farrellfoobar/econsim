@@ -39,6 +39,9 @@ public class SimulationConstants
         new CoinAmount(0)
     );
     
+    private const int FOOD_CONSUMPTION_PER_PERSON_YEAR = 20;
+    public const int FOOD_CONSUMPTION_PER_TURN = FOOD_CONSUMPTION_PER_PERSON_YEAR / TurnAndTimeManager.TURNS_IN_A_YEAR;
+
     public static BuildingInitialValues SubsistanceFarmValues = new BuildingInitialValues(
         ItemType.GRAIN, ItemType.NONE , 20, 0, new CoinAmount(0)
     );
