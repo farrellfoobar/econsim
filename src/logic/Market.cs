@@ -53,7 +53,8 @@ public class Market
         inventory.removeItems(itemType, 1);
         itemSupplyDemandHistory[itemType].addDemand(turnManager.getTurnCount());
         
-        return getPrice(itemType);
+        CoinAmount tmp = getPrice(itemType);
+        return tmp;
     }
     
     public Inventory getInventory() {return inventory;}
@@ -64,7 +65,7 @@ public class Market
         }
     }
 
-    public CoinAmount getPrice(ItemType itemType) {
+    public virtual CoinAmount getPrice(ItemType itemType) {
         CoinAmount price = CoinAmount.getMultiplyBy(
             SimulationConstants.BASE_PRICE[itemType], 
             getSupplyDemandFactor(itemType)

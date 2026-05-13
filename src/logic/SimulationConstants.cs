@@ -21,7 +21,7 @@ public class SimulationConstants
     public static BuildingInitialValues BreweryValues = new BuildingInitialValues(
         ItemType.BEER, ItemType.GRAIN, 
         1404, // 9*12 packs (10 gallons) a day, cleaning every other day = 9*3*52=1404 
-        2.5, // 2.378 lb grain/Liter * 2.13Liter/6pack ~= 5, halved since beer was way weeker back then (/ballance)
+        1, // 2.378 lb grain/Liter * 2.13Liter/6pack ~= 5, halved since beer was way weeker back then (/ballance)
         new CoinAmount(0)
         );
     

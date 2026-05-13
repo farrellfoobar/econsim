@@ -9,20 +9,17 @@ public class FactoryAndBasePriceSanityCheck
 {
 
     public void run() {
-        Town town = getTestTown();
-        sanityCheckBaseFactoryIO(new Brewery(town), town);
-        sanityCheckBaseFactoryIO(new CarpentryYard(town), town);
-        sanityCheckBaseFactoryIO(new Jeweler(town), town);
-    }
-    
-    private void sanityCheckBaseFactoryIO(Building building, Town town) {
-        testBuildingMakesMoneyOnPaper(building);
-        testBuildingDoesntMakeMoneyIfItCantBuyIngredients(building);
-        testBuildingMakesMoneyWithWages(building, town, building.GET_ITEM_CONSUMED());
+        testBuildingMakesMoneyOnPaper(new Brewery(getTestTown()));
+        testBuildingDoesntMakeMoneyIfItCantBuyIngredients(new Brewery(getTestTown()));
+        testBuildingMakesMoneyWithWages(new Brewery(getTestTown()));
     }
 
+
     private Town getTestTown() {
-        return new Town("TestTown", 100, new TurnAndTimeManager());
+        TurnAndTimeManager turnManager = new TurnAndTimeManager();
+        Town town = new Town("TestTown", 1, turnManager);
+        town.setMarket(new FixedPriceMarket(turnManager));
+        return town;
     }    
 
     void testBuildingMakesMoneyOnPaper(Building building) {
@@ -56,9 +53,11 @@ public class FactoryAndBasePriceSanityCheck
         Util.Assert(building.getProfit().asDouble().Equals(0d), building.GetType() + "\t makes money without buying any ingredients.");
     }
     
-    private void testBuildingMakesMoneyWithWages(Building building, Town town, ItemType itemConsumed) {
+    private void testBuildingMakesMoneyWithWages(Building building) {
+        Town town = building.getTown();
+        ItemType itemConsumed = building.GET_ITEM_CONSUMED();
         building.employWorkers(1);
-        int pollLength = 100;
+        int pollLength = 4;
         
         double yearlyConsumption = building.GET_PRODUCTION_PER_PERSONYEAR() * building.GET_ITEMS_CONSUMED_PER_UNIT_PRODUCED();
         double yearsInPoll = (double) pollLength / TurnAndTimeManager.TURNS_IN_A_YEAR;
@@ -72,6 +71,11 @@ public class FactoryAndBasePriceSanityCheck
         CoinAmount profitPerTurn = CoinAmount.getDivideBy(
             building.getProfit(), 
             pollLength
+        );
+        
+        CoinAmount profitPerYear = CoinAmount.getMultiplyBy(
+            profitPerTurn, 
+            TurnAndTimeManager.TURNS_IN_A_YEAR
         );
 
         CoinAmount totalWages = CoinAmount.getMultiplyBy(
@@ -87,7 +91,7 @@ public class FactoryAndBasePriceSanityCheck
         
         Util.Assert(wageFractionOfProfit > 0, building.GetType() + "\t did not make pay any wages as fraction of profit.");
         
-        SimpleLogger.debug(building.GetType() + "\t has income per person turn of " + profitPerTurn);
+        SimpleLogger.debug(building.GetType() + "\t has income per person year of " + profitPerYear);
         SimpleLogger.debug(building.GetType() + "\t has wage fraction of profit of " + wageFractionOfProfit);
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using EconSim.data;
 using EconSim.logic.buildings;
+using EconSim.tst;
 
 namespace EconSim.logic;
 
@@ -115,5 +116,12 @@ public class Town
                + middleShare.ToString("P0") + ","
                + highestShare.ToString("P0") + ","
                + ">";
+    }
+
+    /*
+     * For testing
+     */
+    public void setMarket(FixedPriceMarket fixedPriceMarket) {
+        this.market = fixedPriceMarket;
     }
 }

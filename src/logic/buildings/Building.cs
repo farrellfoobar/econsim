@@ -27,14 +27,17 @@ public abstract class Building
         CoinAmount wagePerPersonTurn = CoinAmount.getDivideBy(WAGE_PER_PERSONYEAR, TurnAndTimeManager.TURNS_IN_A_YEAR);
 
         double production = productionOverflow + productionPerPersonTurn * employees.Count;
-        double consumption = consumptionOverflow + production * ITEMS_CONSUMED_PER_UNIT_PRODUCED;
-                
+        double consumption = consumptionOverflow + (production * ITEMS_CONSUMED_PER_UNIT_PRODUCED);
+
         Optional<CoinAmount> consumptionCostMaybe = hostTown.getMarket().tryBuyItems(ITEM_CONSUMED, getIntegerComponent(consumption));
 
         if (consumptionCostMaybe.IsPresent()) {
+            profit.subtract(consumptionCostMaybe.get());
             consumptionOverflow = getNonIntegerComponent(consumption);
-            
-            profit.add(hostTown.getMarket().sellItems(ITEM_PRODUCED, getIntegerComponent(production)));
+
+            CoinAmount turnIncome = hostTown.getMarket().sellItems(ITEM_PRODUCED, getIntegerComponent(production));
+            profit.add(turnIncome);
+                        
             productionOverflow = getNonIntegerComponent(production);
             
             foreach (Laborer employee in employees) {
@@ -103,5 +106,9 @@ public abstract class Building
 
     public double GET_ITEMS_CONSUMED_PER_UNIT_PRODUCED() {
         return ITEMS_CONSUMED_PER_UNIT_PRODUCED; 
+    }
+
+    public Town getTown() {
+        return hostTown;
     }
 }
