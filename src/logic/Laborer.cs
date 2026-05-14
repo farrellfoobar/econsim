@@ -96,6 +96,10 @@ public class Laborer
     public CoinAmount GetWealth() {
         return wealth;
     }
+    
+    public void TestingSetWealth(CoinAmount wealth) {
+        this.wealth = wealth;
+    }
 
     private bool IsEmployed()
     {

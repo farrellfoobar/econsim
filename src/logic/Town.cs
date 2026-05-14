@@ -61,6 +61,8 @@ public class Town
         ret += " - " + unemployment.ToString("P0") + " unemployment";
         
         ret += " - Market: " + market;
+
+        ret += " - Wealth: " + GetWealthDistribution();
         
         return ret ;
     }
@@ -86,7 +88,7 @@ public class Town
     }
 
     public String GetWealthDistribution() {
-        List<Laborer> dist = allPopulation.OrderBy(laborer => laborer.GetWealth().AsInt()).OrderDescending().ToList();
+        List<Laborer> dist = allPopulation.OrderBy(laborer => laborer.GetWealth().AsInt()).ToList();
 
         int third = dist.Count/3;
 
@@ -111,10 +113,10 @@ public class Town
         double middleShare = middleThirdWealth/totalWealth;
         double lowShare = lowThirdWealth/totalWealth;
 
-        return "WD:<"
-               + lowShare.ToString("P0") + ","
-               + middleShare.ToString("P0") + ","
-               + highestShare.ToString("P0") + ","
+        return "<"
+               + lowShare.ToString("P0") + "@" + dist[third].GetWealth() +","
+               + middleShare.ToString("P0") + "@" + dist[third*2].GetWealth() +","
+               + highestShare.ToString("P0") + "@" + dist[(third*3)-1].GetWealth() +","
                + ">";
     }
 
