@@ -8,7 +8,7 @@ namespace EconSim.tst;
 public class FactoryAndBasePriceSanityCheck
 {
 
-    public void run() {
+    public void Run() {
         testBrewery();
         testCarpentryYard();
         testJewelry();
@@ -35,7 +35,7 @@ public class FactoryAndBasePriceSanityCheck
     private Town getTestTown() {
         TurnAndTimeManager turnManager = new TurnAndTimeManager();
         Town town = new Town("TestTown", 1, turnManager);
-        town.setMarket(new FixedPriceMarket(turnManager));
+        town.SetMarket(new FixedPriceMarket(turnManager));
         return town;
     }    
 
@@ -44,69 +44,69 @@ public class FactoryAndBasePriceSanityCheck
             !building.GET_ITEM_CONSUMED().Equals(building.GET_ITEM_PRODUCED()),
             building.GetType() + "\t cannot consume and produce the same item.");
         
-        CoinAmount unitCost = CoinAmount.getMultiplyBy(
-            SimulationConstants.BASE_PRICE[building.GET_ITEM_CONSUMED()], 
+        CoinAmount unitCost = CoinAmount.GetMultiplyBy(
+            SimulationConstants.BasePrice[building.GET_ITEM_CONSUMED()], 
             building.GET_ITEMS_CONSUMED_PER_UNIT_PRODUCED()
         );
         
-        CoinAmount unitIncome = SimulationConstants.BASE_PRICE[building.GET_ITEM_PRODUCED()];
+        CoinAmount unitIncome = SimulationConstants.BasePrice[building.GET_ITEM_PRODUCED()];
 
-        double roi = CoinAmount.getDivideBy(unitIncome , unitCost);
+        double roi = CoinAmount.GetDivideBy(unitIncome , unitCost);
         
         Util.Assert(roi > 1, 
             building.GetType() + "\t cannot have roi <1. (Unit Income,Unit Cost) = ( " + unitIncome + ", " + unitCost + ")");
 
-        SimpleLogger.debug(building.GetType() + "\t has (Unit Income,Unit Cost) = ( " + unitIncome + ", " + unitCost + ")");
-        SimpleLogger.debug(building.GetType() + "\t has on paper ReturnOnInvestment of " + roi);
+        SimpleLogger.Debug(building.GetType() + "\t has (Unit Income,Unit Cost) = ( " + unitIncome + ", " + unitCost + ")");
+        SimpleLogger.Debug(building.GetType() + "\t has on paper ReturnOnInvestment of " + roi);
     }
 
     private void testBuildingDoesntMakeMoneyIfItCantBuyIngredients(Building building) {
-        building.employWorkers(1);
+        building.EmployWorkers(1);
 
         int pollLength = 100;
         for (int i = 0; i < pollLength; i++) {
-            building.doProductionTurn();
+            building.DoProductionTurn();
         }
 
-        Util.Assert(building.getProfit().asDouble().Equals(0d), building.GetType() + "\t makes money without buying any ingredients.");
+        Util.Assert(building.GetProfit().AsDouble().Equals(0d), building.GetType() + "\t makes money without buying any ingredients.");
     }
     
     private void testBuildingMakesMoneyWithWages(Building building) {
-        Town town = building.getTown();
+        Town town = building.GetTown();
         ItemType itemConsumed = building.GET_ITEM_CONSUMED();
-        building.employWorkers(1);
+        building.EmployWorkers(1);
         int pollLength = 4;
         
         double yearlyConsumption = building.GET_PRODUCTION_PER_PERSONYEAR() * building.GET_ITEMS_CONSUMED_PER_UNIT_PRODUCED();
-        double yearsInPoll = (double) pollLength / TurnAndTimeManager.TURNS_IN_A_YEAR;
+        double yearsInPoll = (double) pollLength / TurnAndTimeManager.TurnsInAYear;
         double totalConsumption = yearlyConsumption * yearsInPoll;
 
-        town.getMarket().sellItems(itemConsumed, (int) Double.Round(Math.Ceiling(totalConsumption)));
+        town.GetMarket().SellItems(itemConsumed, (int) Double.Round(Math.Ceiling(totalConsumption)));
         for (int i = 0; i < pollLength; i++) {
-            building.doProductionTurn();
+            building.DoProductionTurn();
         }
 
-        CoinAmount profitPerTurn = CoinAmount.getDivideBy(
-            building.getProfit(), 
+        CoinAmount profitPerTurn = CoinAmount.GetDivideBy(
+            building.GetProfit(), 
             pollLength
         );
         
-        CoinAmount profitPerYear = CoinAmount.getMultiplyBy(
+        CoinAmount profitPerYear = CoinAmount.GetMultiplyBy(
             profitPerTurn, 
-            TurnAndTimeManager.TURNS_IN_A_YEAR
+            TurnAndTimeManager.TurnsInAYear
         );
 
-        CoinAmount totalWages = CoinAmount.getMultiplyBy(
+        CoinAmount totalWages = CoinAmount.GetMultiplyBy(
             building.GET_WAGE_PER_PERSONYEAR(),
-            (double) pollLength / TurnAndTimeManager.TURNS_IN_A_YEAR
+            (double) pollLength / TurnAndTimeManager.TurnsInAYear
        );
         
-        double wageFractionOfProfit = CoinAmount.getDivideBy(totalWages, building.getProfit());
+        double wageFractionOfProfit = CoinAmount.GetDivideBy(totalWages, building.GetProfit());
         
-        SimpleLogger.debug(building.GetType() + "\t has income per person year of " + profitPerYear);
-        SimpleLogger.debug(building.GetType() + "\t has wage fraction of profit of " + wageFractionOfProfit.ToString("P0"));
+        SimpleLogger.Debug(building.GetType() + "\t has income per person year of " + profitPerYear);
+        SimpleLogger.Debug(building.GetType() + "\t has wage fraction of profit of " + wageFractionOfProfit.ToString("P0"));
         
-        Util.Assert( profitPerTurn.asDouble() > CoinAmount.MIN_VALUE.asDouble(),
+        Util.Assert( profitPerTurn.AsDouble() > CoinAmount.MinValue.AsDouble(),
             building.GetType() + "\t didnt make any money. Are wages too high?"
         );
         

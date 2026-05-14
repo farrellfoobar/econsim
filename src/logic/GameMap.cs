@@ -22,15 +22,15 @@ public class GameMap
             {
                  for (int y = 0; y < height; y++)
                  {
-                     GameTile tile = new GameTile(TileType.GRASS, new Vector2Int(x, y));
+                     GameTile tile = new GameTile(TileType.Grass, new Vector2Int(x, y));
                      tiles.Add(tile.position, tile);
                  }   
             }
        }
 
-       public void setTileType(Vector2Int position, TileType tileType)
+       public void SetTileType(Vector2Int position, TileType tileType)
        {
-           if (position.getX() >= width || position.getY() >= height)
+           if (position.GetX() >= width || position.GetY() >= height)
            {
                throw new IndexOutOfRangeException(
                    "Tried to assign tile at position: " + position + " in map of " + new Vector2Int(width, height));
@@ -38,21 +38,21 @@ public class GameMap
            tiles[position].tileType = tileType;
        }
        
-       public void addTown(Vector2Int position, Town town)
+       public void AddTown(Vector2Int position, Town town)
        {
-           setTileType(position, TileType.HAMLET);
+           SetTileType(position, TileType.Hamlet);
            towns.Add(position, town);
        }
 
-       public Town getTownAt(Vector2Int position) {
+       public Town GetTownAt(Vector2Int position) {
            return towns[position]; //this is kinda intentionally unsafe because eventually Merchant should know if/what town it is in
        }
 
-       public List<Town> getTowns() { return towns.Values.ToList(); }
+       public List<Town> GetTowns() { return towns.Values.ToList(); }
        
-       public Dictionary<Vector2Int, GameTile> getTiles() { return tiles; }
+       public Dictionary<Vector2Int, GameTile> GetTiles() { return tiles; }
 
-       public int getHeight(){ return height; }
+       public int GetHeight(){ return height; }
 
-       public int getWidth(){ return width; }
+       public int GetWidth(){ return width; }
 }

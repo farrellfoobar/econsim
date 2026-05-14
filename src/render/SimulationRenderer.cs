@@ -17,13 +17,13 @@ public class SimulationRenderer
         this.parent = root2dScene;
         this.simulation = simulation;
         
-        mapRenderer = new MapRenderer(parent, this.simulation.getGameMap());
-        merchantRenderer = new MerchantRenderer(parent, this.simulation.getGameMap());
+        mapRenderer = new MapRenderer(parent, this.simulation.GetGameMap());
+        merchantRenderer = new MerchantRenderer(parent, this.simulation.GetGameMap());
     }
     
-    public void renderSimulation()
+    public void RenderSimulation()
     {
-        mapRenderer.renderMap();
-        merchantRenderer.render(simulation.getMerchants());
+        mapRenderer.RenderMap();
+        merchantRenderer.Render(simulation.GetMerchants());
     }
 }

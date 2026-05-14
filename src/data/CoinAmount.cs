@@ -4,8 +4,8 @@ namespace EconSim.data;
 
 public class CoinAmount
 {
-    public static readonly CoinAmount MAX_VALUE = new CoinAmount(Double.MaxValue);
-    public static readonly CoinAmount MIN_VALUE = new CoinAmount(0.01f);
+    public static readonly CoinAmount MaxValue = new CoinAmount(Double.MaxValue);
+    public static readonly CoinAmount MinValue = new CoinAmount(0.01f);
     
     private double cents = 0;
 
@@ -19,18 +19,18 @@ public class CoinAmount
         this.cents = that.cents;
     }
 
-    public void add(CoinAmount that) {
+    public void Add(CoinAmount that) {
         this.cents += that.cents;
     }
     
-    public void subtract(CoinAmount that) {
+    public void Subtract(CoinAmount that) {
         this.cents -= that.cents;
         if (this.cents < 0f) {
             //throw new NotImplementedException("Coin Amount is negative, maybe it shouldnt do that?");
         }
     }
 
-    public double asDouble() {
+    public double AsDouble() {
         return this.cents;
     }
 
@@ -41,21 +41,21 @@ public class CoinAmount
         } else if (cents >= 1) {
             ret = "$" + cents.ToString("0.##");
         }
-        else if (cents >= MIN_VALUE.asDouble()) {
+        else if (cents >= MinValue.AsDouble()) {
             ret = "c" + (cents * 100).ToString("0.");
         }
         else {
             ret = ">c" + (cents * 100).ToString("0.");
-            SimpleLogger.debug("Coin amount < 1c: " + cents);
+            SimpleLogger.Debug("Coin amount < 1c: " + cents);
         }
         return ret;
     }
 
-    public bool isLessThan(CoinAmount that) {
+    public bool IsLessThan(CoinAmount that) {
         return this.cents < that.cents;
     }
     
-    public bool isGreaterThan(CoinAmount that) {
+    public bool IsGreaterThan(CoinAmount that) {
         return this.cents > that.cents;
     }
 
@@ -71,19 +71,19 @@ public class CoinAmount
         return new CoinAmount(goldCoinCount * 100);
     }
     
-    public static CoinAmount getDivideBy(CoinAmount coinAmount, int denominator) {        
+    public static CoinAmount GetDivideBy(CoinAmount coinAmount, int denominator) {        
         return new CoinAmount(coinAmount.cents / denominator);
     }
     
-    public static double getDivideBy(CoinAmount numerator, CoinAmount denominator) {
+    public static double GetDivideBy(CoinAmount numerator, CoinAmount denominator) {
         return numerator.cents / denominator.cents;
     }
     
-    public static CoinAmount getMultiplyBy(CoinAmount coinAmount, double factor) {
+    public static CoinAmount GetMultiplyBy(CoinAmount coinAmount, double factor) {
         return new CoinAmount(coinAmount.cents * factor);
     }
 
-    public static CoinAmount getAdd(CoinAmount a, CoinAmount b) {
+    public static CoinAmount GetAdd(CoinAmount a, CoinAmount b) {
         return new CoinAmount(a.cents + b.cents);
     }
 }

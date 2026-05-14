@@ -20,66 +20,66 @@ public class Market
         }
     }
 
-    public CoinAmount sellItems(ItemType itemType, int quantity) {
+    public CoinAmount SellItems(ItemType itemType, int quantity) {
         CoinAmount cost = new CoinAmount(0);
         for (int i = 0; i < quantity; i++) {
-            cost.add(sellItem(itemType));
+            cost.Add(sellItem(itemType));
         }
         
         return cost;
     }
 
-    public Optional<CoinAmount> tryBuyItems(ItemType itemType, int quantity) {
-        if (quantity > inventory.getItemCount(itemType)) {
-            return Optional<CoinAmount>.EMPTY();
+    public Optional<CoinAmount> TryBuyItems(ItemType itemType, int quantity) {
+        if (quantity > inventory.GetItemCount(itemType)) {
+            return Optional<CoinAmount>.Empty();
         }
 
         CoinAmount cost = new CoinAmount();
         for (int i = 0; i < quantity; i++) {
-            cost.add(buyItem(itemType));
+            cost.Add(buyItem(itemType));
         }
         
         return new Optional<CoinAmount>(cost);
     }
 
     private CoinAmount sellItem(ItemType itemType) {
-        inventory.addItems(itemType, 1);
-        itemSupplyDemandHistory[itemType].addSupply(turnManager.getTurnCount());
+        inventory.AddItems(itemType, 1);
+        itemSupplyDemandHistory[itemType].AddSupply(turnManager.GetTurnCount());
         
-        return getPrice(itemType);
+        return GetPrice(itemType);
     }
 
     private CoinAmount buyItem(ItemType itemType) {
-        inventory.removeItems(itemType, 1);
-        itemSupplyDemandHistory[itemType].addDemand(turnManager.getTurnCount());
+        inventory.RemoveItems(itemType, 1);
+        itemSupplyDemandHistory[itemType].AddDemand(turnManager.GetTurnCount());
         
-        return getPrice(itemType);
+        return GetPrice(itemType);
     }
     
-    public Inventory getInventory() {return inventory;}
+    public Inventory GetInventory() {return inventory;}
 
-    public void doTurn(int turnCount) {
+    public void DoTurn(int turnCount) {
         foreach (ItemType itemType in itemSupplyDemandHistory.Keys) {
-            itemSupplyDemandHistory[itemType].cullSupplyDemandHistory(turnCount);
+            itemSupplyDemandHistory[itemType].CullSupplyDemandHistory(turnCount);
         }
     }
 
-    public virtual CoinAmount getPrice(ItemType itemType) {
-        CoinAmount price = CoinAmount.getMultiplyBy(
-            SimulationConstants.BASE_PRICE[itemType], 
+    public virtual CoinAmount GetPrice(ItemType itemType) {
+        CoinAmount price = CoinAmount.GetMultiplyBy(
+            SimulationConstants.BasePrice[itemType], 
             getSupplyDemandFactor(itemType)
         );
         
         return price;
     }
 
-    public bool isInStock(ItemType itemType) {
-        return inventory.getItemCount(itemType) > 0;
+    public bool IsInStock(ItemType itemType) {
+        return inventory.GetItemCount(itemType) > 0;
     }
 
     private double getSupplyDemandFactor(ItemType itemType) {
-        double totalDemand = itemSupplyDemandHistory[itemType].getTotalDemand();
-        double totalSupply = itemSupplyDemandHistory[itemType].getTotalSupply();
+        double totalDemand = itemSupplyDemandHistory[itemType].GetTotalDemand();
+        double totalSupply = itemSupplyDemandHistory[itemType].GetTotalSupply();
         double supplyDemandFactor = 1;
         if (totalSupply != 0 && totalDemand != 0) {
             supplyDemandFactor = totalSupply / totalDemand;
@@ -92,11 +92,11 @@ public class Market
         String str = "<";
         foreach (ItemType itemType in Enum.GetValues(typeof (ItemType))) {
             if (inventory.ContainsItem(itemType)) {
-                str += itemType + ":" + inventory.getItemCount(itemType) + ":" + getPrice(itemType);
+                str += itemType + ":" + inventory.GetItemCount(itemType) + ":" + GetPrice(itemType);
 
-                if (SimpleLogger.isDebug)
-                    str += ":S/D=" + itemSupplyDemandHistory[itemType].getTotalSupply() + "/" +
-                           itemSupplyDemandHistory[itemType].getTotalDemand();
+                if (SimpleLogger.IsDebug)
+                    str += ":S/D=" + itemSupplyDemandHistory[itemType].GetTotalSupply() + "/" +
+                           itemSupplyDemandHistory[itemType].GetTotalDemand();
                     
                 str += ", ";
             }

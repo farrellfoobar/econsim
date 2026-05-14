@@ -20,35 +20,35 @@ public class Simulation
         Town burg = new Town("Burgherville", 20, turnAndTimeManager);
         Town soko = new Town("Sokotra", 60, turnAndTimeManager);
         
-        gameMap.addTown(new Vector2Int(3, 3), sili);
-        gameMap.addTown(new Vector2Int(13, 7), burg);
-        gameMap.addTown(new Vector2Int(20, 9), soko);
+        gameMap.AddTown(new Vector2Int(3, 3), sili);
+        gameMap.AddTown(new Vector2Int(13, 7), burg);
+        gameMap.AddTown(new Vector2Int(20, 9), soko);
         
-        sili.getInventory().addItems(ItemType.GRAIN, 10000);
-        sili.getInventory().addItems(ItemType.WOOD, 100);
-        sili.getInventory().addItems(ItemType.FISH, 10000);
+        sili.GetInventory().AddItems(ItemType.Grain, 10000);
+        sili.GetInventory().AddItems(ItemType.Wood, 100);
+        sili.GetInventory().AddItems(ItemType.Fish, 10000);
         Building siliBrewery = new Brewery(sili);
-        siliBrewery.employWorkers(3);
-        sili.addBuilding(siliBrewery);
+        siliBrewery.EmployWorkers(3);
+        sili.AddBuilding(siliBrewery);
         
-        burg.getInventory().addItems(ItemType.GRAIN, 10000);
-        burg.getInventory().addItems(ItemType.WOOD, 1000);
-        burg.getInventory().addItems(ItemType.FISH, 10000);
+        burg.GetInventory().AddItems(ItemType.Grain, 10000);
+        burg.GetInventory().AddItems(ItemType.Wood, 1000);
+        burg.GetInventory().AddItems(ItemType.Fish, 10000);
 
         Building burgLumberYard = new CarpentryYard(burg); 
-        burg.addBuilding(burgLumberYard);
-        burgLumberYard.employWorkers(12);
+        burg.AddBuilding(burgLumberYard);
+        burgLumberYard.EmployWorkers(12);
 
         Building burgJeweler = new Jeweler(burg); 
-        burg.addBuilding(burgJeweler);
-        burgJeweler.employWorkers(4);
+        burg.AddBuilding(burgJeweler);
+        burgJeweler.EmployWorkers(4);
         
-        soko.getInventory().addItems(ItemType.GRAIN, 1000);
-        soko.getInventory().addItems(ItemType.WOOD, 100);
-        soko.getInventory().addItems(ItemType.FISH, 10000);
+        soko.GetInventory().AddItems(ItemType.Grain, 1000);
+        soko.GetInventory().AddItems(ItemType.Wood, 100);
+        soko.GetInventory().AddItems(ItemType.Fish, 10000);
         Building sokoBrewery = new Brewery(sili);
-        sokoBrewery.employWorkers(10);
-        soko.addBuilding(sokoBrewery);
+        sokoBrewery.EmployWorkers(10);
+        soko.AddBuilding(sokoBrewery);
         // This setup should get the merchant to trade GRAIN for WOOD from sili to soko without using mind control (setOnJourneyTo) 
 
         Merchant thisOneGuy = new Merchant(new Vector2Int(3, 3), gameMap);
@@ -57,23 +57,23 @@ public class Simulation
         thisOneGuy.setOnJourneyTo(new Vector2Int(20, 9));
     }
 
-    public void doTurn() {
-        Console.WriteLine("TURN " + turnAndTimeManager.getTurnCount() + " YEAR " + turnAndTimeManager.getYear());
-        turnAndTimeManager.nextTurn();
+    public void DoTurn() {
+        Console.WriteLine("TURN " + turnAndTimeManager.GetTurnCount() + " YEAR " + turnAndTimeManager.GetYear());
+        turnAndTimeManager.NextTurn();
         
         foreach (Merchant merchant in merchants)
         {
             merchant.DoTurn();
         }
         
-        foreach (Town town in gameMap.getTowns()) {
+        foreach (Town town in gameMap.GetTowns()) {
             Console.WriteLine(town);
-            town.doProductionTurn();
-            town.doConsumptionTurn();
+            town.DoProductionTurn();
+            town.DoConsumptionTurn();
         }
     }
     
-    public GameMap getGameMap() { return gameMap; }
-    public List<Merchant> getMerchants() { return merchants; }
+    public GameMap GetGameMap() { return gameMap; }
+    public List<Merchant> GetMerchants() { return merchants; }
     
 }

@@ -34,7 +34,7 @@ public class Vector2Int
         
         Vector2Int thatVector = (Vector2Int)that;
         
-        return x.Equals(thatVector.getX()) && y.Equals(thatVector.getY());
+        return x.Equals(thatVector.GetX()) && y.Equals(thatVector.GetY());
     }
 
     public override int GetHashCode()
@@ -42,17 +42,17 @@ public class Vector2Int
         return HashCode.Combine(x.GetHashCode(), y.GetHashCode());
     }
 
-    public Vector2I asGodotVector()
+    public Vector2I AsGodotVector()
     {
         return new Vector2I(x, y);
     }
     
-    public int getX()
+    public int GetX()
     {
         return x;
     }
     
-    public int getY()
+    public int GetY()
     {
         return y;
     }

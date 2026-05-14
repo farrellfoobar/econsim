@@ -29,7 +29,7 @@ public class Town
         this.buildings = new List<Building>();
 
         SubsistenceFarm subsistenceFarm = new SubsistenceFarm(this, turnAndTimeManager);
-        subsistenceFarm.setEmployees(unemployedPopulation);
+        subsistenceFarm.SetEmployees(unemployedPopulation);
         buildings.Add(subsistenceFarm);
         market = new Market(turnAndTimeManager);
     }
@@ -37,27 +37,27 @@ public class Town
     /*
      * Basically just for setup now, should be using the market to exchange between agents
      */
-    public Inventory getInventory() { return market.getInventory(); }
+    public Inventory GetInventory() { return market.GetInventory(); }
     
-    public Market getMarket() { return market; }
+    public Market GetMarket() { return market; }
 
-    public void doProductionTurn() {
-        market.doTurn(turnAndTimeManager.getTurnCount());
+    public void DoProductionTurn() {
+        market.DoTurn(turnAndTimeManager.GetTurnCount());
         foreach (Building building in buildings) {
-            building.doProductionTurn();
+            building.DoProductionTurn();
         }
     }
     
-    public void doConsumptionTurn() {
+    public void DoConsumptionTurn() {
         foreach (Laborer person in allPopulation) {
-            person.consumeAtMarket(market);
+            person.ConsumeAtMarket(market);
         }
     }
 
     public override String ToString() {
         String ret = name;
 
-        double unemployment = (double) unemployedPopulation.Count / getPopulationCount();
+        double unemployment = (double) unemployedPopulation.Count / GetPopulationCount();
         ret += " - " + unemployment.ToString("P0") + " unemployment";
         
         ret += " - Market: " + market;
@@ -65,44 +65,44 @@ public class Town
         return ret ;
     }
 
-    public void addBuilding(Building building) {
+    public void AddBuilding(Building building) {
         buildings.Add(building);
     }
 
-    public int getUnemployedPopulationCount() {
+    public int GetUnemployedPopulationCount() {
         return unemployedPopulation.Count;
     }
     
-    public Stack<Laborer> getUnemployedPopulation() {
+    public Stack<Laborer> GetUnemployedPopulation() {
         return unemployedPopulation;
     }
 
-    public int getPopulationCount() {
+    public int GetPopulationCount() {
         return allPopulation.Count;
     }
 
-    public List<Laborer> getAllPopulation() {
+    public List<Laborer> GetAllPopulation() {
         return allPopulation;
     }
 
-    public String getWealthDistribution() {
-        List<Laborer> dist = allPopulation.OrderBy(laborer => laborer.getWealth().asDouble()).OrderDescending().ToList();
+    public String GetWealthDistribution() {
+        List<Laborer> dist = allPopulation.OrderBy(laborer => laborer.GetWealth().AsDouble()).OrderDescending().ToList();
 
         int third = dist.Count/3;
 
         double highestThirdWealth = 0;
         for (int i = 0; i < third; i++) {
-            highestThirdWealth+=dist[i].getWealth().asDouble();
+            highestThirdWealth+=dist[i].GetWealth().AsDouble();
         }
         
         double middleThirdWealth = 0;
         for (int i = third; i < third*2; i++) {
-            middleThirdWealth+=dist[i].getWealth().asDouble();
+            middleThirdWealth+=dist[i].GetWealth().AsDouble();
         }
         
         double lowThirdWealth = 0;
         for (int i = third*2; i < dist.Count-1; i++) {
-            lowThirdWealth+=dist[i].getWealth().asDouble();
+            lowThirdWealth+=dist[i].GetWealth().AsDouble();
         }
         
         double totalWealth = highestThirdWealth + middleThirdWealth + lowThirdWealth;
@@ -121,7 +121,7 @@ public class Town
     /*
      * For testing
      */
-    public void setMarket(FixedPriceMarket fixedPriceMarket) {
+    public void SetMarket(FixedPriceMarket fixedPriceMarket) {
         this.market = fixedPriceMarket;
     }
 }

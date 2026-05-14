@@ -7,7 +7,7 @@ namespace EconSim.render;
 
 public class MapRenderer
 {
-    readonly Vector2I ATLAS_COORDS = new Vector2I(0, 0); // idk wtf this is
+    readonly Vector2I atlasCoords = new Vector2I(0, 0); // idk wtf this is
     
     private TileMapLayer tileMapLayer;
     private GameMap map;
@@ -24,9 +24,9 @@ public class MapRenderer
         tileMapLayer.SetScale(new Vector2(0.5f, 0.5f));
     }
 
-    public void renderMap()
+    public void RenderMap()
     {
-        foreach (KeyValuePair<Vector2Int, GameTile> tile in map.getTiles())
+        foreach (KeyValuePair<Vector2Int, GameTile> tile in map.GetTiles())
         {
             renderTile(tile.Value);
         }
@@ -34,7 +34,7 @@ public class MapRenderer
 
     private void renderTile(GameTile gameTile)
     {
-        Vector2I tilePositionAsGodotType = new Vector2I(gameTile.position.getX(), gameTile.position.getY());
-        tileMapLayer.SetCell(tilePositionAsGodotType, (int) gameTile.tileType, ATLAS_COORDS);
+        Vector2I tilePositionAsGodotType = new Vector2I(gameTile.position.GetX(), gameTile.position.GetY());
+        tileMapLayer.SetCell(tilePositionAsGodotType, (int) gameTile.tileType, atlasCoords);
     }
 }

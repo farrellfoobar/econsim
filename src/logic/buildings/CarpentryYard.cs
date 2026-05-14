@@ -5,9 +5,9 @@ namespace EconSim.logic.buildings;
 
 public class CarpentryYard(Town hostTown) : Building(hostTown)
 {
-    protected override double PRODUCTION_PER_PERSONYEAR { get; } = SimulationConstants.CarpentryYardValues.PRODUCTION_PER_PERSONYEAR;
-    protected override ItemType ITEM_CONSUMED { get; } = SimulationConstants.CarpentryYardValues.ITEM_CONSUMED;
-    protected override double ITEMS_CONSUMED_PER_UNIT_PRODUCED { get; } = SimulationConstants.CarpentryYardValues.CONSUMPTION_PER_UNIT_PRODUCED;
-    protected override CoinAmount WAGE_PER_PERSONYEAR { get; } = SimulationConstants.CarpentryYardValues.WAGE_PER_PERSONYEAR;
-    protected override ItemType ITEM_PRODUCED { get; } = SimulationConstants.CarpentryYardValues.ITEM_PRODUCED;
+    protected override double productionPerPersonyear { get; } = SimulationConstants.CarpentryYardValues.ProductionPerPersonyear;
+    protected override ItemType itemConsumed { get; } = SimulationConstants.CarpentryYardValues.ItemConsumed;
+    protected override double itemsConsumedPerUnitProduced { get; } = SimulationConstants.CarpentryYardValues.ConsumptionPerUnitProduced;
+    protected override CoinAmount wagePerPersonyear { get; } = SimulationConstants.CarpentryYardValues.WagePerPersonyear;
+    protected override ItemType itemProduced { get; } = SimulationConstants.CarpentryYardValues.ItemProduced;
 }

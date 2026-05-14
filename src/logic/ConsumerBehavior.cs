@@ -6,11 +6,11 @@ namespace EconSim.logic;
 
 public class ConsumerBehavior
 {
-    private const int DECIMAL_PRECISION_OF_DOUBLE_TO_INT_PROBABILITY = 2;
+    private const int decimalPrecisionOfDoubleToIntProbability = 2;
     private Random random = new Random(0); // 0 so we get the same random numbers from run to run
     
     public int QuantityPurchasedPerTurn(ItemType itemType, CoinAmount wealth, CoinAmount itemPrice) {
-        double quantityDouble = QuantityPurchasedPerYear(itemType, wealth, itemPrice) / TurnAndTimeManager.TURNS_IN_A_YEAR;
+        double quantityDouble = quantityPurchasedPerYear(itemType, wealth, itemPrice) / TurnAndTimeManager.TurnsInAYear;
 
         return doubleToIntAndProbability(quantityDouble);
     }
@@ -25,7 +25,7 @@ public class ConsumerBehavior
         int integerComponent = (int) Math.Truncate(quantityDouble);
         double doubleComponent = quantityDouble - integerComponent;
 
-        int powerOfTen = (int) Math.Pow(10, DECIMAL_PRECISION_OF_DOUBLE_TO_INT_PROBABILITY);
+        int powerOfTen = (int) Math.Pow(10, decimalPrecisionOfDoubleToIntProbability);
         int thresh = (int) ( doubleComponent * powerOfTen);
         if (random.Next(0, powerOfTen) <= thresh) {
             integerComponent++;
@@ -34,13 +34,13 @@ public class ConsumerBehavior
         return integerComponent;
     }
 
-    private double QuantityPurchasedPerYear(ItemType itemType, CoinAmount wealth, CoinAmount price) {
+    private double quantityPurchasedPerYear(ItemType itemType, CoinAmount wealth, CoinAmount price) {
         //TODO: take wealth into consideration
  
-        double m = SimulationConstants.DEMAND_SLOPE[itemType];
-        double elasticity = SimulationConstants.DEMAND_ELASTICITY[itemType];
+        double m = SimulationConstants.DemandSlope[itemType];
+        double elasticity = SimulationConstants.DemandElasticity[itemType];
         
-        double quantityDemanded = m / Math.Pow(price.asDouble(), elasticity);
+        double quantityDemanded = m / Math.Pow(price.AsDouble(), elasticity);
         
         return quantityDemanded;
     }

@@ -21,8 +21,8 @@ public partial class Root2dScene : Node2D
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
-		simulation.doTurn();
-		renderer.renderSimulation();
+		simulation.DoTurn();
+		renderer.RenderSimulation();
 		OS.DelayMsec(1000);
 	}
 }

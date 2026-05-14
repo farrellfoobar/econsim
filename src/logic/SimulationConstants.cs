@@ -7,86 +7,86 @@ namespace EconSim.logic;
 //TODO: PPPY, CPUP -> double maybe depending on implementation?
 public class BuildingInitialValues(ItemType produces, ItemType consumes, double pppy, double cpup, CoinAmount wppy)
 {
-    public ItemType ITEM_PRODUCED { get; init; } = produces;
-    public ItemType ITEM_CONSUMED { get; init; } = consumes;
+    public ItemType ItemProduced { get; init; } = produces;
+    public ItemType ItemConsumed { get; init; } = consumes;
     
-    public double PRODUCTION_PER_PERSONYEAR { get; init; } = pppy;   
-    public double CONSUMPTION_PER_UNIT_PRODUCED { get; init; } = cpup;
+    public double ProductionPerPersonyear { get; init; } = pppy;   
+    public double ConsumptionPerUnitProduced { get; init; } = cpup;
 
-    public CoinAmount WAGE_PER_PERSONYEAR { get; init; } = wppy;
+    public CoinAmount WagePerPersonyear { get; init; } = wppy;
 }
 
 public class SimulationConstants
 {
     public static BuildingInitialValues BreweryValues = new BuildingInitialValues(
-        ItemType.BEER, ItemType.GRAIN, 
+        ItemType.Beer, ItemType.Grain, 
         1404, // 9*12 packs (10 gallons) a day, cleaning every other day = 9*3*52=1404 
         2.5, // 2.378 lb grain/Liter * 2.13Liter/6pack ~= 5, halved since beer was way weeker back then (/ballance)
         CoinAmount.Silver(8)
         );
     
     public static BuildingInitialValues CarpentryYardValues = new BuildingInitialValues(
-        ItemType.FURNITURE, ItemType.WOOD, 
+        ItemType.Furniture, ItemType.Wood, 
         18, // one every three weeks
         2, //see BASE_PRICE[ItemType.Furniture] declaration
         CoinAmount.Silver(15)
     );
     
     public static BuildingInitialValues JewelryValues = new BuildingInitialValues(
-        ItemType.JEWELRY, ItemType.SILVER_ORE, 
+        ItemType.Jewelry, ItemType.SilverOre, 
         12, //one a month
         1, // one ring ~= 4 grams ~= CoinAmount.Silver(1) := about 3.5grams silver
         CoinAmount.Silver(18)
     );
     
     public static BuildingInitialValues SubsistanceFarmValues = new BuildingInitialValues(
-        ItemType.GRAIN, ItemType.NONE , 100, 0, new CoinAmount(0)
+        ItemType.Grain, ItemType.None , 100, 0, new CoinAmount(0)
     );
     
-    public static Dictionary<ItemType, CoinAmount> BASE_PRICE = new Dictionary<ItemType, CoinAmount> {
+    public static Dictionary<ItemType, CoinAmount> BasePrice = new Dictionary<ItemType, CoinAmount> {
         
         //1 copper ~= $1
-        { ItemType.GRAIN, CoinAmount.Copper(3) }, //$3 = enough for a lb of flour
-        { ItemType.BEER, CoinAmount.Copper(12) }, //$12 = a six pack
+        { ItemType.Grain, CoinAmount.Copper(3) }, //$3 = enough for a lb of flour
+        { ItemType.Beer, CoinAmount.Copper(12) }, //$12 = a six pack
         
-        { ItemType.FISH, CoinAmount.Copper(10) }, //$10 = a 1lb fillet
+        { ItemType.Fish, CoinAmount.Copper(10) }, //$10 = a 1lb fillet
         
         //todo: rename wood -> lumber
-        { ItemType.WOOD, CoinAmount.Copper(50) }, //$50 = 50 board feet 
-        { ItemType.FURNITURE, CoinAmount.Silver(5) }, //$500 = a big ass dining table, ~= 100 board feet of wood
+        { ItemType.Wood, CoinAmount.Copper(50) }, //$50 = 50 board feet 
+        { ItemType.Furniture, CoinAmount.Silver(5) }, //$500 = a big ass dining table, ~= 100 board feet of wood
         
-        { ItemType.SILVER_ORE, CoinAmount.Silver(1) }, // $100 = a big chunk of ore, i.e. enough for a coin or rings
-        { ItemType.JEWELRY, CoinAmount.Silver(6) }, // $600 = a fancy silver band ring 
+        { ItemType.SilverOre, CoinAmount.Silver(1) }, // $100 = a big chunk of ore, i.e. enough for a coin or rings
+        { ItemType.Jewelry, CoinAmount.Silver(6) }, // $600 = a fancy silver band ring 
         
     };
     
 // ############ EDIT THESE WITH CAUTION: they interact in a lot of complicated ways, use the spreadsheet to try them out first ############
-    private const int MIN_FOOD_CONSUMPTION_PER_PERSON_YEAR = 300;
-    public const int FOOD_CONSUMPTION_PER_TURN = MIN_FOOD_CONSUMPTION_PER_PERSON_YEAR / TurnAndTimeManager.TURNS_IN_A_YEAR;
-    public static Dictionary<ItemType, double> BASE_DEMAND = new Dictionary<ItemType, double> {
-        { ItemType.GRAIN, 200 },
-        { ItemType.BEER, 730 },
+    private const int minFoodConsumptionPerPersonYear = 300;
+    public const int FoodConsumptionPerTurn = minFoodConsumptionPerPersonYear / TurnAndTimeManager.TurnsInAYear;
+    public static Dictionary<ItemType, double> BaseDemand = new Dictionary<ItemType, double> {
+        { ItemType.Grain, 200 },
+        { ItemType.Beer, 730 },
         
-        { ItemType.FISH, 100 },
+        { ItemType.Fish, 100 },
         
-        { ItemType.WOOD, 0 },
-        { ItemType.FURNITURE, 1 },
+        { ItemType.Wood, 0 },
+        { ItemType.Furniture, 1 },
         
-        { ItemType.SILVER_ORE, 0 },
-        { ItemType.JEWELRY, 0.1 },
+        { ItemType.SilverOre, 0 },
+        { ItemType.Jewelry, 0.1 },
     };
     
-    public static Dictionary<ItemType, double> DEMAND_ELASTICITY = new Dictionary<ItemType, double> {
-        { ItemType.GRAIN, 0.03 },
-        { ItemType.BEER, 0.5 },
+    public static Dictionary<ItemType, double> DemandElasticity = new Dictionary<ItemType, double> {
+        { ItemType.Grain, 0.03 },
+        { ItemType.Beer, 0.5 },
         
-        { ItemType.FISH, 0.3 },
+        { ItemType.Fish, 0.3 },
         
-        { ItemType.WOOD, 0 },
-        { ItemType.FURNITURE, 2 },
+        { ItemType.Wood, 0 },
+        { ItemType.Furniture, 2 },
         
-        { ItemType.SILVER_ORE, 0 },
-        { ItemType.JEWELRY, 3 },
+        { ItemType.SilverOre, 0 },
+        { ItemType.Jewelry, 3 },
     };
 // ############ END EDIT WITH CAUTION ############
     
@@ -96,25 +96,25 @@ public class SimulationConstants
         //We define QD(basePrice) = baseDemand
         // m = baseDemand * basePrice^elasticity
         
-        double baseDemand = BASE_DEMAND[itemType];
-        double basePrice = BASE_PRICE[itemType].asDouble();
-        double elasticity = DEMAND_ELASTICITY[itemType];
+        double baseDemand = BaseDemand[itemType];
+        double basePrice = BasePrice[itemType].AsDouble();
+        double elasticity = DemandElasticity[itemType];
         
         double m = baseDemand * Math.Pow(basePrice, elasticity);
 
         return m;
     }
     
-    public static Dictionary<ItemType, double> DEMAND_SLOPE = new Dictionary<ItemType, double> {
-        { ItemType.GRAIN, getDemandSlope(ItemType.GRAIN) },
-        { ItemType.BEER, getDemandSlope(ItemType.BEER) },
+    public static Dictionary<ItemType, double> DemandSlope = new Dictionary<ItemType, double> {
+        { ItemType.Grain, getDemandSlope(ItemType.Grain) },
+        { ItemType.Beer, getDemandSlope(ItemType.Beer) },
         
-        { ItemType.FISH, getDemandSlope(ItemType.FISH) },
+        { ItemType.Fish, getDemandSlope(ItemType.Fish) },
         
-        { ItemType.WOOD, getDemandSlope(ItemType.WOOD) },
-        { ItemType.FURNITURE, getDemandSlope(ItemType.FURNITURE) },
+        { ItemType.Wood, getDemandSlope(ItemType.Wood) },
+        { ItemType.Furniture, getDemandSlope(ItemType.Furniture) },
         
-        { ItemType.SILVER_ORE, getDemandSlope(ItemType.SILVER_ORE) },
-        { ItemType.JEWELRY, getDemandSlope(ItemType.JEWELRY) },
+        { ItemType.SilverOre, getDemandSlope(ItemType.SilverOre) },
+        { ItemType.Jewelry, getDemandSlope(ItemType.Jewelry) },
     };
 }

@@ -5,19 +5,19 @@ namespace EconSim.logic;
 
 public class Items
 {
-    public static readonly List<ItemType> ALL_FOOD_ITEMS = new List<ItemType> { ItemType.GRAIN, ItemType.FISH }; 
+    public static readonly List<ItemType> AllFoodItems = new List<ItemType> { ItemType.Grain, ItemType.Fish }; 
 }
 
 public enum ItemType
 {
-    NONE,
-    GRAIN,
-    FISH,
-    BEER,
+    None,
+    Grain,
+    Fish,
+    Beer,
     
-    WOOD,
-    FURNITURE,
+    Wood,
+    Furniture,
     
-    SILVER_ORE,
-    JEWELRY,
+    SilverOre,
+    Jewelry,
 }

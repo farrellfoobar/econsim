@@ -6,7 +6,7 @@ namespace EconSim.logic;
 
 public class Merchant
 {
-    private Goal goal = Goal.NONE;
+    private Goal goal = Goal.None;
     private Vector2Int position;
     private Vector2Int destination;
     private AStarPathfinder pathfinder;
@@ -22,15 +22,15 @@ public class Merchant
     {
         switch (goal)
         {
-            case Goal.GOTO:
+            case Goal.Goto:
                 if (position.Equals(destination))
-                    goal = Goal.NONE; //todo
+                    goal = Goal.None; //todo
                 else
                     position = path.Pop();
                 break;
-            case Goal.PLAN_ROUTE:
-                path = pathfinder.findPath(position, destination);
-                goal = Goal.GOTO;
+            case Goal.PlanRoute:
+                path = pathfinder.FindPath(position, destination);
+                goal = Goal.Goto;
                 break;
             default:
                 break;
@@ -40,17 +40,17 @@ public class Merchant
     public void setOnJourneyTo(Vector2Int destination)
     {
         this.destination = destination;
-        this.goal = Goal.PLAN_ROUTE;
+        this.goal = Goal.PlanRoute;
     }
 
-    public Vector2Int getPosition()
+    public Vector2Int GetPosition()
     {
         return position;
     }
 }
 
 public enum Goal{
-    NONE,
-    PLAN_ROUTE,
-    GOTO,
+    None,
+    PlanRoute,
+    Goto,
 }

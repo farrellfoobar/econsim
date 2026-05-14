@@ -2,28 +2,28 @@ namespace EconSim.logic;
 
 public class TurnAndTimeManager
 {
-    public const int TURNS_IN_A_YEAR = 4;
+    public const int TurnsInAYear = 4;
     private int turnCount = 0;
     private int years = 0;    
     
-    public int getTurnCount() {
+    public int GetTurnCount() {
         return turnCount;
     }
     
-    public int getYear() {
+    public int GetYear() {
         return years;
     }
 
-    public void nextTurn() {
-        if (turnCount == TURNS_IN_A_YEAR) {
+    public void NextTurn() {
+        if (turnCount == TurnsInAYear) {
             years++;
             turnCount = 1;
         }
         turnCount++;
     }
 
-    public bool isHarvestTurn() {
-        return turnCount == TURNS_IN_A_YEAR;
+    public bool IsHarvestTurn() {
+        return turnCount == TurnsInAYear;
     }
 
 }

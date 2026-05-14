@@ -17,7 +17,7 @@ public class GameTile
 }
 
 public enum TileType { //values from tile indexes
-    GRASS = 1,
-    PATH = 13,
-    HAMLET = 14,
+    Grass = 1,
+    Path = 13,
+    Hamlet = 14,
 }

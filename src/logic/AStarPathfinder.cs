@@ -14,14 +14,14 @@ public class AStarPathfinder
     public AStarPathfinder(GameMap map)
     {
         pathfinder = new AStarGrid2D();
-        pathfinder.SetRegion(new Rect2I(0, 0, map.getWidth(), map.getHeight()));
+        pathfinder.SetRegion(new Rect2I(0, 0, map.GetWidth(), map.GetHeight()));
         pathfinder.SetDiagonalMode(AStarGrid2D.DiagonalModeEnum.Always);
         pathfinder.Update();
     }
 
-    public Stack<Vector2Int> findPath(Vector2Int start, Vector2Int goal)
+    public Stack<Vector2Int> FindPath(Vector2Int start, Vector2Int goal)
     {
-        Vector2[] godotPath = pathfinder.GetPointPath(start.asGodotVector(), goal.asGodotVector());
+        Vector2[] godotPath = pathfinder.GetPointPath(start.AsGodotVector(), goal.AsGodotVector());
         
         Stack<Vector2Int> path = new Stack<Vector2Int>(godotPath.Length);
         for(int i = godotPath.Length-1; i >= 0 ; i--){

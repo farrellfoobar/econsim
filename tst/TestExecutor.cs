@@ -6,8 +6,8 @@ namespace EconSim.tst;
 
 public class TestExecutor
 {
-    public static void main() {
+    public static void Main() {
         FactoryAndBasePriceSanityCheck test = new FactoryAndBasePriceSanityCheck();
-        test.run();
+        test.Run();
     }
 }

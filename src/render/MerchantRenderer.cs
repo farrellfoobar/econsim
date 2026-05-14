@@ -8,14 +8,14 @@ namespace EconSim.render;
 
 public class MerchantRenderer
 {
-    const double TILE_SIZE_PX = 128;
-    private const int MERCHANT_TEXTURE_INDEX = 1;
-    private const int ERASE_TEXTURE_INDEX = -1;
+    const double tileSizePx = 128;
+    private const int merchantTextureIndex = 1;
+    private const int eraseTextureIndex = -1;
     private TileMapLayer mapLayer;
     GameMap gameMap;
     
-    readonly Vector2I ATLAS_COORDS = new Vector2I(0, 0); // idk wtf this is
-    readonly Vector2I ERASE_ATLAS_COORDS = new Vector2I(-1, -1); // idk wtf this is
+    readonly Vector2I atlasCoords = new Vector2I(0, 0); // idk wtf this is
+    readonly Vector2I eraseAtlasCoords = new Vector2I(-1, -1); // idk wtf this is
     
     public MerchantRenderer(Node rendererParent, GameMap gameMap)
     {
@@ -29,19 +29,19 @@ public class MerchantRenderer
         mapLayer.SetScale(new Vector2(0.5f, 0.5f)); 
     }
     
-    public void render(List<Merchant> merchants)
+    public void Render(List<Merchant> merchants)
     {
         clear();
         foreach (Merchant merchant in merchants){
-            Vector2I tilePositionAsGodotType = new Vector2I(merchant.getPosition().getX(), merchant.getPosition().getY());
-            mapLayer.SetCell(tilePositionAsGodotType, MERCHANT_TEXTURE_INDEX, ATLAS_COORDS);
+            Vector2I tilePositionAsGodotType = new Vector2I(merchant.GetPosition().GetX(), merchant.GetPosition().GetY());
+            mapLayer.SetCell(tilePositionAsGodotType, merchantTextureIndex, atlasCoords);
         }
     }
 
     private void clear()
     {
-        foreach (KeyValuePair<Vector2Int, GameTile> tile in gameMap.getTiles()){
-            mapLayer.SetCell(tile.Key.asGodotVector(), ERASE_TEXTURE_INDEX, ERASE_ATLAS_COORDS);
+        foreach (KeyValuePair<Vector2Int, GameTile> tile in gameMap.GetTiles()){
+            mapLayer.SetCell(tile.Key.AsGodotVector(), eraseTextureIndex, eraseAtlasCoords);
         }
     }
 }

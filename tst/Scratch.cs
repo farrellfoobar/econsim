@@ -4,27 +4,27 @@ namespace EconSim.tst;
 
 public class Scratch
 {
-    public void run() {
+    public void Run() {
         AccessorsDoNotDoWhatIThoughtWowThatWasDumb();
     }
     
     class Thing()
     {
-        public int val
+        public int Val
         {
-            get { return val;} //get { return val;} causes stack overflow
+            get { return Val;} //get { return val;} causes stack overflow
             set {}
         }
 
         public Thing(int value) : this() {
-            this.val = value;
+            this.Val = value;
         }
     }
 
     public void AccessorsDoNotDoWhatIThoughtWowThatWasDumb() {
         Thing thing = new Thing(100);
-        int fuckyou = thing.val;
+        int fuckyou = thing.Val;
         
-        Console.WriteLine(thing.val);
+        Console.WriteLine(thing.Val);
     }
 }

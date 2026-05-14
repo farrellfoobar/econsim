@@ -7,11 +7,11 @@ namespace EconSim.logic;
 
 public abstract class Building
 {
-    protected abstract CoinAmount WAGE_PER_PERSONYEAR { get; }
-    protected abstract ItemType ITEM_PRODUCED { get; }
-    protected abstract double PRODUCTION_PER_PERSONYEAR { get; }
-    protected abstract ItemType ITEM_CONSUMED { get; }
-    protected abstract double ITEMS_CONSUMED_PER_UNIT_PRODUCED { get; }
+    protected abstract CoinAmount wagePerPersonyear { get; }
+    protected abstract ItemType itemProduced { get; }
+    protected abstract double productionPerPersonyear { get; }
+    protected abstract ItemType itemConsumed { get; }
+    protected abstract double itemsConsumedPerUnitProduced { get; }
     protected Town hostTown;
     protected CoinAmount profit = new CoinAmount(0);
     protected Stack<Laborer> employees = new Stack<Laborer>();
@@ -22,27 +22,27 @@ public abstract class Building
         this.hostTown = hostTown;
     }
 
-    public virtual void doProductionTurn() {        
-        double productionPerPersonTurn = PRODUCTION_PER_PERSONYEAR / TurnAndTimeManager.TURNS_IN_A_YEAR;
-        CoinAmount wagePerPersonTurn = CoinAmount.getDivideBy(WAGE_PER_PERSONYEAR, TurnAndTimeManager.TURNS_IN_A_YEAR);
+    public virtual void DoProductionTurn() {        
+        double productionPerPersonTurn = productionPerPersonyear / TurnAndTimeManager.TurnsInAYear;
+        CoinAmount wagePerPersonTurn = CoinAmount.GetDivideBy(wagePerPersonyear, TurnAndTimeManager.TurnsInAYear);
 
         double production = productionOverflow + productionPerPersonTurn * employees.Count;
-        double consumption = consumptionOverflow + (production * ITEMS_CONSUMED_PER_UNIT_PRODUCED);
+        double consumption = consumptionOverflow + (production * itemsConsumedPerUnitProduced);
 
-        Optional<CoinAmount> consumptionCostMaybe = hostTown.getMarket().tryBuyItems(ITEM_CONSUMED, getIntegerComponent(consumption));
+        Optional<CoinAmount> consumptionCostMaybe = hostTown.GetMarket().TryBuyItems(itemConsumed, getIntegerComponent(consumption));
 
         if (consumptionCostMaybe.IsPresent()) {
-            profit.subtract(consumptionCostMaybe.get());
+            profit.Subtract(consumptionCostMaybe.Get());
             consumptionOverflow = getNonIntegerComponent(consumption);
 
-            CoinAmount turnIncome = hostTown.getMarket().sellItems(ITEM_PRODUCED, getIntegerComponent(production));
-            profit.add(turnIncome);
+            CoinAmount turnIncome = hostTown.GetMarket().SellItems(itemProduced, getIntegerComponent(production));
+            profit.Add(turnIncome);
                         
             productionOverflow = getNonIntegerComponent(production);
             
             foreach (Laborer employee in employees) {
-                employee.pay(wagePerPersonTurn);
-                profit.subtract(wagePerPersonTurn);
+                employee.Pay(wagePerPersonTurn);
+                profit.Subtract(wagePerPersonTurn);
             }
         }
     }
@@ -55,60 +55,60 @@ public abstract class Building
         return(int) consumptionRequired;
     }
 
-    public CoinAmount getProfit() {
+    public CoinAmount GetProfit() {
         return profit;
     }
     
-    public virtual bool employWorkers(int amount) {
-        if (amount > hostTown.getUnemployedPopulation().Count) {
+    public virtual bool EmployWorkers(int amount) {
+        if (amount > hostTown.GetUnemployedPopulation().Count) {
             return false;
         }
 
         for (int i = 0; i < amount; i++) {
-            Laborer laborer = hostTown.getUnemployedPopulation().Pop();
-            laborer.setEmployed(true);
+            Laborer laborer = hostTown.GetUnemployedPopulation().Pop();
+            laborer.SetEmployed(true);
             employees.Push(laborer);
         }
         return true;
     }
 
-    public virtual bool unemployWorkers(int amount, Stack<Laborer> unemployedPopulation) {
+    public virtual bool UnemployWorkers(int amount, Stack<Laborer> unemployedPopulation) {
         if (amount > unemployedPopulation.Count)
             return false;
 
         for (int i = 0; i < amount; i++) {
             Laborer laborer = employees.Pop();
-            laborer.setEmployed(false);
+            laborer.SetEmployed(false);
             unemployedPopulation.Push(laborer);
         }
         return true;
     }
 
-    public int getEmployeeCount() {
+    public int GetEmployeeCount() {
         return employees.Count;
     }
     
     public CoinAmount GET_WAGE_PER_PERSONYEAR() {
-        return WAGE_PER_PERSONYEAR; 
+        return wagePerPersonyear; 
     }
     
     public ItemType GET_ITEM_PRODUCED() {
-        return ITEM_PRODUCED; 
+        return itemProduced; 
     }
 
     public double GET_PRODUCTION_PER_PERSONYEAR() {
-        return PRODUCTION_PER_PERSONYEAR; 
+        return productionPerPersonyear; 
     }
 
     public ItemType GET_ITEM_CONSUMED() {
-        return ITEM_CONSUMED; 
+        return itemConsumed; 
     }
 
     public double GET_ITEMS_CONSUMED_PER_UNIT_PRODUCED() {
-        return ITEMS_CONSUMED_PER_UNIT_PRODUCED; 
+        return itemsConsumedPerUnitProduced; 
     }
 
-    public Town getTown() {
+    public Town GetTown() {
         return hostTown;
     }
 }
