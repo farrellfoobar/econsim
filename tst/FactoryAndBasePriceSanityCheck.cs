@@ -51,7 +51,7 @@ public class FactoryAndBasePriceSanityCheck
         
         CoinAmount unitIncome = SimulationConstants.BasePrice[building.GET_ITEM_PRODUCED()];
 
-        double roi = CoinAmount.GetDivideBy(unitIncome , unitCost);
+        double roi = CoinAmount.UnsafeGetDivideBy(unitIncome , unitCost);
         
         Util.Assert(roi > 1, 
             building.GetType() + "\t cannot have roi <1. (Unit Income,Unit Cost) = ( " + unitIncome + ", " + unitCost + ")");
@@ -68,7 +68,7 @@ public class FactoryAndBasePriceSanityCheck
             building.DoProductionTurn();
         }
 
-        Util.Assert(building.GetProfit().AsDouble().Equals(0d), building.GetType() + "\t makes money without buying any ingredients.");
+        Util.Assert(building.GetProfit().AsInt().Equals(0d), building.GetType() + "\t makes money without buying any ingredients.");
     }
     
     private void testBuildingMakesMoneyWithWages(Building building) {
@@ -86,7 +86,7 @@ public class FactoryAndBasePriceSanityCheck
             building.DoProductionTurn();
         }
 
-        CoinAmount profitPerTurn = CoinAmount.GetDivideBy(
+        CoinAmount profitPerTurn = CoinAmount.UnsafeGetDivideBy(
             building.GetProfit(), 
             pollLength
         );
@@ -101,12 +101,12 @@ public class FactoryAndBasePriceSanityCheck
             (double) pollLength / TurnAndTimeManager.TurnsInAYear
        );
         
-        double wageFractionOfProfit = CoinAmount.GetDivideBy(totalWages, building.GetProfit());
+        double wageFractionOfProfit = CoinAmount.UnsafeGetDivideBy(totalWages, building.GetProfit());
         
         SimpleLogger.Debug(building.GetType() + "\t has income per person year of " + profitPerYear);
         SimpleLogger.Debug(building.GetType() + "\t has wage fraction of profit of " + wageFractionOfProfit.ToString("P0"));
         
-        Util.Assert( profitPerTurn.AsDouble() > CoinAmount.MinValue.AsDouble(),
+        Util.Assert( profitPerTurn.AsInt() > CoinAmount.MinValue.AsInt(),
             building.GetType() + "\t didnt make any money. Are wages too high?"
         );
         

@@ -97,7 +97,7 @@ public class SimulationConstants
         // m = baseDemand * basePrice^elasticity
         
         double baseDemand = BaseDemand[itemType];
-        double basePrice = BasePrice[itemType].AsDouble();
+        double basePrice = BasePrice[itemType].AsInt();
         double elasticity = DemandElasticity[itemType];
         
         double m = baseDemand * Math.Pow(basePrice, elasticity);

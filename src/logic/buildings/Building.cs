@@ -17,14 +17,21 @@ public abstract class Building
     protected Stack<Laborer> employees = new Stack<Laborer>();
     protected double productionOverflow = 0;
     protected double consumptionOverflow = 0;
+
+    private CoinAmount wagePerPersonTurn;
     
     protected Building(Town hostTown) {
         this.hostTown = hostTown;
+
+        if (wagePerPersonyear.AsInt() % TurnAndTimeManager.TurnsInAYear != 0)
+            throw new ArgumentException("Wage per person year must be divisible by TurnsInAYear: " + 
+                                        wagePerPersonyear.AsInt() + "/" + TurnAndTimeManager.TurnsInAYear + " != 0");
+        
+        wagePerPersonTurn = new CoinAmount(wagePerPersonyear.AsInt() / TurnAndTimeManager.TurnsInAYear);
     }
 
     public virtual void DoProductionTurn() {        
         double productionPerPersonTurn = productionPerPersonyear / TurnAndTimeManager.TurnsInAYear;
-        CoinAmount wagePerPersonTurn = CoinAmount.GetDivideBy(wagePerPersonyear, TurnAndTimeManager.TurnsInAYear);
 
         double production = productionOverflow + productionPerPersonTurn * employees.Count;
         double consumption = consumptionOverflow + (production * itemsConsumedPerUnitProduced);

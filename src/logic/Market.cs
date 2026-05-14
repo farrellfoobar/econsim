@@ -68,6 +68,8 @@ public class Market
             getSupplyDemandFactor(itemType)
         );
         
+        price = price.IsLessThan(CoinAmount.MinValue) ? CoinAmount.MinValue : price;
+        
         return price;
     }
 

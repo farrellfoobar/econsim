@@ -40,7 +40,7 @@ public class ConsumerBehavior
         double m = SimulationConstants.DemandSlope[itemType];
         double elasticity = SimulationConstants.DemandElasticity[itemType];
         
-        double quantityDemanded = m / Math.Pow(price.AsDouble(), elasticity);
+        double quantityDemanded = m / Math.Pow(price.AsInt(), elasticity);
         
         return quantityDemanded;
     }

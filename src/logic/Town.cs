@@ -86,23 +86,23 @@ public class Town
     }
 
     public String GetWealthDistribution() {
-        List<Laborer> dist = allPopulation.OrderBy(laborer => laborer.GetWealth().AsDouble()).OrderDescending().ToList();
+        List<Laborer> dist = allPopulation.OrderBy(laborer => laborer.GetWealth().AsInt()).OrderDescending().ToList();
 
         int third = dist.Count/3;
 
         double highestThirdWealth = 0;
         for (int i = 0; i < third; i++) {
-            highestThirdWealth+=dist[i].GetWealth().AsDouble();
+            highestThirdWealth+=dist[i].GetWealth().AsInt();
         }
         
         double middleThirdWealth = 0;
         for (int i = third; i < third*2; i++) {
-            middleThirdWealth+=dist[i].GetWealth().AsDouble();
+            middleThirdWealth+=dist[i].GetWealth().AsInt();
         }
         
         double lowThirdWealth = 0;
         for (int i = third*2; i < dist.Count-1; i++) {
-            lowThirdWealth+=dist[i].GetWealth().AsDouble();
+            lowThirdWealth+=dist[i].GetWealth().AsInt();
         }
         
         double totalWealth = highestThirdWealth + middleThirdWealth + lowThirdWealth;
