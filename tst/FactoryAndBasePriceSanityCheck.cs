@@ -16,18 +16,21 @@ public class FactoryAndBasePriceSanityCheck
 
     private void testBrewery() {
         testBuildingMakesMoneyOnPaper(new Brewery(getTestTown()));
+        testBuildingEmployeesMakeMoneyOnPaper(new Brewery(getTestTown()));
         testBuildingDoesntMakeMoneyIfItCantBuyIngredients(new Brewery(getTestTown()));
         testBuildingMakesMoneyWithWages(new Brewery(getTestTown()));
     }
     
     private void testCarpentryYard() {
         testBuildingMakesMoneyOnPaper(new CarpentryYard(getTestTown()));
+        testBuildingEmployeesMakeMoneyOnPaper(new CarpentryYard(getTestTown()));
         testBuildingDoesntMakeMoneyIfItCantBuyIngredients(new CarpentryYard(getTestTown()));
         testBuildingMakesMoneyWithWages(new CarpentryYard(getTestTown()));
     }
     
     private void testJewelry() {
         testBuildingMakesMoneyOnPaper(new Jeweler(getTestTown()));
+        testBuildingEmployeesMakeMoneyOnPaper(new Jeweler(getTestTown()));
         testBuildingDoesntMakeMoneyIfItCantBuyIngredients(new Jeweler(getTestTown()));
         testBuildingMakesMoneyWithWages(new Jeweler(getTestTown()));
     }
@@ -58,6 +61,17 @@ public class FactoryAndBasePriceSanityCheck
 
         SimpleLogger.Debug(building.GetType() + "\t has (Unit Income,Unit Cost) = ( " + unitIncome + ", " + unitCost + ")");
         SimpleLogger.Debug(building.GetType() + "\t has on paper ReturnOnInvestment of " + roi);
+    }
+
+    private void testBuildingEmployeesMakeMoneyOnPaper(Building building)
+    {
+        int totalYearlyConsumption = SimulationConstants.FoodConsumptionPerTurn * TurnAndTimeManager.TurnsInAYear;
+        CoinAmount totalYearlyCost = CoinAmount.GetMultiplyBy(SimulationConstants.BasePrice[ItemType.Grain], totalYearlyConsumption);
+        CoinAmount yearlyWage = building.GET_WAGE_PER_PERSONYEAR();
+
+        Util.Assert(yearlyWage.IsGreaterThan(totalYearlyCost), "Yearly wage: " + yearlyWage + 
+                                                               " must be greater than yearly food cost: " + totalYearlyCost);
+
     }
 
     private void testBuildingDoesntMakeMoneyIfItCantBuyIngredients(Building building) {
