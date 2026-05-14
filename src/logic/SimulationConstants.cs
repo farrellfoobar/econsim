@@ -39,11 +39,8 @@ public class SimulationConstants
         CoinAmount.Silver(18)
     );
     
-    private const int FOOD_CONSUMPTION_PER_PERSON_YEAR = 20;
-    public const int FOOD_CONSUMPTION_PER_TURN = FOOD_CONSUMPTION_PER_PERSON_YEAR / TurnAndTimeManager.TURNS_IN_A_YEAR;
-
     public static BuildingInitialValues SubsistanceFarmValues = new BuildingInitialValues(
-        ItemType.GRAIN, ItemType.NONE , 20, 0, new CoinAmount(0)
+        ItemType.GRAIN, ItemType.NONE , 100, 0, new CoinAmount(0)
     );
     
     public static Dictionary<ItemType, CoinAmount> BASE_PRICE = new Dictionary<ItemType, CoinAmount> {
@@ -63,45 +60,36 @@ public class SimulationConstants
         
     };
     
+// ############ EDIT THESE WITH CAUTION: they interact in a lot of complicated ways, use the spreadsheet to try them out first ############
+    private const int MIN_FOOD_CONSUMPTION_PER_PERSON_YEAR = 300;
+    public const int FOOD_CONSUMPTION_PER_TURN = MIN_FOOD_CONSUMPTION_PER_PERSON_YEAR / TurnAndTimeManager.TURNS_IN_A_YEAR;
     public static Dictionary<ItemType, double> BASE_DEMAND = new Dictionary<ItemType, double> {
-        { ItemType.GRAIN, 15 },
-        { ItemType.BEER, 5 },
+        { ItemType.GRAIN, 200 },
+        { ItemType.BEER, 730 },
         
-        { ItemType.FISH, 5 },
+        { ItemType.FISH, 100 },
         
         { ItemType.WOOD, 0 },
-        { ItemType.FURNITURE, 5 },
+        { ItemType.FURNITURE, 1 },
         
         { ItemType.SILVER_ORE, 0 },
-        { ItemType.JEWELRY, 5 },
+        { ItemType.JEWELRY, 0.1 },
     };
     
     public static Dictionary<ItemType, double> DEMAND_ELASTICITY = new Dictionary<ItemType, double> {
-        { ItemType.GRAIN, 0 },
-        { ItemType.BEER, 0 },
+        { ItemType.GRAIN, 0.03 },
+        { ItemType.BEER, 0.5 },
         
-        { ItemType.FISH, 0 },
+        { ItemType.FISH, 0.3 },
         
         { ItemType.WOOD, 0 },
-        { ItemType.FURNITURE, 0 },
+        { ItemType.FURNITURE, 2 },
         
         { ItemType.SILVER_ORE, 0 },
-        { ItemType.JEWELRY, 0 },
+        { ItemType.JEWELRY, 3 },
     };
+// ############ END EDIT WITH CAUTION ############
     
-    public static Dictionary<ItemType, double> DEMAND_SLOPE = new Dictionary<ItemType, double> {
-        { ItemType.GRAIN, getDemandSlope(ItemType.GRAIN) },
-        { ItemType.BEER, getDemandSlope(ItemType.BEER) },
-        
-        { ItemType.FISH, getDemandSlope(ItemType.FISH) },
-        
-        { ItemType.WOOD, getDemandSlope(ItemType.WOOD) },
-        { ItemType.FURNITURE, getDemandSlope(ItemType.FURNITURE) },
-        
-        { ItemType.SILVER_ORE, getDemandSlope(ItemType.SILVER_ORE) },
-        { ItemType.JEWELRY, getDemandSlope(ItemType.JEWELRY) },
-    };
-
     private static double getDemandSlope(ItemType itemType) {
         //We define: QuantityofDemand(price) = m/price^elasticity 
         //Thus: m = QuantityofDemand * price^elasticity
@@ -116,4 +104,17 @@ public class SimulationConstants
 
         return m;
     }
+    
+    public static Dictionary<ItemType, double> DEMAND_SLOPE = new Dictionary<ItemType, double> {
+        { ItemType.GRAIN, getDemandSlope(ItemType.GRAIN) },
+        { ItemType.BEER, getDemandSlope(ItemType.BEER) },
+        
+        { ItemType.FISH, getDemandSlope(ItemType.FISH) },
+        
+        { ItemType.WOOD, getDemandSlope(ItemType.WOOD) },
+        { ItemType.FURNITURE, getDemandSlope(ItemType.FURNITURE) },
+        
+        { ItemType.SILVER_ORE, getDemandSlope(ItemType.SILVER_ORE) },
+        { ItemType.JEWELRY, getDemandSlope(ItemType.JEWELRY) },
+    };
 }

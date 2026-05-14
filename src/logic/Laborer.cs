@@ -14,8 +14,6 @@ public class Laborer
         wealth.add(wage);
     }
 
-    //For reference subsistance farmer makes $20/yr, LumberYard laborer makes 60/yr
-    //For reference subsistance farmer makes $5/tr, LumberYard laborer makes 15/trn
     public void consumeAtMarket(Market market) {
         bool isSubsistanceFamerWhoFeedsSelf = !isEmployed;
         if (!isSubsistanceFamerWhoFeedsSelf)
@@ -26,17 +24,35 @@ public class Laborer
 
     private void consumeFood(Market market) {
         int foodConsumed = consumeDesiredFood(market);
+        int remainingRequiredFoodConsmption = SimulationConstants.FOOD_CONSUMPTION_PER_TURN - foodConsumed;
 
-        ItemType cheapestItem = getCheapestItem(market);
-        for (int i = foodConsumed; i < SimulationConstants.FOOD_CONSUMPTION_PER_TURN; i++) {
-            Optional<CoinAmount> result = market.tryBuyItems(cheapestItem, 1);
-            if (result.IsPresent())
+        Optional<ItemType> cheapestFood = getCheapestFoodItem(market);
+        while (remainingRequiredFoodConsmption > 0 && cheapestFood.IsPresent()) {
+            bool bought = tryBuy(market, cheapestFood.get());
+            remainingRequiredFoodConsmption--;
+            
+            if (bought)
                 foodConsumed++;
+            
+            cheapestFood = getCheapestFoodItem(market);
         }
-        
-        if(foodConsumed < SimulationConstants.FOOD_CONSUMPTION_PER_TURN)
-            SimpleLogger.log("Im starving!!!");
+
+        if (foodConsumed < SimulationConstants.FOOD_CONSUMPTION_PER_TURN) {
+            SimpleLogger.log("Im starving!");
+        }
     }
+
+    private bool tryBuy(Market market, ItemType item) {
+        bool ret = false;
+        Optional<CoinAmount> buyResult = market.tryBuyItems(item, 1);
+        if (buyResult.IsPresent()) {
+            wealth.subtract(buyResult.get()); //TODO: right now we cant 'not afford' anything
+            ret = true;
+        }
+
+        return ret;
+    }
+
 
     private int consumeDesiredFood(Market market) {
         int foodConsumed = 0;
@@ -51,18 +67,18 @@ public class Laborer
         return foodConsumed;
     }
     
-    private ItemType getCheapestItem(Market market) {
+    private Optional<ItemType> getCheapestFoodItem(Market market) {
         CoinAmount cheapestItemCost = CoinAmount.MAX_VALUE;
         ItemType cheapestItemType = ItemType.NONE;
         foreach (ItemType food in Items.ALL_FOOD_ITEMS) {
             CoinAmount foodCost = market.getPrice(food);
-            if (foodCost.isLessThan(cheapestItemCost) ) {
+            if (market.isInStock(food) && foodCost.isLessThan(cheapestItemCost)) {
                 cheapestItemCost = foodCost;
                 cheapestItemType = food;
             }
         }
 
-        return cheapestItemType;
+        return cheapestItemType.Equals(ItemType.NONE) ? Optional<ItemType>.EMPTY() : new Optional<ItemType>(cheapestItemType);
     }
     
     public void setEmployed(bool isEmployed) {

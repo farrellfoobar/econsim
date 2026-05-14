@@ -73,6 +73,10 @@ public class Market
         return price;
     }
 
+    public bool isInStock(ItemType itemType) {
+        return inventory.getItemCount(itemType) > 0;
+    }
+
     private double getSupplyDemandFactor(ItemType itemType) {
         double totalDemand = itemSupplyDemandHistory[itemType].getTotalDemand();
         double totalSupply = itemSupplyDemandHistory[itemType].getTotalSupply();

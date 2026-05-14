@@ -24,16 +24,16 @@ public class Simulation
         gameMap.addTown(new Vector2Int(13, 7), burg);
         gameMap.addTown(new Vector2Int(20, 9), soko);
         
-        sili.getInventory().addItems(ItemType.GRAIN, 1000);
+        sili.getInventory().addItems(ItemType.GRAIN, 10000);
         sili.getInventory().addItems(ItemType.WOOD, 100);
-        sili.getInventory().addItems(ItemType.FISH, 1000);
+        sili.getInventory().addItems(ItemType.FISH, 10000);
         Building siliBrewery = new Brewery(sili);
-        siliBrewery.employWorkers(10);
+        siliBrewery.employWorkers(3);
         sili.addBuilding(siliBrewery);
         
-        burg.getInventory().addItems(ItemType.GRAIN, 1000);
+        burg.getInventory().addItems(ItemType.GRAIN, 10000);
         burg.getInventory().addItems(ItemType.WOOD, 1000);
-        burg.getInventory().addItems(ItemType.FISH, 1000);
+        burg.getInventory().addItems(ItemType.FISH, 10000);
 
         Building burgLumberYard = new CarpentryYard(burg); 
         burg.addBuilding(burgLumberYard);
@@ -43,9 +43,9 @@ public class Simulation
         burg.addBuilding(burgJeweler);
         burgJeweler.employWorkers(4);
         
-        soko.getInventory().addItems(ItemType.GRAIN, 100);
+        soko.getInventory().addItems(ItemType.GRAIN, 1000);
         soko.getInventory().addItems(ItemType.WOOD, 100);
-        soko.getInventory().addItems(ItemType.FISH, 1000);
+        soko.getInventory().addItems(ItemType.FISH, 10000);
         Building sokoBrewery = new Brewery(sili);
         sokoBrewery.employWorkers(10);
         soko.addBuilding(sokoBrewery);
@@ -58,8 +58,8 @@ public class Simulation
     }
 
     public void doTurn() {
-        turnAndTimeManager.nextTurn();
         Console.WriteLine("TURN " + turnAndTimeManager.getTurnCount() + " YEAR " + turnAndTimeManager.getYear());
+        turnAndTimeManager.nextTurn();
         
         foreach (Merchant merchant in merchants)
         {
@@ -67,9 +67,9 @@ public class Simulation
         }
         
         foreach (Town town in gameMap.getTowns()) {
+            Console.WriteLine(town);
             town.doProductionTurn();
             town.doConsumptionTurn();
-            Console.WriteLine(town);
         }
     }
     
