@@ -110,6 +110,6 @@ public class FactoryAndBasePriceSanityCheck
             building.GetType() + "\t didnt make any money. Are wages too high?"
         );
         
-        //Util.Assert(wageFractionOfProfit > 0, building.GetType() + "\t did not pay any wages as fraction of profit.");        
+        Util.Assert(wageFractionOfProfit > 0, building.GetType() + "\t did not pay any wages as fraction of profit.");        
     }
 }

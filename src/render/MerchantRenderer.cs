@@ -15,7 +15,7 @@ public class MerchantRenderer
     GameMap gameMap;
     
     readonly Vector2I atlasCoords = new Vector2I(0, 0); // idk wtf this is
-    readonly Vector2I eraseAtlasCoords = new Vector2I(-1, -1); // idk wtf this is
+    readonly Vector2I eraseAtlasCoords = new Vector2I(-1, -1);
     
     public MerchantRenderer(Node rendererParent, GameMap gameMap)
     {

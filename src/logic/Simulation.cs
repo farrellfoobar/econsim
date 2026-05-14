@@ -49,7 +49,6 @@ public class Simulation
         Building sokoBrewery = new Brewery(sili);
         sokoBrewery.EmployWorkers(10);
         soko.AddBuilding(sokoBrewery);
-        // This setup should get the merchant to trade GRAIN for WOOD from sili to soko without using mind control (setOnJourneyTo) 
 
         Merchant thisOneGuy = new Merchant(new Vector2Int(3, 3), gameMap);
         merchants = new List<Merchant> {thisOneGuy};

@@ -24,7 +24,7 @@ public class Merchant
         {
             case Goal.Goto:
                 if (position.Equals(destination))
-                    goal = Goal.None; //todo
+                    goal = Goal.None;
                 else
                     position = path.Pop();
                 break;

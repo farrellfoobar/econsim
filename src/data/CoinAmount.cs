@@ -25,9 +25,6 @@ public class CoinAmount
     
     public void Subtract(CoinAmount that) {
         this.cents -= that.cents;
-        if (this.cents < 0f) {
-            //throw new NotImplementedException("Coin Amount is negative, maybe it shouldnt do that?");
-        }
     }
 
     public double AsDouble() {
