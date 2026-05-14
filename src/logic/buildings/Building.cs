@@ -73,7 +73,7 @@ public abstract class Building
 
         for (int i = 0; i < amount; i++) {
             Laborer laborer = hostTown.GetUnemployedPopulation().Pop();
-            laborer.SetEmployed(true);
+            laborer.Employ(this);
             employees.Push(laborer);
         }
         return true;
@@ -85,7 +85,7 @@ public abstract class Building
 
         for (int i = 0; i < amount; i++) {
             Laborer laborer = employees.Pop();
-            laborer.SetEmployed(false);
+            laborer.Unemploy();
             unemployedPopulation.Push(laborer);
         }
         return true;
