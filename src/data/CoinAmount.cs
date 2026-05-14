@@ -64,14 +64,6 @@ public class CoinAmount
         return new CoinAmount(goldCoinCount * 100 * 100);
     }
     
-    public static CoinAmount UnsafeGetDivideBy(CoinAmount coinAmount, int denominator) {        
-        return new CoinAmount(coinAmount.cents / denominator);
-    }
-    
-    public static double UnsafeGetDivideBy(CoinAmount numerator, CoinAmount denominator) {
-        return numerator.cents / denominator.cents;
-    }
-    
     public static CoinAmount GetMultiplyBy(CoinAmount coinAmount, double factor)
     {
         double cents = coinAmount.cents * factor;

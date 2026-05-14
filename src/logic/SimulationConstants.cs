@@ -22,7 +22,7 @@ public class SimulationConstants
         ItemType.Beer, ItemType.Grain, 
         1404, // 9*12 packs (10 gallons) a day, cleaning every other day = 9*3*52=1404 
         2.5, // 2.378 lb grain/Liter * 2.13Liter/6pack ~= 5, halved since beer was way weeker back then (/ballance)
-        CoinAmount.Silver(8)
+        CoinAmount.Silver(12)
         );
     
     public static BuildingInitialValues CarpentryYardValues = new BuildingInitialValues(
