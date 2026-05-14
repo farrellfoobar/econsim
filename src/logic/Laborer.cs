@@ -7,7 +7,6 @@ public class Laborer
 {
     private CoinAmount wealth = new CoinAmount(0);
     private bool isEmployed = false;
-    private double turnLengthConsumptionModifier = 1f / (double) TurnAndTimeManager.TurnsInAYear;
     private ConsumerBehavior consumerBehavior = new ConsumerBehavior();
     
     public void Pay(CoinAmount wage) {

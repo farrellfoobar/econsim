@@ -10,8 +10,6 @@ public class Market
     private Inventory inventory = new Inventory();
     private TurnAndTimeManager turnManager;
     private Dictionary<ItemType, MarketHistory> itemSupplyDemandHistory = new Dictionary<ItemType, MarketHistory>();
-        
-    private int lastTurnSeen = 0;
 
     public Market(TurnAndTimeManager turnManager) {
         this.turnManager = turnManager;

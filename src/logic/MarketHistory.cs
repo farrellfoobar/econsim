@@ -6,8 +6,7 @@ namespace EconSim.logic;
 
 public class MarketHistory
 {
-    private const int supplyAndDemandMemoryLengthInTurns = 4;
-    private int turnLastSeen = 0;
+    private const int supplyAndDemandMemoryLengthInTurns = TurnAndTimeManager.TurnsInAYear;
     private List<int> supplyByTurnModulo = new List<int>(supplyAndDemandMemoryLengthInTurns);
     private List<int> demandByTurnModulo = new List<int>(supplyAndDemandMemoryLengthInTurns);
 

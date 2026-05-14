@@ -34,8 +34,8 @@ public class SubsistenceFarm : Building
         this.employees = unemployedPopulation;
     }
     
-    public virtual bool EmployWorkers(int amount) {
-        throw new NotImplementedException("Cannot employ workers at SubsistenceFarm. subsistence farmers are by " +
+    public override bool EmployWorkers(int amount) {
+        throw new NotImplementedException("Cannot employ workers at SubsistenceFarm. Subsistence farmers are by " +
                                           "definition unemployed. ");
     }
 }
