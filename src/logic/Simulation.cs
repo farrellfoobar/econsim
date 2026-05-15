@@ -43,7 +43,7 @@ public class Simulation
         burg.AddBuilding(burgJeweler);
         burgJeweler.EmployWorkers(4);
         
-        soko.GetInventory().AddItems(ItemType.Grain, 1000);
+        soko.GetInventory().AddItems(ItemType.Grain, 10000);
         soko.GetInventory().AddItems(ItemType.Wood, 100);
         soko.GetInventory().AddItems(ItemType.Fish, 10000);
         Building sokoBrewery = new Brewery(sili);

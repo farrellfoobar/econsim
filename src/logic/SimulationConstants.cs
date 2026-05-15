@@ -63,8 +63,8 @@ public class SimulationConstants
     };
     
 // ############ EDIT THESE WITH CAUTION: they interact in a lot of complicated ways, use the spreadsheet to try them out first ############
-    private const int minFoodConsumptionPerPersonYear = 300;
-    public const int FoodConsumptionPerTurn = minFoodConsumptionPerPersonYear / TurnAndTimeManager.TurnsInAYear;
+    public const int MinFoodConsumptionPerPersonYear = 300;
+    public const int FoodConsumptionPerTurn = MinFoodConsumptionPerPersonYear / TurnAndTimeManager.TurnsInAYear;
     public static Dictionary<ItemType, double> BaseDemand = new Dictionary<ItemType, double> {
         { ItemType.Grain, 200 },
         { ItemType.Beer, 730 },
@@ -90,7 +90,13 @@ public class SimulationConstants
         { ItemType.SilverOre, 0 },
         { ItemType.Jewelry, 3 },
     };
-// ############ END EDIT WITH CAUTION ############
+
+    public static CoinAmount PovertyLineWealth = CoinAmount.GetMultiplyBy(
+        BasePrice[ItemType.Grain],
+        MinFoodConsumptionPerPersonYear
+        );
+    
+    // ############ END EDIT WITH CAUTION ############
     
     private static double getDemandSlope(ItemType itemType) {
         //We define: QuantityofDemand(price) = m/price^elasticity 

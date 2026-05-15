@@ -23,9 +23,9 @@ public class Laborer
     private void consumeFood(Market market) {
         int foodConsumed = 0;
         if (!isPoor()) {
-            consumeDesiredFood(market);
+            foodConsumed += consumeDesiredFood(market);
         }
-        foodConsumed += consumeRequiredFood(market, foodConsumed);
+        consumeRequiredFood(market, foodConsumed);
     }
 
     private int consumeDesiredFood(Market market) {
@@ -58,7 +58,7 @@ public class Laborer
             if (result == PurchaseResult.Success) {
                 foodConsumed += foodToConsume;
             } else if (result == PurchaseResult.FailedCantAfford) {
-                SimpleLogger.Debug("I cant afford to eat!!!!");
+                SimpleLogger.Log("I cant afford to eat!!!!");
             } else if (result == PurchaseResult.FailedNotInStock) {
                 throw new Exception("getCheapestFoodItemInStock returned a food that is not in stock: " + cheapestFood);
             }
@@ -99,7 +99,7 @@ public class Laborer
 
     private bool isPoor()
     {
-        return true; //fix me!!!!!!
+        return wealth.IsGreaterThan(SimulationConstants.PovertyLineWealth);
     }
     
     public void Employ(Building building)
