@@ -27,7 +27,6 @@ public class Merchant
                 if (position.Equals(destination))
                     goal = Goal.None;
                 else {
-                    Console.WriteLine("########################## @ " + position + " to " + path.Peek());
                     position = path.Pop();
                 }
                 break;
