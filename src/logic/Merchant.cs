@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using EconSim.data;
 
@@ -25,11 +26,14 @@ public class Merchant
             case Goal.Goto:
                 if (position.Equals(destination))
                     goal = Goal.None;
-                else
+                else {
+                    Console.WriteLine("########################## @ " + position + " to " + path.Peek());
                     position = path.Pop();
+                }
                 break;
             case Goal.PlanRoute:
                 path = pathfinder.FindPath(position, destination);
+                path.Pop();
                 goal = Goal.Goto;
                 break;
             default:

@@ -5,15 +5,37 @@ namespace EconSim.logic;
 
 public class GameTile
 {
-    public TileType tileType;
-    public Vector2Int position;
+    private TileType tileType;
+    private Vector2Int position;
     
     public GameTile(TileType tileType, Vector2Int position)
     {
         this.tileType = tileType;
         this.position = position;
     }
+
+    public Vector2Int GetPosition() {
+        return position;
+    }
+
+    public void SetTileType(TileType tileType)
+    {
+        this.tileType = tileType;
+    }
+
+    public TileType GetTileType()
+    {
+        return tileType;
+    }
+
+    public float GetPathfindingWeight()
+    {
+        return 1f;
+    }
     
+    public bool IsPassable() {
+        return true;
+    }
 }
 
 public enum TileType { //values from tile indexes

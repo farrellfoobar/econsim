@@ -26,15 +26,15 @@ public class MapRenderer
 
     public void RenderMap()
     {
-        foreach (KeyValuePair<Vector2Int, GameTile> tile in map.GetTiles())
+        foreach (GameTile tile in map.GetTiles())
         {
-            renderTile(tile.Value);
+            renderTile(tile);
         }
     }
 
     private void renderTile(GameTile gameTile)
     {
-        Vector2I tilePositionAsGodotType = new Vector2I(gameTile.position.GetX(), gameTile.position.GetY());
-        tileMapLayer.SetCell(tilePositionAsGodotType, (int) gameTile.tileType, atlasCoords);
+        Vector2I tilePositionAsGodotType = new Vector2I(gameTile.GetPosition().GetX(), gameTile.GetPosition().GetY());
+        tileMapLayer.SetCell(tilePositionAsGodotType, (int) gameTile.GetTileType(), atlasCoords);
     }
 }

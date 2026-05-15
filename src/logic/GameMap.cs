@@ -23,7 +23,7 @@ public class GameMap
                  for (int y = 0; y < height; y++)
                  {
                      GameTile tile = new GameTile(TileType.Grass, new Vector2Int(x, y));
-                     tiles.Add(tile.position, tile);
+                     tiles.Add(tile.GetPosition(), tile);
                  }   
             }
        }
@@ -35,7 +35,7 @@ public class GameMap
                throw new IndexOutOfRangeException(
                    "Tried to assign tile at position: " + position + " in map of " + new Vector2Int(width, height));
            }
-           tiles[position].tileType = tileType;
+           tiles[position].SetTileType(tileType);
        }
        
        public void AddTown(Vector2Int position, Town town)
@@ -44,15 +44,38 @@ public class GameMap
            towns.Add(position, town);
        }
 
+       public List<GameTile> GetNeighborTiles(GameTile tile)
+       {
+           Vector2Int position = tile.GetPosition();
+           List<Vector2Int> possibleNeighbors = new List<Vector2Int>
+           {
+                new Vector2Int(position.GetX()+1, position.GetY()),
+                new Vector2Int(position.GetX(), position.GetY()+1),
+                new Vector2Int(position.GetX()-1, position.GetY()),
+                new Vector2Int(position.GetX(), position.GetY()-1),
+                new Vector2Int(position.GetX()+1, position.GetY()+1),
+                new Vector2Int(position.GetX()-1, position.GetY()-1),
+           };
+           
+           List<GameTile> neighbors = new List<GameTile>();
+           foreach (Vector2Int possibleNeighbor in possibleNeighbors) {
+               if (tiles.ContainsKey(possibleNeighbor)) {
+                   neighbors.Add(tiles[possibleNeighbor]);
+               }
+           }
+           
+           return neighbors;
+       }
+
        public Town GetTownAt(Vector2Int position) {
            return towns[position]; //this is kinda intentionally unsafe because eventually Merchant should know if/what town it is in
        }
+       
+       public List<GameTile> GetTiles() {
+           return tiles.Values.ToList();
+       }
 
        public List<Town> GetTowns() { return towns.Values.ToList(); }
-       
-       public Dictionary<Vector2Int, GameTile> GetTiles() { return tiles; }
-
        public int GetHeight(){ return height; }
-
        public int GetWidth(){ return width; }
 }

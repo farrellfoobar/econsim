@@ -40,8 +40,8 @@ public class MerchantRenderer
 
     private void clear()
     {
-        foreach (KeyValuePair<Vector2Int, GameTile> tile in gameMap.GetTiles()){
-            mapLayer.SetCell(tile.Key.AsGodotVector(), eraseTextureIndex, eraseAtlasCoords);
+        foreach (GameTile tile in gameMap.GetTiles()){
+            mapLayer.SetCell(tile.GetPosition().AsGodotVector(), eraseTextureIndex, eraseAtlasCoords);
         }
     }
 }
