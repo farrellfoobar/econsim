@@ -45,7 +45,7 @@ public class FactoryAndBasePriceSanityCheck
     void testBuildingMakesMoneyOnPaper(Building building) {
         Util.Assert(
             !building.GET_ITEM_CONSUMED().Equals(building.GET_ITEM_PRODUCED()),
-            building.GetType() + "\t cannot consume and produce the same item.");
+            building.GetType().Name + " cannot consume and produce the same item.");
         
         CoinAmount unitCost = CoinAmount.GetMultiplyBy(
             SimulationConstants.BasePrice[building.GET_ITEM_CONSUMED()], 
@@ -57,10 +57,10 @@ public class FactoryAndBasePriceSanityCheck
         double roi = (double) unitIncome.AsInt() / unitCost.AsInt();
         
         Util.Assert(roi > 1, 
-            building.GetType() + "\t cannot have roi <1. (Unit Income,Unit Cost) = ( " + unitIncome + ", " + unitCost + ")");
+            building.GetType().Name + " cannot have roi <1. (Unit Income,Unit Cost) = ( " + unitIncome + ", " + unitCost + ")");
 
-        SimpleLogger.Debug(building.GetType() + "\t has (Unit Income,Unit Cost) = ( " + unitIncome + ", " + unitCost + ")");
-        SimpleLogger.Debug(building.GetType() + "\t has on paper ReturnOnInvestment of " + roi);
+        SimpleLogger.Debug(building.GetType().Name + " has (Unit Income,Unit Cost) = ( " + unitIncome + ", " + unitCost + ")");
+        SimpleLogger.Debug(building.GetType().Name + " has on paper ReturnOnInvestment of " + roi);
     }
 
     private void testBuildingEmployeesMakeMoneyOnPaper(Building building)
@@ -83,7 +83,7 @@ public class FactoryAndBasePriceSanityCheck
         }
         
         Util.Assert(building.GetProfit().Equals(SimulationConstants.BuildingStaringWealth),
-            building.GetType() + "\t makes money without buying any ingredients.");
+            building.GetType().Name + " makes money without buying any ingredients.");
     }
     
     private void testBuildingMakesMoneyWithWages(Building building) {
@@ -115,13 +115,13 @@ public class FactoryAndBasePriceSanityCheck
         
         double wageFractionOfProfit = (double) totalWages.AsInt() / building.GetProfit().AsInt();
         
-        SimpleLogger.Debug(building.GetType() + "\t has income per person year of " + profitPerYear);
-        SimpleLogger.Debug(building.GetType() + "\t has wage fraction of profit of " + wageFractionOfProfit.ToString("P0"));
+        SimpleLogger.Debug(building.GetType().Name + " has income per person year of " + profitPerYear);
+        SimpleLogger.Debug(building.GetType().Name + " has wage fraction of profit of " + wageFractionOfProfit.ToString("P0"));
         
         Util.Assert( profitPerTurn.AsInt() > CoinAmount.MinValue.AsInt(),
-            building.GetType() + "\t didnt make any money. Are wages too high?"
+            building.GetType().Name + " didnt make any money. Are wages too high?"
         );
         
-        Util.Assert(wageFractionOfProfit > 0, building.GetType() + "\t did not pay any wages as fraction of profit.");        
+        Util.Assert(wageFractionOfProfit > 0, building.GetType().Name + " did not pay any wages as fraction of profit.");        
     }
 }
