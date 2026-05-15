@@ -43,6 +43,8 @@ public class SimulationConstants
         ItemType.Grain, ItemType.None , 100, 0, new CoinAmount(0)
     );
     
+    public static CoinAmount BuildingStaringWealth = CoinAmount.Gold(1);
+    
     public static Dictionary<ItemType, CoinAmount> BasePrice = new Dictionary<ItemType, CoinAmount> {
         
         //1 copper ~= $1

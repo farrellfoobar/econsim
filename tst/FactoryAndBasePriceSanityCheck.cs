@@ -81,8 +81,9 @@ public class FactoryAndBasePriceSanityCheck
         for (int i = 0; i < pollLength; i++) {
             building.DoProductionTurn();
         }
-
-        Util.Assert(building.GetProfit().AsInt().Equals(0), building.GetType() + "\t makes money without buying any ingredients.");
+        
+        Util.Assert(building.GetProfit().Equals(SimulationConstants.BuildingStaringWealth),
+            building.GetType() + "\t makes money without buying any ingredients.");
     }
     
     private void testBuildingMakesMoneyWithWages(Building building) {
@@ -95,7 +96,7 @@ public class FactoryAndBasePriceSanityCheck
         double yearsInPoll = (double) pollLength / TurnAndTimeManager.TurnsInAYear;
         double totalConsumption = yearlyConsumption * yearsInPoll;
 
-        town.GetMarket().SellItems(itemConsumed, (int) Double.Round(Math.Ceiling(totalConsumption)));
+        town.GetMarket().SellItems(new CoinAmount(), itemConsumed, (int) Double.Round(Math.Ceiling(totalConsumption)));
         for (int i = 0; i < pollLength; i++) {
             building.DoProductionTurn();
         }

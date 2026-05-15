@@ -4,6 +4,13 @@ using EconSim.data;
 
 namespace EconSim.logic;
 
+public enum PurchaseResult
+{
+    Success,
+    FailedNotInStock,
+    FailedCantAfford,
+}
+
 public class Market
 {
     
@@ -17,45 +24,7 @@ public class Market
             itemSupplyDemandHistory[itemType] = new MarketHistory();
         }
     }
-
-    public CoinAmount SellItems(ItemType itemType, int quantity) {
-        CoinAmount cost = new CoinAmount(0);
-        for (int i = 0; i < quantity; i++) {
-            cost.Add(sellItem(itemType));
-        }
-        
-        return cost;
-    }
-
-    public Optional<CoinAmount> TryBuyItems(ItemType itemType, int quantity) {
-        if (quantity > inventory.GetItemCount(itemType)) {
-            return Optional<CoinAmount>.Empty();
-        }
-
-        CoinAmount cost = new CoinAmount();
-        for (int i = 0; i < quantity; i++) {
-            cost.Add(buyItem(itemType));
-        }
-        
-        return new Optional<CoinAmount>(cost);
-    }
-
-    private CoinAmount sellItem(ItemType itemType) {
-        inventory.AddItems(itemType, 1);
-        itemSupplyDemandHistory[itemType].AddSupply(turnManager.GetTurnCount());
-        
-        return GetPrice(itemType);
-    }
-
-    private CoinAmount buyItem(ItemType itemType) {
-        inventory.RemoveItems(itemType, 1);
-        itemSupplyDemandHistory[itemType].AddDemand(turnManager.GetTurnCount());
-        
-        return GetPrice(itemType);
-    }
     
-    public Inventory GetInventory() {return inventory;}
-
     public void DoTurn(int turnCount) {
         foreach (ItemType itemType in itemSupplyDemandHistory.Keys) {
             itemSupplyDemandHistory[itemType].CullSupplyDemandHistory(turnCount);
@@ -72,9 +41,39 @@ public class Market
         
         return price;
     }
+    
+    public void SellItems(CoinAmount wealth, ItemType itemType, int quantity)
+    {
+        wealth.Add(CoinAmount.GetMultiplyBy(GetPrice(itemType), quantity));
+        addItems(itemType, quantity);
+    }
 
-    public bool IsInStock(ItemType itemType) {
-        return inventory.GetItemCount(itemType) > 0;
+    public PurchaseResult TryBuyItems(CoinAmount wealth, ItemType itemType, int quantity) {
+        PurchaseResult result = PurchaseResult.Success;
+        CoinAmount cost = CoinAmount.GetMultiplyBy(GetPrice(itemType), quantity);
+        
+        if (quantity > inventory.GetItemCount(itemType)) {
+            result = PurchaseResult.FailedNotInStock;
+        }
+        else if (!wealth.IsGreaterThan(cost)) {
+            result = PurchaseResult.FailedCantAfford;
+        }
+        else {
+            removeItems(itemType, quantity);
+            wealth.Subtract(cost);
+        }
+        
+        return result;
+    }
+
+    private void addItems(ItemType itemType, int quantity) {
+        inventory.AddItems(itemType, quantity);
+        itemSupplyDemandHistory[itemType].AddSupply(turnManager.GetTurnCount(), quantity);
+    }
+
+    private void removeItems(ItemType itemType, int quantity) {
+        inventory.RemoveItems(itemType, quantity);
+        itemSupplyDemandHistory[itemType].AddDemand(turnManager.GetTurnCount(), quantity);
     }
 
     private double getSupplyDemandFactor(ItemType itemType) {
@@ -87,6 +86,12 @@ public class Market
 
         return supplyDemandFactor;
     }
+    
+    public bool IsInStock(ItemType itemType, int quantity) {
+        return inventory.GetItemCount(itemType) >= quantity;
+    }
+    
+    public Inventory GetInventory() {return inventory;}
     
     public override string ToString() {
         String str = "<";

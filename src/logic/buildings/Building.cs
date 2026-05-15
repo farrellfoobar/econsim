@@ -13,7 +13,7 @@ public abstract class Building
     protected abstract ItemType itemConsumed { get; }
     protected abstract double itemsConsumedPerUnitProduced { get; }
     protected Town hostTown;
-    protected CoinAmount profit = new CoinAmount(0);
+    protected CoinAmount wealth = SimulationConstants.BuildingStaringWealth;
     protected Stack<Laborer> employees = new Stack<Laborer>();
     protected double productionOverflow = 0;
     protected double consumptionOverflow = 0;
@@ -36,21 +36,23 @@ public abstract class Building
         double production = productionOverflow + productionPerPersonTurn * employees.Count;
         double consumption = consumptionOverflow + (production * itemsConsumedPerUnitProduced);
 
-        Optional<CoinAmount> consumptionCostMaybe = hostTown.GetMarket().TryBuyItems(itemConsumed, getIntegerComponent(consumption));
+        PurchaseResult result = hostTown.GetMarket().TryBuyItems(wealth, itemConsumed, getIntegerComponent(consumption));
 
-        if (consumptionCostMaybe.IsPresent()) {
-            profit.Subtract(consumptionCostMaybe.Get());
+        if (result == PurchaseResult.Success) {
             consumptionOverflow = getNonIntegerComponent(consumption);
 
-            CoinAmount turnIncome = hostTown.GetMarket().SellItems(itemProduced, getIntegerComponent(production));
-            profit.Add(turnIncome);
+            hostTown.GetMarket().SellItems(wealth, itemProduced, getIntegerComponent(production));
                         
             productionOverflow = getNonIntegerComponent(production);
             
             foreach (Laborer employee in employees) {
                 employee.Pay(wagePerPersonTurn);
-                profit.Subtract(wagePerPersonTurn);
+                wealth.Subtract(wagePerPersonTurn);
             }
+        } else if (result == PurchaseResult.FailedNotInStock) {
+            SimpleLogger.Debug(this.GetType().Name + " in " + this.hostTown.getName() + " has no input to produce.");
+        } else if (result == PurchaseResult.FailedCantAfford) {
+            SimpleLogger.Log(this.GetType().Name + " in " + this.hostTown.getName() + " cannot afford to produce.");
         }
     }
 
@@ -63,7 +65,7 @@ public abstract class Building
     }
 
     public CoinAmount GetProfit() {
-        return profit;
+        return wealth;
     }
     
     public virtual bool EmployWorkers(int amount) {

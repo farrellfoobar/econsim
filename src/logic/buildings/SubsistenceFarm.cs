@@ -24,7 +24,7 @@ public class SubsistenceFarm : Building
         productionThisYear += productionPerPersonTurn * this.employees.Count;
 
         if (turnAndTimeManager.IsHarvestTurn()) {
-            this.profit.Add(hostTown.GetMarket().SellItems(ItemType.Grain, (int) productionThisYear));
+            hostTown.GetMarket().SellItems(wealth, ItemType.Grain, (int) productionThisYear);
             //TODO: split profit among employees
             //this will be kinda complicated because employees can change durring the year
         }

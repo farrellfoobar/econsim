@@ -126,4 +126,9 @@ public class Town
     public void SetMarket(FixedPriceMarket fixedPriceMarket) {
         this.market = fixedPriceMarket;
     }
+
+    public string getName()
+    {
+        return name;
+    }
 }

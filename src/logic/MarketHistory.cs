@@ -25,12 +25,12 @@ public class MarketHistory
         return supplyByTurnModulo.Sum();
     }
 
-    public void AddSupply(int turnCount) {
-        supplyByTurnModulo[turnCount % supplyAndDemandMemoryLengthInTurns]++;
+    public void AddSupply(int turnCount, int quantity) {
+        supplyByTurnModulo[turnCount % supplyAndDemandMemoryLengthInTurns]+= quantity;
     }
 
-    public void AddDemand(int turnCount) {
-        demandByTurnModulo[turnCount % supplyAndDemandMemoryLengthInTurns]++;
+    public void AddDemand(int turnCount, int quantity) {
+        demandByTurnModulo[turnCount % supplyAndDemandMemoryLengthInTurns]+= quantity;
     }
 
     public void CullSupplyDemandHistory(int turnCount) {
