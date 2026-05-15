@@ -81,7 +81,7 @@ public class Market
         double totalSupply = itemSupplyDemandHistory[itemType].GetTotalSupply();
         double supplyDemandFactor = 1;
         if (totalSupply != 0 && totalDemand != 0) {
-            supplyDemandFactor = totalSupply / totalDemand;
+            supplyDemandFactor = totalDemand/ totalSupply;
         }
 
         return supplyDemandFactor;
