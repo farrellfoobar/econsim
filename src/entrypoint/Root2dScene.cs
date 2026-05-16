@@ -18,6 +18,7 @@ public partial class Root2dScene : Node2D
 		isTest = "true".Equals(System.Environment.GetEnvironmentVariable("--test"));
 		if (isTest) {
 			TestExecutor.Main();
+			GetTree().Quit();
 		} else {
 			simulation = new Simulation();
 			renderer = new SimulationRenderer(this, simulation);

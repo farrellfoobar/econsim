@@ -6,11 +6,9 @@ namespace EconSim.tst;
 public class LaborersBuyAppropreatly
 {
     
-    Laborer laborer;
-
-    public void run()
+    public static void Run()
     {
-        laborer = new Laborer();
+        Laborer laborer = new Laborer();
         Market market = new Market(new TurnAndTimeManager());
         market.GetInventory().AddItems(ItemType.Grain, 1000);
         

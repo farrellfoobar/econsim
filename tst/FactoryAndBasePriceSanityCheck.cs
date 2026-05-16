@@ -8,41 +8,41 @@ namespace EconSim.tst;
 public class FactoryAndBasePriceSanityCheck
 {
 
-    public void Run() {
+    public static void Run() {
         testBrewery();
         testCarpentryYard();
         testJewelry();
     }
 
-    private void testBrewery() {
+    private static void testBrewery() {
         testBuildingMakesMoneyOnPaper(new Brewery(getTestTown()));
         testBuildingEmployeesMakeMoneyOnPaper(new Brewery(getTestTown()));
         testBuildingDoesntMakeMoneyIfItCantBuyIngredients(new Brewery(getTestTown()));
         testBuildingMakesMoneyWithWages(new Brewery(getTestTown()));
     }
     
-    private void testCarpentryYard() {
+    private static void testCarpentryYard() {
         testBuildingMakesMoneyOnPaper(new CarpentryYard(getTestTown()));
         testBuildingEmployeesMakeMoneyOnPaper(new CarpentryYard(getTestTown()));
         testBuildingDoesntMakeMoneyIfItCantBuyIngredients(new CarpentryYard(getTestTown()));
         testBuildingMakesMoneyWithWages(new CarpentryYard(getTestTown()));
     }
     
-    private void testJewelry() {
+    private static void testJewelry() {
         testBuildingMakesMoneyOnPaper(new Jeweler(getTestTown()));
         testBuildingEmployeesMakeMoneyOnPaper(new Jeweler(getTestTown()));
         testBuildingDoesntMakeMoneyIfItCantBuyIngredients(new Jeweler(getTestTown()));
         testBuildingMakesMoneyWithWages(new Jeweler(getTestTown()));
     }
 
-    private Town getTestTown() {
+    private static Town getTestTown() {
         TurnAndTimeManager turnManager = new TurnAndTimeManager();
         Town town = new Town("TestTown", 1, turnManager);
         town.SetMarket(new FixedPriceMarket(turnManager));
         return town;
     }    
 
-    void testBuildingMakesMoneyOnPaper(Building building) {
+    private static void testBuildingMakesMoneyOnPaper(Building building) {
         Util.Assert(
             !building.GET_ITEM_CONSUMED().Equals(building.GET_ITEM_PRODUCED()),
             building.GetType().Name + " cannot consume and produce the same item.");
@@ -63,7 +63,7 @@ public class FactoryAndBasePriceSanityCheck
         SimpleLogger.Debug(building.GetType().Name + " has on paper ReturnOnInvestment of " + roi);
     }
 
-    private void testBuildingEmployeesMakeMoneyOnPaper(Building building)
+    private static void testBuildingEmployeesMakeMoneyOnPaper(Building building)
     {
         int totalYearlyConsumption = SimulationConstants.FoodConsumptionPerTurn * TurnAndTimeManager.TurnsInAYear;
         CoinAmount totalYearlyCost = CoinAmount.GetMultiplyBy(SimulationConstants.BasePrice[ItemType.Grain], totalYearlyConsumption);
@@ -74,7 +74,7 @@ public class FactoryAndBasePriceSanityCheck
 
     }
 
-    private void testBuildingDoesntMakeMoneyIfItCantBuyIngredients(Building building) {
+    private static void testBuildingDoesntMakeMoneyIfItCantBuyIngredients(Building building) {
         building.EmployWorkers(1);
 
         int pollLength = 100;
@@ -86,7 +86,7 @@ public class FactoryAndBasePriceSanityCheck
             building.GetType().Name + " makes money without buying any ingredients.");
     }
     
-    private void testBuildingMakesMoneyWithWages(Building building) {
+    private static void testBuildingMakesMoneyWithWages(Building building) {
         Town town = building.GetTown();
         ItemType itemConsumed = building.GET_ITEM_CONSUMED();
         building.EmployWorkers(1);
