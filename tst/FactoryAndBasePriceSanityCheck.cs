@@ -37,7 +37,7 @@ public class FactoryAndBasePriceSanityCheck
 
     private static Town getTestTown() {
         TurnAndTimeManager turnManager = new TurnAndTimeManager();
-        Town town = new Town("TestTown", 1, turnManager);
+        Town town = new Town("TestTown", 1, new Vector2Int(1,1), turnManager);
         town.SetMarket(new FixedPriceMarket(turnManager));
         return town;
     }    

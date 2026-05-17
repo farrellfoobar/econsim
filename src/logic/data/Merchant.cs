@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using EconSim.data;
 
 namespace EconSim.logic;
@@ -9,51 +10,74 @@ public class Merchant
 {
     private Goal goal = Goal.None;
     private Vector2Int position;
-    private Vector2Int destination;
-    private AStarPathfinder pathfinder;
-    private Stack<Vector2Int> path;
+    private TradeRoute tradeRoute;
+    private Inventory inventory;
+    private Agent parent;
+    private GameMap map;
 
-    public Merchant(Vector2Int position, GameMap map)
+    public Merchant(Agent parent, TradeRoute tradeRoute, GameMap map)
     {
-        this.position = position;
-        this.pathfinder = new AStarPathfinder(map);
+        this.position = parent.GetPosition();
+        this.tradeRoute = tradeRoute;
+        this.inventory = new Inventory();
+        this.parent = parent;
+        this.map = map;
+        goal = Goal.BuyExport;
     }
     
     public void DoTurn()
     {
-        switch (goal)
-        {
-            case Goal.Goto:
-                if (position.Equals(destination))
-                    goal = Goal.None;
-                else {
-                    position = path.Pop();
-                }
+        switch (goal) {
+            case Goal.BuyExport:
+                    buyForRoute(tradeRoute.GetExportRoute());
+                    goal = Goal.GoToDestination;
                 break;
-            case Goal.PlanRoute:
-                path = pathfinder.FindPath(position, destination);
-                path.Pop();
-                goal = Goal.Goto;
+            case Goal.GoToDestination:
+                position = tradeRoute.GetExportPath().Pop();
+                if (position.Equals(tradeRoute.GetToTown().GetPosition()))
+                    goal = Goal.SellExportAndBuyImportFromDestination;
+                break;
+            case Goal.SellExportAndBuyImportFromDestination:
+                tradeRoute.GetToTown().GetMarket().SellItems(parent.GetWealth(), tradeRoute.GetExportItem(), tradeRoute.GetExportQuantity());
+                buyForRoute(tradeRoute.GetImportRoute());
+                goal = Goal.GoBackToOrigin;
+                break;
+            case Goal.GoBackToOrigin:
+                position = tradeRoute.GetImportPath().Pop();
+                if (position.Equals(tradeRoute.GetFromTown().GetPosition()))
+                    goal = Goal.SellImport;
+                break;
+            case Goal.SellImport:
+                tradeRoute.GetFromTown().GetMarket().SellItems(parent.GetWealth(), tradeRoute.GetImportItem(), tradeRoute.GetImportQuantity());
+                goal = Goal.None;
                 break;
             default:
+                parent.RemoveMerchant(this);
                 break;
         }
+        
     }
-
-    public void setOnJourneyTo(Vector2Int destination)
-    {
-        this.destination = destination;
-        this.goal = Goal.PlanRoute;
-    }
-
+    
     public Vector2Int GetPosition()
     {
         return position;
+    }
+
+    private void buyForRoute(OneWayTradeRoute route)
+    {
+        PurchaseResult purchaseResult = map.GetTownAt(position).GetMarket().TryBuyItems(parent.GetWealth(), route.GetTradeItem(), route.GetTradeQuantity());
+        if(purchaseResult != PurchaseResult.Success)
+            throw new Exception("Could not purchase items for trade route " + tradeRoute + " because " + purchaseResult + map.GetTownAt(position));
+        
+        inventory.AddItems(route.GetTradeItem(), route.GetTradeQuantity());
     }
 }
 
 public enum Goal{
     None,
-    PlanRoute,
-    Goto,
+    BuyExport,
+    GoToDestination,
+    SellExportAndBuyImportFromDestination,
+    GoBackToOrigin,
+    SellImport,
 }

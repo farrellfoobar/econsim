@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace EconSim.logic;
 
@@ -23,7 +24,7 @@ public class Inventory
         inventory[itemType] -= amount;
     }
 
-    public double GetItemCount(ItemType item) {
+    public int GetItemCount(ItemType item) {
         int ret = 0;
         if( inventory.ContainsKey(item) ) {
             ret = inventory[item];

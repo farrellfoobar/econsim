@@ -91,6 +91,10 @@ public class SimulationConstants
         { ItemType.Jewelry, 3 },
     };
 
+    public static readonly CoinAmount AgentStartingWealth = CoinAmount.Gold(10);
+    public static readonly int WAGON_GRAIN_CONSUMPTION_PER_TILE = 10;
+    public static readonly int BASE_WAGON_CAPACITY = 6000;
+    
     public static CoinAmount PovertyLineWealth = CoinAmount.GetMultiplyBy(
         BasePrice[ItemType.Grain],
         MinFoodConsumptionPerPersonYear

@@ -15,8 +15,9 @@ public class Town
     private Stack<Laborer> unemployedPopulation;
     private List<Laborer> allPopulation;
     private TurnAndTimeManager turnAndTimeManager;
+    private Vector2Int position;
     
-    public Town(String name, int population, TurnAndTimeManager turnAndTimeManager) {
+    public Town(String name, int population, Vector2Int position, TurnAndTimeManager turnAndTimeManager) {
         unemployedPopulation = new Stack<Laborer>(population);
         allPopulation = new List<Laborer>(population);
         for (int i = 0; i < population; i++) {
@@ -26,6 +27,7 @@ public class Town
         }
         this.turnAndTimeManager = turnAndTimeManager;
         this.name = name;
+        this.position = position;
         this.buildings = new List<Building>();
 
         SubsistenceFarm subsistenceFarm = new SubsistenceFarm(this, turnAndTimeManager);
@@ -38,8 +40,8 @@ public class Town
      * Basically just for setup now, should be using the market to exchange between agents
      */
     public Inventory GetInventory() { return market.GetInventory(); }
-    
     public Market GetMarket() { return market; }
+    public Vector2Int GetPosition() { return position; }
 
     public void DoProductionTurn() {
         market.DoTurn(turnAndTimeManager.GetTurnCount());
@@ -113,7 +115,7 @@ public class Town
         double middleShare = middleThirdWealth/totalWealth;
         double lowShare = lowThirdWealth/totalWealth;
 
-        return "<"
+        return allPopulation.Count < 3 ? "Pop too low for distribution" : "<"
                + lowShare.ToString("P0") + "@" + dist[third].GetWealth() +","
                + middleShare.ToString("P0") + "@" + dist[third*2].GetWealth() +","
                + highestShare.ToString("P0") + "@" + dist[(third*3)-1].GetWealth() +","

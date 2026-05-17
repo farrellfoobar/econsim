@@ -38,10 +38,13 @@ public class GameMap
            tiles[position].SetTileType(tileType);
        }
        
-       public void AddTown(Vector2Int position, Town town)
+       public void AddTown(Town town)
        {
-           SetTileType(position, TileType.Hamlet);
-           towns.Add(position, town);
+           if(towns.ContainsKey(town.GetPosition()))
+               throw new ArgumentException("There is already a town with the same position: " + town);
+           
+           SetTileType(town.GetPosition(), TileType.Hamlet);
+           towns.Add(town.GetPosition(), town);
        }
 
        public List<GameTile> GetNeighborTiles(GameTile tile)
@@ -69,6 +72,14 @@ public class GameMap
 
        public Town GetTownAt(Vector2Int position) {
            return towns[position]; //this is kinda intentionally unsafe because eventually Merchant should know if/what town it is in
+       }
+
+       public Vector2Int GetTownPosition(Town town)
+       {
+           if(!towns.ContainsValue(town))
+               throw new ArgumentException("Tried to find a town that doesnt exist. That shouldnt happen");
+           
+           return towns.First(towns => towns.Value.Equals(town)).Key;
        }
        
        public List<GameTile> GetTiles() {

@@ -91,6 +91,11 @@ public class Market
         return inventory.GetItemCount(itemType) >= quantity;
     }
     
+    public int GetStock(ItemType itemType)
+    {
+        return inventory.GetItemCount(itemType);
+    }
+    
     public Inventory GetInventory() {return inventory;}
     
     public override string ToString() {
