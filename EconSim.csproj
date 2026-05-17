@@ -7,7 +7,4 @@
   <ItemGroup>
     <Content Include="README.md" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="src\entrypoint\" />
-  </ItemGroup>
 </Project>
