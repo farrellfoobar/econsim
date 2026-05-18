@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using EconSim.data;
 using EconSim.logic;
 using Godot;
 namespace EconSim.render;

@@ -1,4 +1,3 @@
-using System;
 using EconSim.data;
 
 namespace EconSim.logic.buildings;

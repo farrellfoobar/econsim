@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using EconSim.data;
 using EconSim.logic;
-using Godot;
 
 namespace EconSim.tst;
 

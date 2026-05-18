@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using EconSim.data;
-using EconSim.logic.buildings;
 
 namespace EconSim.logic;
 

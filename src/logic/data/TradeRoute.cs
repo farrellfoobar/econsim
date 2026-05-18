@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using EconSim.data;
 
 namespace EconSim.logic;
