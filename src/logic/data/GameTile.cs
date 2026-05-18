@@ -28,9 +28,9 @@ public class GameTile
         return tileType;
     }
 
-    public float GetPathfindingWeight()
+    public int GetPathfindingWeight()
     {
-        return 1f;
+        return 1;
     }
     
     public bool IsPassable() {

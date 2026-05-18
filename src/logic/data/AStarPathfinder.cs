@@ -8,8 +8,6 @@ namespace EconSim.logic;
 
 public class AStarPathfinder
 {
-    //TODO: replace this with AStar2D and manually connect adjacent tiles for correct hex neighbor logic
-    // see https://github.com/godotengine/godot-demo-projects/blob/3.5-9e68af3/2d/navigation_astar/pathfind_astar.gd
     private AStar2D pathfinder;
     private GameMap map;
     
@@ -42,8 +40,9 @@ public class AStarPathfinder
         TradeRoute bestRoute = null;
         foreach (Town toTown in otherTowns) {
             //TODO: ideally pathfinder.FindPath() would return a path & a cost, but since Godot didnt implement that Ill just path.Count for now
-            Stack<Vector2Int> path = FindPath(map.GetTownPosition(fromTown), map.GetTownPosition(toTown));
-            TradeRoute route = getBestRouteForTown(fromTown, toTown, path, maxCost);
+            Tuple<Stack<Vector2Int>, int> pathAndCost = FindPath(map.GetTownPosition(fromTown), map.GetTownPosition(toTown));
+            Stack<Vector2Int> path = pathAndCost.Item1;
+            TradeRoute route = getBestRouteForTown(fromTown, toTown, path, pathAndCost.Item2, maxCost);
             CoinAmount routeProfit = route.GetProfitFrom();
 
             if (routeProfit.IsGreaterThan(bestProfit)) {
@@ -55,7 +54,7 @@ public class AStarPathfinder
         return bestRoute;
     }
 
-    private TradeRoute getBestRouteForTown(Town fromTown, Town toTown, Stack<Vector2Int> path, CoinAmount maxCost)
+    private TradeRoute getBestRouteForTown(Town fromTown, Town toTown, Stack<Vector2Int> path, int pathCost, CoinAmount maxCost)
     {
         CoinAmount bestExportProfit = new CoinAmount(-1);
         CoinAmount bestImportProfit = new CoinAmount(-1);
@@ -63,9 +62,9 @@ public class AStarPathfinder
         OneWayTradeRoute bestImportRoute = null;
         
         foreach (ItemType item in Items.ALL_ITEMS) {
-            OneWayTradeRoute exportRoute = new OneWayTradeRoute(fromTown, toTown, item, path, maxCost);
+            OneWayTradeRoute exportRoute = new OneWayTradeRoute(fromTown, toTown, item, path, pathCost, maxCost);
             //Im not really sure why I dont have to .Reverse the path for import route. Probably because of how Stack is enumerated, which is frustrating
-            OneWayTradeRoute importRoute = new OneWayTradeRoute(toTown, fromTown, item, new Stack<Vector2Int>(path), maxCost);
+            OneWayTradeRoute importRoute = new OneWayTradeRoute(toTown, fromTown, item, new Stack<Vector2Int>(path), pathCost, maxCost);
             CoinAmount exportProfit = exportRoute.GetProfitFrom();
             CoinAmount importProfit = importRoute.GetProfitFrom();
             
@@ -94,15 +93,18 @@ public class AStarPathfinder
         //https://en.wikipedia.org/wiki/Pairing_function#Cantor_pairing_function
     }
 
-    private Stack<Vector2Int> FindPath(Vector2Int start, Vector2Int goal)
+    private Tuple<Stack<Vector2Int>, int> FindPath(Vector2Int start, Vector2Int goal)
     {
         Vector2[] godotPath = pathfinder.GetPointPath(positionToId(start), positionToId(goal));
         
         Stack<Vector2Int> path = new Stack<Vector2Int>(godotPath.Length);
-        for(int i = godotPath.Length-1; i >= 0 ; i--){
-            path.Push(new Vector2Int(godotPath[i]));
+        int pathCost = 0;
+        for(int i = godotPath.Length-1; i >= 0 ; i--) {
+            Vector2Int pos = new Vector2Int(godotPath[i]);
+            path.Push(pos);
+            pathCost += map.GetTilePathfindingWeight(pos);
         }
         
-        return path;
+        return new Tuple<Stack<Vector2Int>, int>(path, pathCost);
     }
 }

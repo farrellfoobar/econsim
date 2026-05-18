@@ -65,8 +65,9 @@ public class PathfinderTests
             new Vector2Int(3,3),
         });
 
-        OneWayTradeRoute expectedExport = new OneWayTradeRoute(from, to, ItemType.Jewelry, expectedPath, maxCost);
-        OneWayTradeRoute expectedImport = new OneWayTradeRoute(to, from, ItemType.Fish, new Stack<Vector2Int>(expectedPath), maxCost);
+        int expectedPathCost = expectedPath.Count;
+        OneWayTradeRoute expectedExport = new OneWayTradeRoute(from, to, ItemType.Jewelry, expectedPath, expectedPathCost, maxCost);
+        OneWayTradeRoute expectedImport = new OneWayTradeRoute(to, from, ItemType.Fish, new Stack<Vector2Int>(expectedPath), expectedPathCost, maxCost);
 
         TradeRoute expectedRoute = new TradeRoute(expectedExport, expectedImport);
         

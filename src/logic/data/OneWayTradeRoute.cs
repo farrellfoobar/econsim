@@ -19,13 +19,13 @@ public class OneWayTradeRoute
     public Town GetToTown(){ return toTown; }
     public Town GetFromTown(){ return fromTown; }
 
-    public OneWayTradeRoute(Town fromTown, Town toTown, ItemType tradeItem, Stack<Vector2Int> path, CoinAmount maxCost)
+    public OneWayTradeRoute(Town fromTown, Town toTown, ItemType tradeItem, Stack<Vector2Int> path, int pathCost, CoinAmount maxCost)
     {
         this.toTown = toTown;
         this.fromTown = fromTown;
         this.tradeItem = tradeItem;
         this.path = path;
-        this.numExport = getMaxQuantity(maxCost);
+        this.numExport = getMaxQuantity(maxCost, pathCost);
     }
     
     public CoinAmount GetProfitFrom()
@@ -55,11 +55,11 @@ public class OneWayTradeRoute
         return numExport + " " + tradeItem + " from " + fromTown.getName() + " to " + toTown.getName() + " via " + String.Join(",", path);
     }
 
-    private int getMaxQuantity(CoinAmount maxCost)
+    private int getMaxQuantity(CoinAmount maxCost, int pathCost)
     {
         //TODO: this logic treats every object as weighing the same, which isnt necessarily true 
         int cargoCapacity = SimulationConstants.BASE_WAGON_CAPACITY -
-                            path.Count * SimulationConstants.WAGON_GRAIN_CONSUMPTION_PER_TILE;
+                            pathCost * SimulationConstants.WAGON_GRAIN_CONSUMPTION_PER_TILE;
         
         int quantityCanAfford = maxCost.AsInt() / fromTown.GetMarket().GetPrice(tradeItem).AsInt();
         

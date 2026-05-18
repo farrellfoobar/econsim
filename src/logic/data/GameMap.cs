@@ -86,6 +86,11 @@ public class GameMap
            return tiles.Values.ToList();
        }
 
+       public int GetTilePathfindingWeight(Vector2Int position)
+       {
+           return tiles[position].GetPathfindingWeight();
+       }
+
        public List<Town> GetTowns() { return towns.Values.ToList(); }
        public int GetHeight(){ return height; }
        public int GetWidth(){ return width; }
