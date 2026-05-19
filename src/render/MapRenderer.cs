@@ -7,19 +7,20 @@ public class MapRenderer
 {
     readonly Vector2I atlasCoords = new Vector2I(0, 0); // idk wtf this is
     
-    private TileMapLayer tileMapLayer;
+    private TileMapLayer terrainMapLayer;
+    private TileMapLayer structureMapLayer;
     private GameMap map;
     
     public MapRenderer(Node parent, GameMap map)
     {
         this.map = map;
-        tileMapLayer = new TileMapLayer();
-        parent.AddChild(tileMapLayer);
+        terrainMapLayer = new TileMapLayer();
+        structureMapLayer = new TileMapLayer();
+        parent.AddChild(terrainMapLayer);
+        parent.AddChild(structureMapLayer);
         
-        tileMapLayer.SetTileSet( (TileSet) GD.Load("res://res/tiles/tileset.tres"));
-        
-        //todo: remove setscale once we add camera movement. Only set to half scale to fit in screen
-        tileMapLayer.SetScale(new Vector2(0.5f, 0.5f));
+        terrainMapLayer.SetTileSet( (TileSet) GD.Load("res://res/tiles/tileset.tres"));
+        structureMapLayer.SetTileSet( (TileSet) GD.Load("res://res/tiles/tileset.tres"));
     }
 
     public void RenderMap()
@@ -33,6 +34,10 @@ public class MapRenderer
     private void renderTile(GameTile gameTile)
     {
         Vector2I tilePositionAsGodotType = new Vector2I(gameTile.GetPosition().GetX(), gameTile.GetPosition().GetY());
-        tileMapLayer.SetCell(tilePositionAsGodotType, (int) gameTile.GetTileType(), atlasCoords);
+        terrainMapLayer.SetCell(tilePositionAsGodotType, (int) gameTile.GetTileType(), atlasCoords);
+
+        if (gameTile.GetStructureType() != StructureType.None) {
+            structureMapLayer.SetCell(tilePositionAsGodotType, (int) gameTile.GetStructureType(), atlasCoords);
+        }
     }
 }

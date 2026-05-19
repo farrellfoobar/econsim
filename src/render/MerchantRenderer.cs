@@ -8,7 +8,7 @@ namespace EconSim.render;
 public class MerchantRenderer
 {
     const double tileSizePx = 128;
-    private const int merchantTextureIndex = 1;
+    private const int merchantTextureIndex = 2;
     private const int eraseTextureIndex = -1;
     private TileMapLayer mapLayer;
     GameMap gameMap;
@@ -23,9 +23,6 @@ public class MerchantRenderer
         rendererParent.AddChild(mapLayer);
         
         mapLayer.SetTileSet( (TileSet) GD.Load("res://res/tiles/agents.tres"));
-        
-        //todo: remove setscale once we add camera movement. Only set to half scale to fit in screen
-        mapLayer.SetScale(new Vector2(0.5f, 0.5f)); 
     }
     
     public void Render(List<Merchant> merchants)

@@ -27,23 +27,13 @@ public class GameMap
                  }   
             }
        }
-
-       public void SetTileType(Vector2Int position, TileType tileType)
-       {
-           if (position.GetX() >= width || position.GetY() >= height)
-           {
-               throw new IndexOutOfRangeException(
-                   "Tried to assign tile at position: " + position + " in map of " + new Vector2Int(width, height));
-           }
-           tiles[position].SetTileType(tileType);
-       }
        
        public void AddTown(Town town)
        {
            if(towns.ContainsKey(town.GetPosition()))
                throw new ArgumentException("There is already a town with the same position: " + town);
            
-           SetTileType(town.GetPosition(), TileType.Hamlet);
+           tiles[town.GetPosition()].SetStructureType(StructureType.Hamlet);
            towns.Add(town.GetPosition(), town);
        }
 
