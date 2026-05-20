@@ -61,4 +61,9 @@ public class Vector2Int
     {
         return "(" + x + "," + y + ")";
     }
+
+    public static Vector2Int Sum(Vector2Int v1, Vector2Int v2)
+    {
+        return new Vector2Int(v1.GetX() + v2.GetX(), v1.GetY() + v2.GetY());
+    }
 }

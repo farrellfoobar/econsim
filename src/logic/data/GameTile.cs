@@ -33,7 +33,17 @@ public class GameTile
 
     public int GetPathfindingWeight()
     {
-        return 1;
+        int ret = 0;
+        switch (tileType) {
+            case TileType.River:
+                ret = 5;
+                break;
+            default:
+                ret = 1;
+                break;
+        }
+
+        return ret;
     }
     
     public bool IsPassable() {

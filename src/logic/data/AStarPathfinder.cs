@@ -22,7 +22,7 @@ public class AStarPathfinder
         }
         
         foreach (GameTile tile in map.GetTiles()) {
-            foreach (GameTile neighborTile in map.GetNeighborTiles(tile)) {
+            foreach (GameTile neighborTile in map.GetNeighborTiles(tile).Values) {
                 if (neighborTile.IsPassable()) {
                     pathfinder.ConnectPoints(positionToId(tile), positionToId(neighborTile));
                 }

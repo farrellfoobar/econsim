@@ -24,6 +24,27 @@ public class Simulation
         gameMap.AddTown(burg);
         gameMap.AddTown(soko);
         
+        gameMap.AddRiver( new Vector2Int(10, 4), new List<Direction>
+            {
+                Direction.South,
+                Direction.SouthEast,
+                Direction.SouthEast,
+                Direction.South,
+                Direction.NorthEast,
+                Direction.NorthEast,
+                Direction.SouthEast,
+                Direction.SouthEast,
+                Direction.SouthEast,
+                Direction.SouthEast,
+                Direction.SouthEast,
+                Direction.South,
+                Direction.South,
+                Direction.SouthEast,
+                Direction.SouthEast,
+                Direction.SouthEast,
+            }
+        );
+        
         sili.GetInventory().AddItems(ItemType.Grain, 10000);
         sili.GetInventory().AddItems(ItemType.Wood, 100);
         sili.GetInventory().AddItems(ItemType.Fish, 10000);
