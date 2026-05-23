@@ -7,6 +7,7 @@ public class TradeRoute
 {
     private OneWayTradeRoute exportRoute;
     private OneWayTradeRoute importRoute;
+    private MerchantType merchantType;
     
     public TradeRoute(OneWayTradeRoute exportRoute, OneWayTradeRoute importRoute)
     {
@@ -22,7 +23,17 @@ public class TradeRoute
     public OneWayTradeRoute GetImportRoute()
     {
         return importRoute;
-    } 
+    }
+
+    public MerchantType GetMerchantType()
+    {
+        return merchantType;
+    }
+    
+    public void SetMerchantType(MerchantType merchantType)
+    {
+        this.merchantType = merchantType;
+    }
 
     public override bool Equals(object that)
     {
