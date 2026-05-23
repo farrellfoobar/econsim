@@ -12,17 +12,18 @@ public class Town
     private String name;
     private Market market;
     private List<Building> buildings;
-    private Stack<Laborer> unemployedPopulation;
+    private List<Laborer> unemployedPopulation;
     private List<Laborer> allPopulation;
     private TurnAndTimeManager turnAndTimeManager;
     private Vector2Int position;
+    private SubsistenceFarm subsistenceFarm;
     
     public Town(String name, int population, Vector2Int position, TurnAndTimeManager turnAndTimeManager) {
-        unemployedPopulation = new Stack<Laborer>(population);
+        unemployedPopulation = new List<Laborer>(population);
         allPopulation = new List<Laborer>(population);
         for (int i = 0; i < population; i++) {
             Laborer laborer = new Laborer();
-            unemployedPopulation.Push(laborer);
+            unemployedPopulation.Add(laborer);
             allPopulation.Add(laborer);
         }
         this.turnAndTimeManager = turnAndTimeManager;
@@ -30,7 +31,7 @@ public class Town
         this.position = position;
         this.buildings = new List<Building>();
 
-        SubsistenceFarm subsistenceFarm = new SubsistenceFarm(this, turnAndTimeManager);
+        subsistenceFarm = new SubsistenceFarm(this, turnAndTimeManager);
         subsistenceFarm.SetEmployees(unemployedPopulation);
         buildings.Add(subsistenceFarm);
         market = new Market(turnAndTimeManager);
@@ -77,7 +78,7 @@ public class Town
         return unemployedPopulation.Count;
     }
     
-    public Stack<Laborer> GetUnemployedPopulation() {
+    public List<Laborer> GetUnemployedPopulation() {
         return unemployedPopulation;
     }
 
@@ -132,5 +133,11 @@ public class Town
     public string getName()
     {
         return name;
+    }
+
+    public void SetUnemployed(Laborer laborer)
+    {
+        unemployedPopulation.Remove(laborer);
+        subsistenceFarm.EmployWorker(laborer);
     }
 }

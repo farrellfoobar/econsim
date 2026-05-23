@@ -8,6 +8,12 @@ public class Laborer
     private CoinAmount wealth = CoinAmount.Silver(10);
     private Optional<Building> workplace = Optional<Building>.Empty();
     private ConsumerBehavior consumerBehavior = new ConsumerBehavior();
+    private Random random;
+
+    public Laborer()
+    {
+        random = new Random(this.GetHashCode());
+    }
     
     public void Pay(CoinAmount wage) {
         wealth.Add(wage);
@@ -25,7 +31,14 @@ public class Laborer
         if (!isPoor()) {
             foodConsumed += consumeDesiredFood(market);
         }
-        consumeRequiredFood(market, foodConsumed);
+        foodConsumed += consumeRequiredFood(market, foodConsumed);
+
+        if (foodConsumed < SimulationConstants.FoodConsumptionPerTurn) {
+            int i = random.Next(0, 10);
+            if (i.Equals(1)) {
+                Unemploy();
+            }
+        }
     }
 
     private int consumeDesiredFood(Market market) {
@@ -36,10 +49,6 @@ public class Laborer
 
             if (result == PurchaseResult.Success) {
                 foodConsumed += desiredFoodConsumption;
-            } else if (result == PurchaseResult.FailedCantAfford) {
-                SimpleLogger.Debug("Failed to buy desired food.");
-            } else if (result == PurchaseResult.FailedNotInStock) {
-                //oh well
             }
         }
         
@@ -57,13 +66,7 @@ public class Laborer
 
             if (result == PurchaseResult.Success) {
                 foodConsumed += foodToConsume;
-            } else if (result == PurchaseResult.FailedCantAfford) {
-                SimpleLogger.Log("I cant afford to eat!!!!");
-            } else if (result == PurchaseResult.FailedNotInStock) {
-                throw new Exception("getCheapestFoodItemInStock returned a food that is not in stock: " + cheapestFood);
             }
-        } else {
-            SimpleLogger.Log("There is no food available to consume!");
         }
         
         return foodConsumed;
@@ -109,6 +112,7 @@ public class Laborer
 
     public void Unemploy()
     {
+        workplace.Get().UnemployWorker(this);
         workplace = Optional<Building>.Empty();
     }
 }

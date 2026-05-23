@@ -4,7 +4,6 @@ using EconSim.data;
 
 namespace EconSim.logic;
 
-//TODO: PPPY, CPUP -> double maybe depending on implementation?
 public class BuildingInitialValues(ItemType produces, ItemType consumes, double pppy, double cpup, CoinAmount wppy)
 {
     public ItemType ItemProduced { get; init; } = produces;

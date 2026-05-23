@@ -30,12 +30,7 @@ public class SubsistenceFarm : Building
         }
     }
     
-    public void SetEmployees(Stack<Laborer> unemployedPopulation) {
+    public void SetEmployees(List<Laborer> unemployedPopulation) {
         this.employees = unemployedPopulation;
-    }
-    
-    public override bool EmployWorkers(int amount) {
-        throw new NotImplementedException("Cannot employ workers at SubsistenceFarm. Subsistence farmers are by " +
-                                          "definition unemployed. ");
     }
 }

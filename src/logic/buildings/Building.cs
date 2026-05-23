@@ -13,7 +13,7 @@ public abstract class Building
     protected abstract double itemsConsumedPerUnitProduced { get; }
     protected Town hostTown;
     protected CoinAmount wealth = SimulationConstants.BuildingStaringWealth;
-    protected Stack<Laborer> employees = new Stack<Laborer>();
+    protected List<Laborer> employees = new List<Laborer>();
     protected double productionOverflow = 0;
     protected double consumptionOverflow = 0;
 
@@ -73,23 +73,23 @@ public abstract class Building
         }
 
         for (int i = 0; i < amount; i++) {
-            Laborer laborer = hostTown.GetUnemployedPopulation().Pop();
-            laborer.Employ(this);
-            employees.Push(laborer);
+            Laborer laborer = hostTown.GetUnemployedPopulation()[0];
+            EmployWorker(laborer);
         }
         return true;
     }
 
-    public virtual bool UnemployWorkers(int amount, Stack<Laborer> unemployedPopulation) {
-        if (amount > unemployedPopulation.Count)
-            return false;
+    public virtual void EmployWorker(Laborer laborer)
+    {
+        hostTown.GetUnemployedPopulation().Remove(laborer);
+        employees.Add(laborer);
+        laborer.Employ(this);
+    }
 
-        for (int i = 0; i < amount; i++) {
-            Laborer laborer = employees.Pop();
-            laborer.Unemploy();
-            unemployedPopulation.Push(laborer);
-        }
-        return true;
+    public virtual void UnemployWorker(Laborer laborer)
+    {
+        employees.Remove(laborer);
+        hostTown.SetUnemployed(laborer);
     }
 
     public int GetEmployeeCount() {
