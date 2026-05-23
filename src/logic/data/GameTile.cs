@@ -1,5 +1,6 @@
 using System;
 using EconSim.data;
+using Godot;
 
 namespace EconSim.logic;
 
@@ -31,12 +32,15 @@ public class GameTile
         return tileType;
     }
 
-    public int GetPathfindingWeight()
+    public int GetWagonPathfindingWeight()
     {
         int ret = 0;
         switch (tileType) {
             case TileType.River:
                 ret = 5;
+                break;
+            case TileType.Ocean:
+                ret = int.MaxValue;
                 break;
             default:
                 ret = 1;
@@ -46,8 +50,38 @@ public class GameTile
         return ret;
     }
     
-    public bool IsPassable() {
-        return true;
+    public int GetBoatPathfindingWeight()
+    {
+        int ret = 0;
+        switch (tileType) {
+            case TileType.River:
+                ret = 1;
+                break;
+            case TileType.Ocean:
+                ret = 1;
+                break;
+            default:
+                ret = int.MaxValue;
+                break;
+        }
+
+        if (structure.Equals(StructureType.Hamlet)) {
+            ret = 1; //so boats can go from a river next to town to a town, maybe TODO: replace with dock structure in river, updating pathfinding logic
+        }
+        
+        return ret;
+    }
+    
+    public bool IsWagonPassable()
+    {
+        return !tileType.Equals(TileType.Ocean);
+    }
+    
+    public bool IsBoatPassable()
+    {
+        bool ret = tileType.Equals(TileType.Ocean) || tileType.Equals(TileType.River) || structure.Equals(StructureType.Hamlet);
+        
+        return ret;
     }
 
     public StructureType GetStructureType()
@@ -65,6 +99,7 @@ public enum TileType { //values from tile indexes
     Grass = 0,
     Path = 13,
     River = 3,
+    Ocean = 23,
 }
 
 public enum StructureType

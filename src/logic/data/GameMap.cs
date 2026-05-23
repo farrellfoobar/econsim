@@ -50,6 +50,11 @@ public class GameMap
         }
    }
 
+   public void SetTileType(TileType tileType, Vector2Int position)
+   {
+       tiles[position].SetTileType(tileType);
+   }
+
    public void AddRiver(Vector2Int start, List<Direction> path)
    {
        tiles[start] = new RiverTile(start, path[0]);
@@ -115,13 +120,18 @@ public class GameMap
        return towns.First(towns => towns.Value.Equals(town)).Key;
    }
    
+   public GameTile GetTileAt(Vector2Int pos)
+   {
+       return tiles[pos];
+   }
+   
    public List<GameTile> GetTiles() {
        return tiles.Values.ToList();
    }
 
    public int GetTilePathfindingWeight(Vector2Int position)
    {
-       return tiles[position].GetPathfindingWeight();
+       return tiles[position].GetWagonPathfindingWeight();
    }
 
    public List<Town> GetTowns() { return towns.Values.ToList(); }

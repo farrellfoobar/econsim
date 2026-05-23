@@ -13,6 +13,11 @@ public class RiverTile : GameTile
         
         this.direction = direction;
     }
+
+    public Direction GetDirection()
+    {
+        return direction;
+    }
 }
 
 public enum Direction

@@ -8,7 +8,8 @@ namespace EconSim.render;
 public class MerchantRenderer
 {
     const double tileSizePx = 128;
-    private const int merchantTextureIndex = 2;
+    private const int merchantWagonTextureIndex = 2;
+    private const int merchantBoatTextureIndex = 0;
     private const int eraseTextureIndex = -1;
     private TileMapLayer mapLayer;
     GameMap gameMap;
@@ -30,7 +31,8 @@ public class MerchantRenderer
         clear();
         foreach (Merchant merchant in merchants){
             Vector2I tilePositionAsGodotType = new Vector2I(merchant.GetPosition().GetX(), merchant.GetPosition().GetY());
-            mapLayer.SetCell(tilePositionAsGodotType, merchantTextureIndex, atlasCoords);
+            int texture = merchant.GetType().Equals(MerchantType.Wagon) ? merchantWagonTextureIndex : merchantBoatTextureIndex;
+            mapLayer.SetCell(tilePositionAsGodotType, texture, atlasCoords);
         }
     }
 

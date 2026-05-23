@@ -47,7 +47,7 @@ public class PathfinderTests
         AStarPathfinder pathfinder = new AStarPathfinder(gameMap);
 
         CoinAmount maxCost = CoinAmount.Gold(1000);
-        TradeRoute ret = pathfinder.GetMostProfitableTradeRoute(from, maxCost);
+        Optional<TradeRoute> ret = pathfinder.GetMostProfitableWagonTradeRoute(from, maxCost);
         
         Stack<Vector2Int> expectedPath = new Stack<Vector2Int>(new [] {
             new Vector2Int(13,7),
@@ -72,7 +72,9 @@ public class PathfinderTests
         Console.WriteLine(expectedRoute);
         Console.WriteLine(ret);
         
-        Util.Assert(ret.Equals(expectedRoute),
+        Util.Assert(ret.IsPresent(), "pathfinder.GetMostProfitableTradeRoute could not find a trade route.");
+        
+        Util.Assert(ret.Get().Equals(expectedRoute),
             "pathfinder.GetMostProfitableTradeRoute did not find expected route.");
     }
 }

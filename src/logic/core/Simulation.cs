@@ -36,14 +36,24 @@ public class Simulation
                 Direction.SouthEast,
                 Direction.SouthEast,
                 Direction.SouthEast,
-                Direction.SouthEast,
                 Direction.South,
-                Direction.South,
-                Direction.SouthEast,
-                Direction.SouthEast,
-                Direction.SouthEast,
             }
         );
+        
+        gameMap.SetTileType(TileType.Ocean, new Vector2Int(20,10));
+        gameMap.SetTileType(TileType.Ocean, new Vector2Int(20,11));
+        gameMap.SetTileType(TileType.Ocean, new Vector2Int(20,12));
+        gameMap.SetTileType(TileType.Ocean, new Vector2Int(19,10));
+        gameMap.SetTileType(TileType.Ocean, new Vector2Int(19,11));
+        gameMap.SetTileType(TileType.Ocean, new Vector2Int(19,12));
+        gameMap.SetTileType(TileType.Ocean, new Vector2Int(18,10));
+        gameMap.SetTileType(TileType.Ocean, new Vector2Int(18,11));
+        gameMap.SetTileType(TileType.Ocean, new Vector2Int(18,12));
+        gameMap.SetTileType(TileType.Ocean, new Vector2Int(17,11));
+        gameMap.SetTileType(TileType.Ocean, new Vector2Int(17,12));
+        gameMap.SetTileType(TileType.Ocean, new Vector2Int(21,11));
+        gameMap.SetTileType(TileType.Ocean, new Vector2Int(21,12));
+        
         
         sili.GetInventory().AddItems(ItemType.Grain, 10000);
         sili.GetInventory().AddItems(ItemType.Wood, 100);
@@ -71,8 +81,9 @@ public class Simulation
         sokoBrewery.EmployWorkers(10);
         soko.AddBuilding(sokoBrewery);
         
-        Agent agent = new Agent(sili, gameMap);
-        agents = new List<Agent> {agent};
+        Agent agent = new ProfitSeekingAgent(sili, gameMap);
+        Agent agentTwo = new ProfitSeekingAgent(burg, gameMap);
+        agents = new List<Agent> {agent, agentTwo};
     }
 
     public void DoTurn() {

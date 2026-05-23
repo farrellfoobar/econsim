@@ -7,46 +7,66 @@ namespace EconSim.logic;
 
 public class AStarPathfinder
 {
-    private AStar2D pathfinder;
+    private AStar2D wagonPathfinder = new AStar2D();
+    private BoatPathfinder boatPathfinder;
     private GameMap map;
     
     public AStarPathfinder(GameMap map)
     {
         this.map = map;
-        pathfinder = new AStar2D();
+        boatPathfinder = new BoatPathfinder(map);
 
         foreach (GameTile tile in map.GetTiles()) {
-            if (tile.IsPassable()) {
-                pathfinder.AddPoint(positionToId(tile), tile.GetPosition().AsGodotVector(), tile.GetPathfindingWeight());
+            if (tile.IsWagonPassable()) {
+                wagonPathfinder.AddPoint(positionToId(tile), tile.GetPosition().AsGodotVector(), tile.GetWagonPathfindingWeight());
+            }
+
+            if (tile.IsBoatPassable()) {
+                boatPathfinder.AddPoint(positionToId(tile), tile.GetPosition().AsGodotVector(), tile.GetBoatPathfindingWeight());
             }
         }
         
         foreach (GameTile tile in map.GetTiles()) {
             foreach (GameTile neighborTile in map.GetNeighborTiles(tile).Values) {
-                if (neighborTile.IsPassable()) {
-                    pathfinder.ConnectPoints(positionToId(tile), positionToId(neighborTile));
+                if (tile.IsWagonPassable() && neighborTile.IsWagonPassable()) {
+                    wagonPathfinder.ConnectPoints(positionToId(tile), positionToId(neighborTile));
+                }
+                if (tile.IsBoatPassable() && neighborTile.IsBoatPassable()) {
+                    boatPathfinder.ConnectPoints(positionToId(tile), positionToId(neighborTile));
                 }
             }
         }
     }
     
-    public TradeRoute GetMostProfitableTradeRoute(Town fromTown, CoinAmount maxCost)
+    public Optional<TradeRoute> GetMostProfitableWagonTradeRoute(Town fromTown, CoinAmount maxCost)
+    {
+        return getMostProfitableTradeRoute(fromTown, maxCost, wagonPathfinder);
+    }
+    
+    public Optional<TradeRoute> GetMostProfitableWaterTradeRoute(Town fromTown, CoinAmount maxCost)
+    {
+        return getMostProfitableTradeRoute(fromTown, maxCost, boatPathfinder);
+    }
+
+    private Optional<TradeRoute> getMostProfitableTradeRoute(Town fromTown, CoinAmount maxCost, AStar2D pathfinder)
     {
         List<Town> otherTowns = map.GetTowns();
         otherTowns.Remove(fromTown);
         
         CoinAmount bestProfit = new CoinAmount(-1);
-        TradeRoute bestRoute = null;
+        Optional<TradeRoute> bestRoute = Optional<TradeRoute>.Empty();
         foreach (Town toTown in otherTowns) {
             //TODO: ideally pathfinder.FindPath() would return a path & a cost, but since Godot didnt implement that Ill just path.Count for now
-            Tuple<Stack<Vector2Int>, int> pathAndCost = FindPath(map.GetTownPosition(fromTown), map.GetTownPosition(toTown));
+            Tuple<Stack<Vector2Int>, int> pathAndCost = findPath(map.GetTownPosition(fromTown), map.GetTownPosition(toTown), pathfinder);
             Stack<Vector2Int> path = pathAndCost.Item1;
-            TradeRoute route = getBestRouteForTown(fromTown, toTown, path, pathAndCost.Item2, maxCost);
-            CoinAmount routeProfit = route.GetProfitFrom();
+            if (path.Count > 0) {
+                TradeRoute route = getBestRouteForTown(fromTown, toTown, path, pathAndCost.Item2, maxCost);
+                CoinAmount routeProfit = route.GetProfitFrom();
 
-            if (routeProfit.IsGreaterThan(bestProfit)) {
-                bestProfit = routeProfit;
-                bestRoute = route;
+                if (routeProfit.IsGreaterThan(bestProfit)) {
+                    bestProfit = routeProfit;
+                    bestRoute = new Optional<TradeRoute>(route);
+                }
             }
         }
 
@@ -92,8 +112,9 @@ public class AStarPathfinder
         //https://en.wikipedia.org/wiki/Pairing_function#Cantor_pairing_function
     }
 
-    private Tuple<Stack<Vector2Int>, int> FindPath(Vector2Int start, Vector2Int goal)
+    private Tuple<Stack<Vector2Int>, int> findPath(Vector2Int start, Vector2Int goal, AStar2D pathfinder)
     {
+        //todo: handle empty stack i.e. no path
         Vector2[] godotPath = pathfinder.GetPointPath(positionToId(start), positionToId(goal));
         
         Stack<Vector2Int> path = new Stack<Vector2Int>(godotPath.Length);

@@ -7,19 +7,21 @@ namespace EconSim.logic;
 public class Merchant
 {
     private Goal goal = Goal.None;
+    private MerchantType type = MerchantType.None;
     private Vector2Int position;
     private TradeRoute tradeRoute;
     private Inventory inventory;
     private Agent parent;
     private GameMap map;
 
-    public Merchant(Agent parent, TradeRoute tradeRoute, GameMap map)
+    public Merchant(Agent parent, TradeRoute tradeRoute, GameMap map, MerchantType type)
     {
         this.position = parent.GetPosition();
         this.tradeRoute = tradeRoute;
         this.inventory = new Inventory();
         this.parent = parent;
         this.map = map;
+        this.type = type;
         goal = Goal.BuyExport;
     }
     
@@ -61,6 +63,11 @@ public class Merchant
         return position;
     }
 
+    public MerchantType GetType()
+    {
+        return type;
+    }
+    
     private void buyForRoute(OneWayTradeRoute route)
     {
         PurchaseResult purchaseResult = map.GetTownAt(position).GetMarket().TryBuyItems(parent.GetWealth(), route.GetTradeItem(), route.GetTradeQuantity());
@@ -69,6 +76,12 @@ public class Merchant
         
         inventory.AddItems(route.GetTradeItem(), route.GetTradeQuantity());
     }
+}
+
+public enum MerchantType {
+    None, 
+    Wagon,
+    Boat,
 }
 
 public enum Goal{
