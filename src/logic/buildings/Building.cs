@@ -1,16 +1,25 @@
 using System;
 using System.Collections.Generic;
 using EconSim.data;
+using EconSim.logic.buildings;
 
 namespace EconSim.logic;
 
 public abstract class Building
 {
+    private static readonly List<Type> ALL_BUILDINGS = new List<Type>{
+        typeof(Brewery),
+        typeof(CarpentryYard),
+        typeof(Jeweler),
+    }; 
+    
     protected abstract CoinAmount wagePerPersonyear { get; }
     protected abstract ItemType itemProduced { get; }
     protected abstract double productionPerPersonyear { get; }
     protected abstract ItemType itemConsumed { get; }
     protected abstract double itemsConsumedPerUnitProduced { get; }
+    protected abstract CoinAmount buildCost { get; }
+    protected abstract int maxEmployees { get; }
     protected Town hostTown;
     protected CoinAmount wealth = SimulationConstants.BuildingStaringWealth;
     protected List<Laborer> employees = new List<Laborer>();
@@ -53,6 +62,43 @@ public abstract class Building
         } else if (result == PurchaseResult.FailedCantAfford) {
             SimpleLogger.Log(this.GetType().Name + " in " + this.hostTown.getName() + " cannot afford to produce.");
         }
+    }
+
+    public static Dictionary<Building, CoinAmount> GetBuildingProfitability(Town hostTown) {
+        Dictionary<Building, CoinAmount> profitabilities = new Dictionary<Building, CoinAmount>();
+
+        List<Type> availableBuildings = ALL_BUILDINGS;
+        foreach (Building existingBuilding in hostTown.GetBuildings()) {
+            if (availableBuildings.Contains( existingBuilding.GetType() )) {
+                availableBuildings.Remove( existingBuilding.GetType() );
+            }
+        }
+        
+        foreach (Type tmp in availableBuildings) {
+            Building building = Activator.CreateInstance(tmp, hostTown) as Building;
+            CoinAmount profitability = building.getProfitability();
+            profitabilities.Add(building, profitability);
+        }
+        
+        return profitabilities;
+    }
+
+    private CoinAmount getProfitability()
+    {
+        CoinAmount unitCost = CoinAmount.GetMultiplyBy(
+            hostTown.GetMarket().GetPrice(GET_ITEM_CONSUMED()), 
+            GET_ITEMS_CONSUMED_PER_UNIT_PRODUCED()
+        );
+        
+        CoinAmount unitIncome = hostTown.GetMarket().GetPrice(GET_ITEM_PRODUCED());
+        
+        CoinAmount unitProfit = unitIncome;
+        unitProfit.Subtract(unitCost);
+
+        CoinAmount profitPerPersonYear = CoinAmount.GetMultiplyBy(unitProfit, GET_PRODUCTION_PER_PERSONYEAR());
+        CoinAmount profit = CoinAmount.GetMultiplyBy(profitPerPersonYear, GET_MAX_EMPLOYEES());
+        
+        return profit;
     }
 
     private double getNonIntegerComponent(double production) {
@@ -116,6 +162,14 @@ public abstract class Building
         return itemsConsumedPerUnitProduced; 
     }
 
+    public CoinAmount GET_BUILD_COST() {
+        return buildCost;
+    }
+
+    public int GET_MAX_EMPLOYEES() {
+        return maxEmployees;
+    }
+    
     public Town GetTown() {
         return hostTown;
     }

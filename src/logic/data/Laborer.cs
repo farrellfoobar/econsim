@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using EconSim.data;
 
 namespace EconSim.logic;
@@ -14,31 +15,39 @@ public class Laborer
     {
         random = new Random(this.GetHashCode());
     }
+
+    public void DoTurn(Town town)
+    {
+        if (IsEmployed()) {
+            int foodConsumed = consumeFood(town.GetMarket());
+            if (foodConsumed < SimulationConstants.FoodConsumptionPerTurn) {
+                if (oneInTen()) {
+                    Unemploy();
+                }
+            }
+        } else if (oneInTen() && town.GetMarket().FoodIsInStock()) {
+            town.EmployLaborer(this);
+        }
+        
+    }
+
+    private bool oneInTen()
+    {
+        return random.Next(0, 10) == 1;
+    }
     
     public void Pay(CoinAmount wage) {
         wealth.Add(wage);
     }
 
-    public void ConsumeAtMarket(Market market) {
-        if (IsEmployed())
-            consumeFood(market);
-
-        //todo consume everything else
-    }
-
-    private void consumeFood(Market market) {
+    private int consumeFood(Market market) {
         int foodConsumed = 0;
         if (!isPoor()) {
             foodConsumed += consumeDesiredFood(market);
         }
         foodConsumed += consumeRequiredFood(market, foodConsumed);
 
-        if (foodConsumed < SimulationConstants.FoodConsumptionPerTurn) {
-            int i = random.Next(0, 10);
-            if (i.Equals(1)) {
-                Unemploy();
-            }
-        }
+        return foodConsumed;
     }
 
     private int consumeDesiredFood(Market market) {
@@ -62,11 +71,12 @@ public class Laborer
         ItemType cheapestFood = getCheapestFoodItemInStock(market, foodToConsume);
 
         if (cheapestFood != ItemType.None) {
-            PurchaseResult result = market.TryBuyItems(wealth, cheapestFood, foodToConsume);
+            PurchaseResult result = market.TryBuyPartial(wealth, cheapestFood, foodToConsume);
 
             if (result == PurchaseResult.Success) {
                 foodConsumed += foodToConsume;
             }
+            //todo handle partial success
         }
         
         return foodConsumed;

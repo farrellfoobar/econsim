@@ -17,6 +17,7 @@ public class Town
     private TurnAndTimeManager turnAndTimeManager;
     private Vector2Int position;
     private SubsistenceFarm subsistenceFarm;
+    private Random rand;
     
     public Town(String name, int population, Vector2Int position, TurnAndTimeManager turnAndTimeManager) {
         unemployedPopulation = new List<Laborer>(population);
@@ -35,6 +36,7 @@ public class Town
         subsistenceFarm.SetEmployees(unemployedPopulation);
         buildings.Add(subsistenceFarm);
         market = new Market(turnAndTimeManager);
+        rand = new Random();
     }
     
     /*
@@ -51,9 +53,9 @@ public class Town
         }
     }
     
-    public void DoConsumptionTurn() {
+    public void DoLaborersTurn() {
         foreach (Laborer person in allPopulation) {
-            person.ConsumeAtMarket(market);
+            person.DoTurn(this);
         }
     }
 
@@ -69,9 +71,15 @@ public class Town
         
         return ret ;
     }
-
-    public void AddBuilding(Building building) {
-        buildings.Add(building);
+    
+    public void BuildBuilding(CoinAmount wealth, Building building) {
+        if (wealth.IsLessThan(building.GET_BUILD_COST())) {
+            SimpleLogger.Log("Tried to build building that cant be afforded");
+        }
+        else {
+            buildings.Add(building);
+            wealth.Subtract(building.GET_BUILD_COST());
+        }
     }
 
     public int GetUnemployedPopulationCount() {
@@ -130,6 +138,11 @@ public class Town
         this.market = fixedPriceMarket;
     }
 
+    public List<Building> GetBuildings()
+    {
+        return buildings;
+    }
+    
     public string getName()
     {
         return name;
@@ -139,5 +152,21 @@ public class Town
     {
         unemployedPopulation.Remove(laborer);
         subsistenceFarm.EmployWorker(laborer);
+    }
+
+    public void EmployLaborer(Laborer laborer)
+    {
+        List<Building> placesToWork = buildings;
+        placesToWork.Remove(subsistenceFarm);
+
+        placesToWork = placesToWork.Where(x => x.GetEmployeeCount() < x.GET_MAX_EMPLOYEES() && x.GetType() != typeof(SubsistenceFarm)).ToList();
+
+        if (placesToWork.Count == 0) {
+            return;
+        }
+        
+        int buildingIndex = rand.Next(0, placesToWork.Count);
+        
+        placesToWork[buildingIndex].EmployWorker(laborer);
     }
 }

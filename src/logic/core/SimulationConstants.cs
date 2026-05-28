@@ -4,13 +4,15 @@ using EconSim.data;
 
 namespace EconSim.logic;
 
-public class BuildingInitialValues(ItemType produces, ItemType consumes, double pppy, double cpup, CoinAmount wppy)
+public class BuildingInitialValues(ItemType produces, ItemType consumes, double pppy, double cpup, CoinAmount wppy, CoinAmount buildCost, int maxEmployees)
 {
     public ItemType ItemProduced { get; init; } = produces;
     public ItemType ItemConsumed { get; init; } = consumes;
     
     public double ProductionPerPersonyear { get; init; } = pppy;   
     public double ConsumptionPerUnitProduced { get; init; } = cpup;
+    public CoinAmount BuildCost { get; init; } = buildCost;
+    public int maxEmployees { get; init; } = maxEmployees;
 
     public CoinAmount WagePerPersonyear { get; init; } = wppy;
 }
@@ -21,25 +23,31 @@ public class SimulationConstants
         ItemType.Beer, ItemType.Grain, 
         1404, // 9*12 packs (10 gallons) a day, cleaning every other day = 9*3*52=1404 
         2.5, // 2.378 lb grain/Liter * 2.13Liter/6pack ~= 5, halved since beer was way weeker back then (/ballance)
-        CoinAmount.Silver(12)
+        CoinAmount.Silver(12),
+        CoinAmount.Gold(3),
+        5
         );
     
     public static BuildingInitialValues CarpentryYardValues = new BuildingInitialValues(
         ItemType.Furniture, ItemType.Wood, 
         18, // one every three weeks
         2, //see BASE_PRICE[ItemType.Furniture] declaration
-        CoinAmount.Silver(15)
+        CoinAmount.Silver(15),
+        CoinAmount.Gold(1),
+        25
     );
     
     public static BuildingInitialValues JewelryValues = new BuildingInitialValues(
         ItemType.Jewelry, ItemType.SilverOre, 
         12, //one a month
         1, // one ring ~= 4 grams ~= CoinAmount.Silver(1) := about 3.5grams silver
-        CoinAmount.Silver(18)
+        CoinAmount.Silver(18),
+        CoinAmount.Gold(8),
+        8
     );
     
     public static BuildingInitialValues SubsistanceFarmValues = new BuildingInitialValues(
-        ItemType.Grain, ItemType.None , 100, 0, new CoinAmount(0)
+        ItemType.Grain, ItemType.None , 100, 0, new CoinAmount(0), new CoinAmount(0), Int32.MaxValue
     );
     
     public static CoinAmount BuildingStaringWealth = CoinAmount.Gold(1);

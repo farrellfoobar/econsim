@@ -9,4 +9,6 @@ public class Brewery(Town hostTown) : Building(hostTown)
     protected override double itemsConsumedPerUnitProduced { get; } = SimulationConstants.BreweryValues.ConsumptionPerUnitProduced;
     protected override CoinAmount wagePerPersonyear { get; } = SimulationConstants.BreweryValues.WagePerPersonyear;
     protected override ItemType itemProduced { get; } = SimulationConstants.BreweryValues.ItemProduced;
+    protected override CoinAmount buildCost { get; } = SimulationConstants.BreweryValues.BuildCost;
+    protected override int maxEmployees { get; } = SimulationConstants.BreweryValues.maxEmployees;
 }

@@ -7,6 +7,7 @@ namespace EconSim.logic;
 public enum PurchaseResult
 {
     Success,
+    PartialSuccess,
     FailedNotInStock,
     FailedCantAfford,
 }
@@ -48,6 +49,22 @@ public class Market
         addItems(itemType, quantity);
     }
 
+    public PurchaseResult TryBuyPartial(CoinAmount wealth, ItemType itemType, int quantity) {
+        int quantityToPurchase = quantity;
+        bool partial = false;
+        if (inventory.GetItemCount(itemType) < quantity) {
+            quantityToPurchase = inventory.GetItemCount(itemType);
+            partial = true;
+        }
+        
+        PurchaseResult result = TryBuyItems(wealth, itemType, quantityToPurchase);
+
+        if (partial && result.Equals(PurchaseResult.Success))
+            result = PurchaseResult.PartialSuccess;
+        
+        return result;
+    }
+    
     public PurchaseResult TryBuyItems(CoinAmount wealth, ItemType itemType, int quantity) {
         PurchaseResult result = PurchaseResult.Success;
         CoinAmount cost = CoinAmount.GetMultiplyBy(GetPrice(itemType), quantity);
@@ -113,5 +130,10 @@ public class Market
         }
         str += ">";
         return str;
+    }
+
+    public bool FoodIsInStock()
+    {
+        return inventory.GetItemCount(ItemType.Grain) > 0 || inventory.GetItemCount(ItemType.Fish) > 0;
     }
 }

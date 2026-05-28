@@ -11,6 +11,8 @@ public class SubsistenceFarm : Building
     protected override double itemsConsumedPerUnitProduced { get; } = SimulationConstants.SubsistanceFarmValues.ConsumptionPerUnitProduced;
     protected override CoinAmount wagePerPersonyear { get; } = SimulationConstants.SubsistanceFarmValues.WagePerPersonyear;
     protected override ItemType itemProduced { get; } = SimulationConstants.SubsistanceFarmValues.ItemProduced;
+    protected override CoinAmount buildCost { get; } = SimulationConstants.SubsistanceFarmValues.BuildCost;
+    protected override int maxEmployees { get; } = SimulationConstants.SubsistanceFarmValues.maxEmployees;
 
     private double productionThisYear = 0;
     private TurnAndTimeManager turnAndTimeManager;

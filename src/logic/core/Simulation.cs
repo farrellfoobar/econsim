@@ -57,29 +57,15 @@ public class Simulation
         
         sili.GetInventory().AddItems(ItemType.Grain, 10000);
         sili.GetInventory().AddItems(ItemType.Wood, 100);
-        sili.GetInventory().AddItems(ItemType.Fish, 10000);
-        Building siliBrewery = new Brewery(sili);
-        siliBrewery.EmployWorkers(3);
-        sili.AddBuilding(siliBrewery);
+        //sili.GetInventory().AddItems(ItemType.Fish, 10000);
         
         burg.GetInventory().AddItems(ItemType.Grain, 10000);
         burg.GetInventory().AddItems(ItemType.Wood, 1000);
-        burg.GetInventory().AddItems(ItemType.Fish, 10000);
-
-        Building burgLumberYard = new CarpentryYard(burg); 
-        burg.AddBuilding(burgLumberYard);
-        burgLumberYard.EmployWorkers(12);
-
-        Building burgJeweler = new Jeweler(burg); 
-        burg.AddBuilding(burgJeweler);
-        burgJeweler.EmployWorkers(4);
+       // burg.GetInventory().AddItems(ItemType.Fish, 10000);
         
         soko.GetInventory().AddItems(ItemType.Grain, 10000);
         soko.GetInventory().AddItems(ItemType.Wood, 100);
-        soko.GetInventory().AddItems(ItemType.Fish, 10000);
-        Building sokoBrewery = new Brewery(sili);
-        sokoBrewery.EmployWorkers(10);
-        soko.AddBuilding(sokoBrewery);
+        //soko.GetInventory().AddItems(ItemType.Fish, 10000);
         
         Agent agent = new ProfitSeekingAgent(sili, gameMap);
         Agent agentTwo = new ProfitSeekingAgent(burg, gameMap);
@@ -98,7 +84,7 @@ public class Simulation
         foreach (Town town in gameMap.GetTowns()) {
             Console.WriteLine(town);
             town.DoProductionTurn();
-            town.DoConsumptionTurn();
+            town.DoLaborersTurn();
         }
     }
 

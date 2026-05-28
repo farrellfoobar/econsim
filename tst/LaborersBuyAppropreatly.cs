@@ -9,12 +9,14 @@ public class LaborersBuyAppropreatly
     public static void Run()
     {
         Laborer laborer = new Laborer();
-        Market market = new Market(new TurnAndTimeManager());
+        TurnAndTimeManager turnAndTimeManager = new TurnAndTimeManager();
+        Market market = new Market(turnAndTimeManager);
         market.GetInventory().AddItems(ItemType.Grain, 1000);
+        Town testTown = new Town("", 1, new Vector2Int(0, 0), turnAndTimeManager);
         
         CoinAmount wealthBefore = new CoinAmount(550);
         laborer.TestingSetWealth(new CoinAmount(wealthBefore));
-        laborer.ConsumeAtMarket(market);
+        laborer.DoTurn(testTown);
         
         CoinAmount minWealthAfter = new CoinAmount(wealthBefore);
         CoinAmount expectedSpend = CoinAmount.GetMultiplyBy(

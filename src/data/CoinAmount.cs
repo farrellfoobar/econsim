@@ -2,7 +2,7 @@ using System;
 
 namespace EconSim.data;
 
-public class CoinAmount
+public class CoinAmount : IComparable<CoinAmount>
 {
     public static readonly CoinAmount MaxValue = new CoinAmount(Int32.MaxValue);
     public static readonly CoinAmount MinValue = new CoinAmount(1);
@@ -68,5 +68,12 @@ public class CoinAmount
     {
         double cents = coinAmount.cents * factor;
         return new CoinAmount( (int) cents);
+    }
+
+    public int CompareTo(CoinAmount other)
+    {
+        if (ReferenceEquals(this, other)) return 0;
+        if (other is null) return 1;
+        return cents.CompareTo(other.cents);
     }
 }
