@@ -10,7 +10,7 @@ To start: just a simple dynamic economic sim with towns, merchants (maybe more a
 # Todo:
 
 ### fixes:
-* fix food consumption so a starving town has 0 food instead of > 1 person's worth
+ *
 
 ### short term
 * laborers consume non-food items
