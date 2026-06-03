@@ -69,7 +69,7 @@ public class Market
         PurchaseResult result = PurchaseResult.Success;
         CoinAmount cost = CoinAmount.GetMultiplyBy(GetPrice(itemType), quantity);
         
-        if (quantity > inventory.GetItemCount(itemType)) {
+        if ( !inventory.ContainsItem(itemType) || quantity > inventory.GetItemCount(itemType)) {
             result = PurchaseResult.FailedNotInStock;
         }
         else if (!wealth.IsGreaterThan(cost)) {
@@ -104,8 +104,8 @@ public class Market
         return supplyDemandFactor;
     }
     
-    public bool IsInStock(ItemType itemType, int quantity) {
-        return inventory.GetItemCount(itemType) >= quantity;
+    public bool IsInStock(ItemType itemType) {
+        return inventory.GetItemCount(itemType) >= 0;
     }
     
     public int GetStock(ItemType itemType)

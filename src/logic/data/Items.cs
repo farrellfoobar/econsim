@@ -4,6 +4,11 @@ namespace EconSim.logic;
 
 public class Items
 {
+    public static readonly List<ItemType> CONSUMER_GOODS = new List<ItemType>
+    {
+        ItemType.Furniture,
+        ItemType.Jewelry,
+    };
     public static readonly List<ItemType> AllFoodItems = new List<ItemType> { ItemType.Grain, ItemType.Fish }; 
     public static readonly List<ItemType> ALL_ITEMS = new List<ItemType>
     {

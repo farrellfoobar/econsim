@@ -1,3 +1,5 @@
+using System;
+
 namespace EconSim.tst;
 
 public class TestExecutor

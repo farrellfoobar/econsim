@@ -21,7 +21,7 @@ public abstract class Building
     protected abstract CoinAmount buildCost { get; }
     protected abstract int maxEmployees { get; }
     protected Town hostTown;
-    protected CoinAmount wealth = SimulationConstants.BuildingStaringWealth;
+    protected CoinAmount wealth;
     protected List<Laborer> employees = new List<Laborer>();
     protected double productionOverflow = 0;
     protected double consumptionOverflow = 0;
@@ -30,6 +30,7 @@ public abstract class Building
     
     protected Building(Town hostTown) {
         this.hostTown = hostTown;
+        wealth = buildCost;
 
         if (wagePerPersonyear.AsInt() % TurnAndTimeManager.TurnsInAYear != 0)
             throw new ArgumentException("Wage per person year must be divisible by TurnsInAYear: " + 

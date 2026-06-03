@@ -25,8 +25,19 @@ public class Laborer
                     Unemploy();
                 }
             }
+
+            consumeGoods(town.GetMarket());
         } else if (oneInTen() && town.GetMarket().FoodIsInStock()) {
             town.EmployLaborer(this);
+        }
+        
+    }
+
+    private void consumeGoods(Market market)
+    {
+        foreach (ItemType item in Items.CONSUMER_GOODS) {
+            int desiredConsumption = consumerBehavior.QuantityPurchasedPerTurn(item, wealth, market.GetPrice(item));
+            market.TryBuyItems(wealth, item, desiredConsumption);    
         }
         
     }
@@ -68,7 +79,7 @@ public class Laborer
     {
         int foodConsumed = 0;
         int foodToConsume = SimulationConstants.FoodConsumptionPerTurn - foodAlreadyConsumed;
-        ItemType cheapestFood = getCheapestFoodItemInStock(market, foodToConsume);
+        ItemType cheapestFood = getCheapestFoodItemInStock(market);
 
         if (cheapestFood != ItemType.None) {
             PurchaseResult result = market.TryBuyPartial(wealth, cheapestFood, foodToConsume);
@@ -76,19 +87,18 @@ public class Laborer
             if (result == PurchaseResult.Success) {
                 foodConsumed += foodToConsume;
             }
-            //todo handle partial success
         }
         
         return foodConsumed;
     }
 
-    private ItemType getCheapestFoodItemInStock(Market market, int quantity) {
+    private ItemType getCheapestFoodItemInStock(Market market) {
         CoinAmount cheapestItemCost = CoinAmount.MaxValue;
         ItemType cheapestItemType = ItemType.None;
         
         foreach (ItemType food in Items.AllFoodItems) {
             CoinAmount foodCost = market.GetPrice(food);
-            if (market.IsInStock(food, quantity) && foodCost.IsLessThan(cheapestItemCost)) {
+            if (market.IsInStock(food) && foodCost.IsLessThan(cheapestItemCost)) {
                 cheapestItemCost = foodCost;
                 cheapestItemType = food;
             }

@@ -4,7 +4,7 @@ namespace EconSim.data;
 
 public class SimpleLogger
 {
-    public static bool IsDebug = true;
+    public static bool IsDebug = false;
     private static String prepend = "*** LOG ***:\t\t";
     private static String debugPrepend = "*** DEBUG LOG ***:\t";
 

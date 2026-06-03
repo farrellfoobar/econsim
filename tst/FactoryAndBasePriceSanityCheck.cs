@@ -82,7 +82,7 @@ public class FactoryAndBasePriceSanityCheck
             building.DoProductionTurn();
         }
         
-        Util.Assert(building.GetProfit().Equals(SimulationConstants.BuildingStaringWealth),
+        Util.Assert(building.GetProfit().Equals(building.GET_BUILD_COST()),
             building.GetType().Name + " makes money without buying any ingredients.");
     }
     
