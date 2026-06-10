@@ -48,6 +48,7 @@ public class Town
 
     public void DoProductionTurn() {
         market.DoTurn(turnAndTimeManager.GetTurnCount());
+        subsistenceFarm.DoProductionTurn();
         foreach (Building building in buildings) {
             building.DoProductionTurn();
         }

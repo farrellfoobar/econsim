@@ -68,8 +68,10 @@ public class Market
     public PurchaseResult TryBuyItems(CoinAmount wealth, ItemType itemType, int quantity) {
         PurchaseResult result = PurchaseResult.Success;
         CoinAmount cost = CoinAmount.GetMultiplyBy(GetPrice(itemType), quantity);
-        
-        if ( !inventory.ContainsItem(itemType) || quantity > inventory.GetItemCount(itemType)) {
+
+        if (quantity == 0) {
+            //do nothing
+        } else if ( !inventory.ContainsItem(itemType) || quantity > inventory.GetItemCount(itemType)) {
             result = PurchaseResult.FailedNotInStock;
         }
         else if (!wealth.IsGreaterThan(cost)) {
