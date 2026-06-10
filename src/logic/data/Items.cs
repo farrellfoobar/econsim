@@ -8,6 +8,7 @@ public class Items
     {
         ItemType.Furniture,
         ItemType.Jewelry,
+        ItemType.Beer,
     };
     public static readonly List<ItemType> AllFoodItems = new List<ItemType> { ItemType.Grain, ItemType.Fish }; 
     public static readonly List<ItemType> ALL_ITEMS = new List<ItemType>
