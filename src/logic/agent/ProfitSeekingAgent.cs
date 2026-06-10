@@ -22,8 +22,8 @@ public class ProfitSeekingAgent : Agent
             }
         }
         
-        foreach (Merchant merchant in merchants) {
-            merchant.DoTurn();
+        for (int i = 0; i < merchants.Count; i++) {
+            merchants[i].DoTurn();
         }
     }
 
