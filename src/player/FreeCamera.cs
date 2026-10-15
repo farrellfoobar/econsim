@@ -1,3 +1,4 @@
+using System;
 using Godot;
 
 namespace EconSim.player;
@@ -5,6 +6,7 @@ namespace EconSim.player;
 public partial class FreeCamera : Camera2D
 {
     private static double cameraSpeed = 100;
+    private static Vector2 cameraZoom = new Vector2(0.1f, 0.1f);
     
     public FreeCamera(Node2D parent)
     {
@@ -30,6 +32,15 @@ public partial class FreeCamera : Camera2D
             direction.Y += distance;
         if (Input.IsActionPressed("north"))
             direction.Y -= distance;
+        
+        if(Input.IsActionPressed("pan faster"))
+            direction *= 5;
+
+        if (Input.IsActionJustReleased("zoom in")) {
+            this.Zoom += cameraZoom;
+        }
+        if(Input.IsActionJustReleased("zoom out"))
+            this.Zoom -= cameraZoom;
         
         this.SetPosition(this.GetPosition() + direction);
     }
