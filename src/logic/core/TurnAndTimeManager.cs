@@ -2,7 +2,7 @@ namespace EconSim.logic;
 
 public class TurnAndTimeManager
 {
-    public const int TurnsInSecond = 1;
+    public const int BASE_TURNS_IN_SECOND = 1;
     public const int TurnsInAYear = 4;
     
     private int turnCount = 0;

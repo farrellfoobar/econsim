@@ -1,3 +1,4 @@
+using System;
 using EconSim.logic;
 using EconSim.render;
 using EconSim.tst;
@@ -11,6 +12,7 @@ public partial class Root2dScene : Node2D
 	
 	public const int GODOT_PHYSICS_TICKS_PER_SECOND = 60;
 	private int current_tick = 0;
+	private int turnsInSecond = TurnAndTimeManager.BASE_TURNS_IN_SECOND;
 	
 	private Simulation simulation;
 	private SimulationRenderer renderer;
@@ -30,6 +32,15 @@ public partial class Root2dScene : Node2D
 			simulation = new Simulation();
 			renderer = new SimulationRenderer(this, simulation);
 		}
+
+		GetNode<Button>("FreeCamera/UI CanvasLayer/Time Control UI/Pause Button").Pressed += () => changeGameSpeed(0);
+		GetNode<Button>("FreeCamera/UI CanvasLayer/Time Control UI/Play Button").Pressed += () => changeGameSpeed(1);
+		GetNode<Button>("FreeCamera/UI CanvasLayer/Time Control UI/Fast Forward Button").Pressed += () => changeGameSpeed(2);
+	}
+
+	void changeGameSpeed(int speed)
+	{
+		turnsInSecond = speed;
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -53,7 +64,10 @@ public partial class Root2dScene : Node2D
 
 	private bool doesTurnHappenThisTick(int currentTick)
 	{
-		int ticksPerTurn = GODOT_PHYSICS_TICKS_PER_SECOND / TurnAndTimeManager.TurnsInSecond;
+		if (turnsInSecond == 0)
+			return false;
+		
+		int ticksPerTurn = GODOT_PHYSICS_TICKS_PER_SECOND / turnsInSecond;
 
 		bool turnHappens = currentTick % ticksPerTurn == 0;
 		return turnHappens;

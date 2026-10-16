@@ -11,7 +11,10 @@ public partial class FreeCamera : Camera2D
     public FreeCamera(Node2D parent)
     {
         parent.AddChild(this);
-        this.MakeCurrent();
+        MakeCurrent();
+        this.Name = "FreeCamera";
+        
+        GetNode("../UI CanvasLayer").Reparent(this, false);
     }
 
     public override void _PhysicsProcess(double delta)
