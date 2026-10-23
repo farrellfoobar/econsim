@@ -12,7 +12,7 @@ public class LaborersBuyAppropreatly
         TurnAndTimeManager turnAndTimeManager = new TurnAndTimeManager();
         Market market = new Market(turnAndTimeManager);
         market.GetInventory().AddItems(ItemType.Grain, 1000);
-        Town testTown = new Town("", 1, new Vector2Int(0, 0), turnAndTimeManager);
+        Town testTown = new Town("", 1, turnAndTimeManager);
         
         CoinAmount wealthBefore = new CoinAmount(550);
         laborer.TestingSetWealth(new CoinAmount(wealthBefore));

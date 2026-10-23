@@ -9,12 +9,33 @@ public class PathfinderTests
 {
     public static void Run()
     {
-        GameMap gameMap = new GameMap(27, 13);
         TurnAndTimeManager turnAndTimeManager = new TurnAndTimeManager();
+        Town from = new Town("fromTown", 0, turnAndTimeManager);
+        Town to = new Town("toTown", 0, turnAndTimeManager);
+        Town redHering = new Town("RedHeringTown", 0, turnAndTimeManager);
         
-        Town from = new Town("fromTown", 0, new Vector2Int(3, 3), turnAndTimeManager);
-        Town to = new Town("toTown", 0, new Vector2Int(13, 7), turnAndTimeManager);
-        Town redHering = new Town("RedHeringTown", 0, new Vector2Int(20, 9), turnAndTimeManager);
+        Dictionary<Vector2Int, Town> towns = new Dictionary<Vector2Int, Town> {
+            { new Vector2Int(3, 3), from },
+            { new Vector2Int(13, 7), to },
+            { new Vector2Int(20, 9), redHering },
+        };
+        
+        GameMap gameMap = new GameMap();
+        for(int x = 0; x < 27; x++) {
+            for (int y = 0; y < 13; y++) {
+                Vector2Int pos = new Vector2Int(x, y);
+                GameTile tile;
+                if (pos.Equals(from.GetPosition()) || pos.Equals(to.GetPosition()) || pos.Equals(redHering.GetPosition())) {
+                    tile = new GameTile(TileType.Temperate, new Vector2Int(x, y), StructureType.Hamlet);
+                }
+                else {
+                    tile = new GameTile(TileType.Temperate, new Vector2Int(x, y));
+                }
+                
+                gameMap.AddTile(tile);
+            }
+        }
+        gameMap.AssignTowns(new List<Town> { from, to, redHering });
 
         FixedPriceMarket fromMarket = new FixedPriceMarket(turnAndTimeManager);
         from.SetMarket(fromMarket);
@@ -24,10 +45,6 @@ public class PathfinderTests
         redHering.SetMarket(new FixedPriceMarket(turnAndTimeManager));
         FixedPriceMarket redHeringMarket = new FixedPriceMarket(turnAndTimeManager);
         from.SetMarket(fromMarket);
-        
-        gameMap.AddTown(from);
-        gameMap.AddTown(to);
-        gameMap.AddTown(redHering);
         
         from.GetInventory().AddItems(ItemType.Grain, 1000);
         to.GetInventory().AddItems(ItemType.Grain, 1000);

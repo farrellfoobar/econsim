@@ -6,11 +6,8 @@ namespace EconSim.logic;
 public class RiverTile : GameTile
 {
     private Direction direction;
-    public RiverTile(Vector2Int position, Direction direction, StructureType structure = StructureType.None) : base(TileType.River, position, structure)
+    public RiverTile(TileType tileType, Vector2Int position, Direction direction, StructureType structureType = StructureType.River) : base(tileType, position, structureType)
     {
-        if(structure != StructureType.None)
-            throw new ArgumentException("River tile cannot have a structure on it.");
-        
         this.direction = direction;
     }
 

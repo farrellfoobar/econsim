@@ -23,13 +23,11 @@ public partial class BoatPathfinder : AStar2D
     
     public override float _ComputeCost(long fromId, long toId)
     {
-        float ret = 0;
         GameTile fromTile = map.GetTileAt(new Vector2Int(GetPointPosition(fromId)));
         GameTile toTile = map.GetTileAt(new Vector2Int(GetPointPosition(toId)));
+        float ret = toTile.GetBoatPathfindingWeight();
         
-        if (fromTile.GetTileType().Equals(TileType.Ocean)) {
-            ret = OCEAN_PATHFINDING_WEIGHT;
-        } else if (fromTile.GetTileType().Equals(TileType.River)) {
+        if (toTile.isRiver() && fromTile.isRiver()) {
             RiverTile riverTile = fromTile as RiverTile;
             bool withCurrent = map.GetNeighborTiles(fromTile)[riverTile.GetDirection()].Equals(toTile);
             ret = withCurrent ? BOAT_PATHFINDING_WEIGHT_WITH_CURRENT : BOAT_PATHFINDING_WEIGHT_AGAINST_CURRENT;

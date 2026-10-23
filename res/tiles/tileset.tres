@@ -19,6 +19,7 @@
 [ext_resource type="Texture2D" uid="uid://c2ga178ock8eq" path="res://res/tiles/tilePNGs/base_watery.png" id="17_tk2nl"]
 [ext_resource type="Texture2D" uid="uid://bfdk2nki84de4" path="res://res/tiles/tilePNGs/base_deep_water.png" id="17_vof6a"]
 [ext_resource type="Texture2D" uid="uid://dy4y3i136lnb6" path="res://res/tiles/tilePNGs/empty-tile.png" id="18_fxryu"]
+[ext_resource type="Texture2D" uid="uid://ck4rop3hixcgq" path="res://res/tiles/tilePNGs/base_greener.png" id="18_wvov8"]
 [ext_resource type="Texture2D" uid="uid://dm8aixu1w08ou" path="res://res/tiles/tilePNGs/green-mountain-2.png" id="19_k4y40"]
 [ext_resource type="Texture2D" uid="uid://cynjv6uuc0gt0" path="res://res/tiles/tilePNGs/base_baren.png" id="20_h3eqt"]
 [ext_resource type="Texture2D" uid="uid://bl0ekcwx57il5" path="res://res/tiles/tilePNGs/green-mountain.png" id="21_1tv56"]
@@ -111,6 +112,11 @@ texture = ExtResource("17_vof6a")
 texture_region_size = Vector2i(64, 64)
 0:0/0 = 0
 
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_h3eqt"]
+texture = ExtResource("18_wvov8")
+texture_region_size = Vector2i(64, 64)
+0:0/0 = 0
+
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_tt4pr"]
 texture = ExtResource("17_tk2nl")
 texture_region_size = Vector2i(64, 64)
@@ -180,3 +186,4 @@ sources/20 = SubResource("TileSetAtlasSource_ph3t7")
 sources/21 = SubResource("TileSetAtlasSource_00r5l")
 sources/22 = SubResource("TileSetAtlasSource_tlq0u")
 sources/23 = SubResource("TileSetAtlasSource_wvov8")
+sources/24 = SubResource("TileSetAtlasSource_h3eqt")

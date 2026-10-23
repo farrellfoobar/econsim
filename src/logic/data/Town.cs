@@ -19,7 +19,7 @@ public class Town
     private SubsistenceFarm subsistenceFarm;
     private Random rand;
     
-    public Town(String name, int population, Vector2Int position, TurnAndTimeManager turnAndTimeManager) {
+    public Town(String name, int population, TurnAndTimeManager turnAndTimeManager) {
         unemployedPopulation = new List<Laborer>(population);
         allPopulation = new List<Laborer>(population);
         for (int i = 0; i < population; i++) {
@@ -29,7 +29,6 @@ public class Town
         }
         this.turnAndTimeManager = turnAndTimeManager;
         this.name = name;
-        this.position = position;
         this.buildings = new List<Building>();
 
         subsistenceFarm = new SubsistenceFarm(this, turnAndTimeManager);
@@ -169,5 +168,10 @@ public class Town
         int buildingIndex = rand.Next(0, placesToWork.Count);
         
         placesToWork[buildingIndex].EmployWorker(laborer);
+    }
+
+    public void SetPosition(Vector2Int pos)
+    {
+        this.position = pos;
     }
 }

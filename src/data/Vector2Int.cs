@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Godot;
 
 namespace EconSim.data;
@@ -25,6 +26,20 @@ public class Vector2Int
         }
         x = (int) godotVector.X;
         y = (int) godotVector.Y;
+    }
+    
+    public Vector2Int(Vector2I godotVector)
+    {
+        x = godotVector.X;
+        y = godotVector.Y;
+    }
+
+    public static List<Vector2Int> withoutGodotTypes(Godot.Collections.Array<Godot.Vector2I> positions) {
+        List<Vector2Int> normalList = new List<Vector2Int>();
+        foreach (Vector2I pos in positions) {
+            normalList.Add(new Vector2Int(pos.X, pos.Y));
+        }
+        return normalList;
     }
     
     public override bool Equals(object that)

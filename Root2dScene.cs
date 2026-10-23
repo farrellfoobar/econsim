@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using EconSim.data;
 using EconSim.logic;
 using EconSim.render;
 using EconSim.tst;
@@ -15,6 +17,7 @@ public partial class Root2dScene : Node2D
 	private int turnsInSecond = TurnAndTimeManager.BASE_TURNS_IN_SECOND;
 	
 	private Simulation simulation;
+	private TurnAndTimeManager turnAndTimeManager = new TurnAndTimeManager();
 	private SimulationRenderer renderer;
 	
 	// Called when the node enters the scene tree for the first time.
@@ -29,7 +32,13 @@ public partial class Root2dScene : Node2D
 				GetTree().Quit();
 			}
 		} else {
-			simulation = new Simulation();
+			simulation = new Simulation(GameMapFromGodotMap.getMap(
+				GetNode<TileMapLayer>("GroundTileMapLayer"), 
+				GetNode<TileMapLayer>("TownTileMapLayer"), 
+				GetNode<TileMapLayer>("RiverTileMapLayer"), 
+				GetNode<TileMapLayer>("RiverDirectionTileMapLayer"))
+			);
+			
 			renderer = new SimulationRenderer(this, simulation);
 		}
 

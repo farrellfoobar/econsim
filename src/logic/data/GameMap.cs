@@ -30,74 +30,34 @@ public class GameMap
         { Direction.SouthEast, new Vector2Int(1, 0) },
     };
     
-   private int width;
-   private int height;
    private Dictionary<Vector2Int, GameTile> tiles = new Dictionary<Vector2Int, GameTile>();
    private Dictionary<Vector2Int, Town> towns = new Dictionary<Vector2Int, Town>();
    
-   public GameMap(int width, int height)
+   public void AddTile(GameTile tile)
    {
-        this.width = width;
-        this.height = height;
-
-        for (int x = 0; x < width; x++)
-        {
-             for (int y = 0; y < height; y++)
-             {
-                 GameTile tile = new GameTile(TileType.Grass, new Vector2Int(x, y));
-                 tiles.Add(tile.GetPosition(), tile);
-             }   
-        }
-   }
-
-   public void SetTileType(TileType tileType, Vector2Int position)
-   {
-       tiles[position].SetTileType(tileType);
-   }
-
-   public void AddRiver(Vector2Int start, List<Direction> path)
-   {
-       tiles[start] = new RiverTile(start, path[0]);
-       Vector2Int pos = start;
-       
-       foreach (Direction direction in path) {
-           Vector2Int next = GetNeighborTiles(tiles[pos])[direction].GetPosition();
-           tiles[next] = new RiverTile(next, direction);
-           pos = next;
+       tiles.Add(tile.GetPosition(), tile);
+       if (tile.GetStructureType().Equals(StructureType.Hamlet)) {
+           towns.Add(tile.GetPosition(), null);
        }
    }
    
-   public void AddTown(Town town)
+   public void AssignTowns(List<Town> list)
    {
-       if(towns.ContainsKey(town.GetPosition()))
-           throw new ArgumentException("There is already a town with the same position: " + town);
-       
-       tiles[town.GetPosition()].SetStructureType(StructureType.Hamlet);
-       towns.Add(town.GetPosition(), town);
+       if (list.Count != towns.Count)
+           throw new Exception("Town count from map and town count from simulation are different!");
+
+       int i = 0;
+       foreach (Vector2Int position in towns.Keys) {
+           list[i].SetPosition(position);
+           towns[position] = list[i];
+           i++;
+       }
    }
 
    public Dictionary<Direction, GameTile> GetNeighborTiles(GameTile tile)
    {
-       Vector2Int position = tile.GetPosition();
-
-       Dictionary<Direction, Vector2Int> relativeNeighborPositions;
-       if (tile.GetPosition().GetX() % 2 == 0) {
-           relativeNeighborPositions = EVEN_COL_DIRECTION_AS_VECTOR;
-       }
-       else {
-           relativeNeighborPositions = ODD_COL_DIRECTION_AS_VECTOR;
-       }
+       Dictionary<Direction, Vector2Int> possibleNeighborPositions = GetPossibleNeighborPositions(tile.GetPosition());
        
-       Dictionary<Direction, Vector2Int> possibleNeighborPositions = new Dictionary<Direction, Vector2Int>
-       {
-            { Direction.North, new Vector2Int(Vector2Int.Sum(position, relativeNeighborPositions[Direction.North]).AsGodotVector() ) },
-            { Direction.South, new Vector2Int(Vector2Int.Sum(position, relativeNeighborPositions[Direction.South]).AsGodotVector() ) },
-            { Direction.NorthWest, new Vector2Int(Vector2Int.Sum(position, relativeNeighborPositions[Direction.NorthWest]).AsGodotVector() ) },
-            { Direction.NorthEast, new Vector2Int(Vector2Int.Sum(position, relativeNeighborPositions[Direction.NorthEast]).AsGodotVector() ) },
-            { Direction.SouthWest, new Vector2Int(Vector2Int.Sum(position, relativeNeighborPositions[Direction.SouthWest]).AsGodotVector() ) },
-            { Direction.SouthEast, new Vector2Int(Vector2Int.Sum(position, relativeNeighborPositions[Direction.SouthEast]).AsGodotVector() ) },
-       };
-
        Dictionary<Direction, GameTile> neighbors = new Dictionary<Direction, GameTile>();
        foreach (KeyValuePair<Direction, Vector2Int> dir in possibleNeighborPositions) {
            if (tiles.ContainsKey(dir.Value)) {
@@ -106,6 +66,29 @@ public class GameMap
        }
        
        return neighbors;
+   }
+   
+   public static Dictionary<Direction, Vector2Int> GetPossibleNeighborPositions(Vector2Int position)
+   {
+       Dictionary<Direction, Vector2Int> relativeNeighborPositions;
+       if (position.GetX() % 2 == 0) {
+           relativeNeighborPositions = EVEN_COL_DIRECTION_AS_VECTOR;
+       }
+       else {
+           relativeNeighborPositions = ODD_COL_DIRECTION_AS_VECTOR;
+       }
+       
+       Dictionary<Direction, Vector2Int> possibleNeighborPositions = new Dictionary<Direction, Vector2Int>
+       {
+            { Direction.North, Vector2Int.Sum(position, relativeNeighborPositions[Direction.North]) },
+            { Direction.South, Vector2Int.Sum(position, relativeNeighborPositions[Direction.South]) },
+            { Direction.NorthWest, Vector2Int.Sum(position, relativeNeighborPositions[Direction.NorthWest]) },
+            { Direction.NorthEast, Vector2Int.Sum(position, relativeNeighborPositions[Direction.NorthEast]) },
+            { Direction.SouthWest, Vector2Int.Sum(position, relativeNeighborPositions[Direction.SouthWest]) },
+            { Direction.SouthEast, Vector2Int.Sum(position, relativeNeighborPositions[Direction.SouthEast]) },
+       };
+       
+       return possibleNeighborPositions;
    }
 
    public Town GetTownAt(Vector2Int position) {
@@ -135,6 +118,5 @@ public class GameMap
    }
 
    public List<Town> GetTowns() { return towns.Values.ToList(); }
-   public int GetHeight(){ return height; }
-   public int GetWidth(){ return width; }
+   
 }
